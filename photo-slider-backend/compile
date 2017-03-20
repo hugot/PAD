@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Compile the project and run it
+
+mvn package && mvn exec:java
