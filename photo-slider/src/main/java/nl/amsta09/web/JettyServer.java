@@ -51,7 +51,6 @@ public class JettyServer {
 	 */
 	public void start() throws Exception{
 		server.start();
-		server.join();
 	}
 	
 	/**
@@ -62,7 +61,8 @@ public class JettyServer {
 		WebAppContext webAppContext = new WebAppContext();
 		webAppContext.setDescriptor(webAppContext + "WEB-INF/web.xml");
 		webAppContext.setResourceBase(".");
-		webAppContext.setContextPath("/runJetty");
+		webAppContext.setContextPath("/");
 		return webAppContext;
 	}
+
 }

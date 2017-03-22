@@ -1,7 +1,7 @@
 package nl.amsta09.driver;
 
 /**
- * Hello world!
+ * Mainclass van de applicatie.
  *
  */
 
