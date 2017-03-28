@@ -16,6 +16,8 @@ public class MainApp {
     	JettyServer jettyServer = new JettyServer();
     	jettyServer.setHandler();
     	jettyServer.start();
+
+    	//start slideshow
         new Slideshow();
     }
 }

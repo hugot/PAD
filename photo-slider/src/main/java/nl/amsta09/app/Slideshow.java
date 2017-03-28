@@ -32,17 +32,16 @@ public final class Slideshow extends JFrame implements KeyListener {
     URL url;
     AudioClip clip;
 
-    String[] list = {
-        "/Resources/Foto/cijfer1.png",
-        "/Resources/Foto/cijfer2.jpg",
-        "/Resources/Foto/cijfer3.jpg",
-        "/Resources/Foto/cijfer4.jpg"
-
+    URL[] list = {
+    	new File("Resources/Foto/Cijfer1.png").toURI().toURL(),
+		new File("Resources/Foto/Cijfer2.jpg").toURI().toURL(),
+		new File("Resources/Foto/Cijfer3.jpg").toURI().toURL(),
+		new File("Resources/Foto/Cijfer4.jpg").toURI().toURL()
     };
 
     public Slideshow() throws MalformedURLException {
         super("Java SlideShow");
-        this.url = Slideshow.class.getResource("Resources/Sounds/duck.wav");
+        this.url = new File("Resources/Sounds/duck.wav").toURI().toURL();
         clip = Applet.newAudioClip(url);
         pic = new JLabel();
         pic.setFocusable(true);
