@@ -17,7 +17,7 @@ public class JettyServer {
 	 * Instantieer de server, default port is 8080
 	 */
 	public JettyServer() {
-		this(8080);
+		this(4848);
 	}
 	
 	/**
