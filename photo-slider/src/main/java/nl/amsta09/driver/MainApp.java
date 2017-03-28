@@ -5,6 +5,7 @@ package nl.amsta09.driver;
  *
  */
 
+import nl.amsta09.app.Slideshow;
 import nl.amsta09.web.JettyServer;
 
 public class MainApp {
@@ -15,5 +16,6 @@ public class MainApp {
     	JettyServer jettyServer = new JettyServer();
     	jettyServer.setHandler();
     	jettyServer.start();
+        new Slideshow();
     }
 }
