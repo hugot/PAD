@@ -2,7 +2,7 @@
 <%@ taglib prefix="" tagdir="/WEB-INF/tags"%>
 <html lang="en">
 <head>
-	<link href="web/mainstylesheet.css" rel="stylesheet" type="text/css" media="screen" />
+	<link href="webroot/style/mainstylesheet.css" rel="stylesheet" type="text/css" media="screen" />
 	<meta charset="UTF-8">
 		<title>Photoslider backend</title>
 </head>
@@ -15,11 +15,9 @@
 			Dit is de photoslider backend	
 		</p>
 		<form action="${pageContext.request.contextPath}/processview" method="post">
-		<input type="submit" name="button1" value="button 1"/>
+		<input type="submit" name="themes" value="Beheer Thema's"/>
+		<input type="submit" name="addPhoto" value="Voeg een foto toe"/>
 		</form>
-		<c:if test="${greeting != null}">
-			<h2>${greeting}</h2>
-		</c:if>
 	</div>
 </body>
 </html>

@@ -20,7 +20,9 @@ public class HomeViewController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, 
 			HttpServletResponse response) throws ServletException, IOException{
 		String url = "/";
+		if (request.getParameter("addPhoto") != null){
+			request.getRequestDispatcher("webroot/addPhoto.jsp").forward(request, response);
+		}
 		request.setAttribute("greeting", "Hello!");
-		request.getRequestDispatcher(url).forward(request, response);
 	}
 }
