@@ -3,7 +3,7 @@
  * 
  * Author: Hugo Thunnissen
  * 
- * hier kan de algemene styling van de servlets gedaan worden
+ * hier kan de algemene styling van de webpagina's gedaan worden
  */
 
 body {
@@ -25,6 +25,34 @@ body {
 	margin: 0;
 	text-align:center;
 	line-height: 100px;
+}
+
+#navBar {
+	background-color: rgba(1,1,1,0.8);
+	margin: 0; 
+	width: 100%;
+	text-align: center;
+	list-style: none;
+	padding: 0;
+	display: inline-block; 
+	color: white;
+}
+
+#navBar li {
+	margin: 0;
+	display: inline;
+}
+
+#navBar li a:link, a:visited{
+	text-decoration: none;
+	color: white;
+	display: inline-block;
+	padding: 10px;
+}
+
+
+#navBar li a:hover {
+	background-color: black;
 }
 
 #main {

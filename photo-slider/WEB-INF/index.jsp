@@ -1,8 +1,18 @@
 <%@ page contentType="text/html;Charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="" tagdir="/WEB-INF/tags"%>
+
+
+<%-- 
+
+	Author: Hugo Thunnissen 
+
+	Via deze view kunnen foto's toegevoegd worden
+	
+--%>
+
 <html lang="en">
 <head>
-	<link href="webroot/style/mainstylesheet.css" rel="stylesheet" type="text/css" media="screen" />
+	<link href="${context}/webroot/style/mainstylesheet.css" rel="stylesheet" type="text/css" media="screen" />
 	<meta charset="UTF-8">
 		<title>Photoslider backend</title>
 </head>
@@ -14,10 +24,6 @@
 		<p>
 			Dit is de photoslider backend	
 		</p>
-		<form action="${pageContext.request.contextPath}/processview" method="post">
-		<input type="submit" name="themes" value="Beheer Thema's"/>
-		<input type="submit" name="addPhoto" value="Voeg een foto toe"/>
-		</form>
 	</div>
 </body>
 </html>

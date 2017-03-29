@@ -5,12 +5,12 @@
 
 	Author: Hugo Thunnissen 
 
-	dit is een doorverwijzing naar addPhoto.jsp in de WEB-INF map 
+	dit is een doorverwijzing naar themes.jsp in de WEB-INF map 
 
 --%>
 
 <html lang="en">
 
-	<%@include file="/WEB-INF/addPhoto.jsp"%>	
+	<%@include file="/WEB-INF/themes.jsp"%>
 
 </html>

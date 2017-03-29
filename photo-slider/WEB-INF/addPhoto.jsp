@@ -3,10 +3,20 @@
 
 <html lang="en">
 <head>
+	<link href="${context}/webroot/style/mainstylesheet.css" rel="stylesheet" type="text/css" media="screen" />
 	<meta charset="UTF-8">
 	<title></title>
 </head>
+
 <body>
-	<h1>Voeg een foto toe pagina</h1>	
+	<%@include file="header.jsp"%>
+	<h1>Voeg een foto toe via deze pagina</h1>	
+	<form method="POST" action="${context}/uploadphoto" enctype="multipart/form-data">
+		Kies een foto:
+		<input type="file" name="file" id="file" /> 
+		<br/>
+		<input type="submit" value="upload" name="upload" id="upload" />
+	</form>
 </body>
+
 </html>
