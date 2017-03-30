@@ -8,7 +8,9 @@ package nl.amsta09.app;
 import java.applet.Applet;
 import java.applet.AudioClip;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -17,6 +19,8 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import javax.swing.*;
 
 /**
@@ -32,22 +36,29 @@ public final class Slideshow extends JFrame implements KeyListener {
     URL url;
     AudioClip clip;
 
-    URL[] list = {
-    	new File("Resources/Foto/Cijfer1.png").toURI().toURL(),
-		new File("Resources/Foto/Cijfer2.jpg").toURI().toURL(),
-		new File("Resources/Foto/Cijfer3.jpg").toURI().toURL(),
-		new File("Resources/Foto/Cijfer4.jpg").toURI().toURL()
-    };
 
-    public Slideshow() throws MalformedURLException {
+   List<URL> list;
+
+   public Slideshow() throws MalformedURLException {
         super("Java SlideShow");
         this.url = new File("Resources/Sounds/duck.wav").toURI().toURL();
         clip = Applet.newAudioClip(url);
         pic = new JLabel();
         pic.setFocusable(true);
-        pic.setBounds(40, 30, 400, 400);
+
+
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        double width = screenSize.getWidth();
+        double height = screenSize.getHeight();
+
+        pic.setBounds(0, 0, (int) width, (int) height);
+
+        pic.setBounds(0, 0, 1980, 1080);
+
         pic.addKeyListener(this);
-        SetImageSize(3);
+        list = new ArrayList<URL>();
+        GetAllPictures(list);
+        SetImageSize(1);
 
         tm = new Timer(666666, new ActionListener() {
 
@@ -55,7 +66,7 @@ public final class Slideshow extends JFrame implements KeyListener {
             public void actionPerformed(ActionEvent b) {
                 SetImageSize(x);
                 x += 1;
-                if (x >= list.length) {
+                if (x >= list.size()) {
                     x = 0;
                 }
             }
@@ -64,9 +75,15 @@ public final class Slideshow extends JFrame implements KeyListener {
         tm.start();
         setLayout(null);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setUndecorated(false);
+
+        setUndecorated(true); //Zet op false om fullscreen uit te schakelen
 //setSize(1980, 1080);
         getContentPane().setBackground(Color.decode("#bdb67b"));
+
+        setUndecorated(false);
+        setSize(1980, 1080);
+        getContentPane().setBackground(Color.decode("#190707"));
+
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
@@ -76,7 +93,7 @@ public final class Slideshow extends JFrame implements KeyListener {
      * Gives the images the correct size
      */
     public void SetImageSize(int i) {
-        ImageIcon icon = new ImageIcon(list[i]);
+        ImageIcon icon = new ImageIcon(list.get(i));
         Image img = icon.getImage();
         Image newImg = img.getScaledInstance(pic.getWidth(), pic.getHeight(), Image.SCALE_SMOOTH);
         ImageIcon newImc = new ImageIcon(newImg);
@@ -86,7 +103,7 @@ public final class Slideshow extends JFrame implements KeyListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
-        System.out.println("Doet niks (Key typed)");
+        System.out.println("(Key typed)");
     }
 
     @Override
@@ -95,7 +112,7 @@ public final class Slideshow extends JFrame implements KeyListener {
 
             SetImageSize(x);
             x += 1;
-            if (x >= list.length) {
+            if (x >= list.size()) {
                 x = 0;
             }
         }
@@ -106,10 +123,23 @@ public final class Slideshow extends JFrame implements KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-        System.out.println("Doet niks (Key released)");
+        System.out.println("(Key released)");
     }
+    /*
+     * krijg alle foto's uit de opgegeven map
+     */
+    public void GetAllPictures(List<URL> list) throws MalformedURLException {
 
-    public void voegFotoToe(ArrayList list) {
-        list.add(Slideshow.class.getResource("/Foto/cijfer1.png"));
+        File folder = new File("Resources/Foto");
+        System.out.println(Arrays.toString(folder.listFiles()));
+        File[] listOfFiles = folder.listFiles();
+
+        for (File file : folder.listFiles()) {
+            if (file.isFile()) {
+                list.add((file).toURI().toURL());
+                System.out.println(file.getName());
+
+            }
+        }
     }
 }
