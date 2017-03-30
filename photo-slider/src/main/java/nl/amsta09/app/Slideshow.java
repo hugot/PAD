@@ -33,10 +33,10 @@ public final class Slideshow extends JFrame implements KeyListener {
     AudioClip clip;
 
     URL[] list = {
-    	new File("Resources/Foto/Cijfer1.png").toURI().toURL(),
-		new File("Resources/Foto/Cijfer2.jpg").toURI().toURL(),
-		new File("Resources/Foto/Cijfer3.jpg").toURI().toURL(),
-		new File("Resources/Foto/Cijfer4.jpg").toURI().toURL()
+    	new File("Resources/Foto/test1.jpg").toURI().toURL(),
+		new File("Resources/Foto/test2.jpg").toURI().toURL(),
+		new File("Resources/Foto/test3.jpg").toURI().toURL(),
+		new File("Resources/Foto/test4.jpg").toURI().toURL()
     };
 
     public Slideshow() throws MalformedURLException {
@@ -45,7 +45,7 @@ public final class Slideshow extends JFrame implements KeyListener {
         clip = Applet.newAudioClip(url);
         pic = new JLabel();
         pic.setFocusable(true);
-        pic.setBounds(40, 30, 400, 400);
+        pic.setBounds(0, 0, 1980, 1080);
         pic.addKeyListener(this);
         SetImageSize(3);
 
@@ -65,8 +65,8 @@ public final class Slideshow extends JFrame implements KeyListener {
         setLayout(null);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setUndecorated(false);
-//setSize(1980, 1080);
-        getContentPane().setBackground(Color.decode("#bdb67b"));
+        setSize(1980, 1080);
+        getContentPane().setBackground(Color.decode("#190707"));
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
