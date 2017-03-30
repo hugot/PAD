@@ -10,12 +10,12 @@
 
 	<body>
 		<%@include file="header.jsp"%>
-		<h1>Voeg een foto toe via deze pagina</h1>	
-		<form method="POST" action="${context}/uploadphoto" enctype="multipart/form-data">
-			Naam van de foto:
+		<h1>Voeg audio toe via deze pagina</h1>	
+		<form method="POST" action="${context}/uploadaudio" enctype="multipart/form-data">
+			Naam van het bestand:
 			<input type="text" name="name" id="name"/>
 			<br/>
-			Kies een foto:
+			Kies een bestand:
 			<input type="file" name="file" id="file" /> 
 			<br/>
 			<input type="submit" value="upload" name="upload" id="upload" />

@@ -8,5 +8,6 @@
 	<ul id="navBar">
 		<li><a href="${context}/webroot/themes.jsp">Beheer foto's en thema's</a></li>
 		<li><a href="${context}/webroot/addPhoto.jsp">Voeg een foto toe</a></li>
+                <li><a href="${context}/webroot/addAudio.jsp">Voeg Audio toe</a></li>
 	</ul>
 </html>
