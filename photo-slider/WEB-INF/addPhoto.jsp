@@ -12,11 +12,18 @@
 	<%@include file="header.jsp"%>
 	<h1>Voeg een foto toe via deze pagina</h1>	
 	<form method="POST" action="${context}/uploadphoto" enctype="multipart/form-data">
+		Naam van de foto:
+		<input type="text" name="name" id="name"/>
+		<br/>
 		Kies een foto:
 		<input type="file" name="file" id="file" /> 
 		<br/>
 		<input type="submit" value="upload" name="upload" id="upload" />
 	</form>
+
+	<c:if test="${message != null}">
+		<p>${message}</p>
+	</c:if>
 </body>
 
 </html>

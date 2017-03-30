@@ -6,7 +6,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -41,12 +40,11 @@ public class PhotoUploadServlet extends HttpServlet {
 
 		//Haal het bestand en de bestandsnaam op
 		final Part filePart = request.getPart("file");
-		final String fileName = filePart.getName();
+		final String fileName = request.getParameter("name");
 		final String destinationdir = "Resources" + File.separator + "Foto" + File.separator;
 
 		OutputStream out= null;
 		InputStream fileContent = null;
-		final PrintWriter writer = response.getWriter();
 
 		try {
 			out = new FileOutputStream(new File(destinationdir + fileName));
@@ -58,11 +56,15 @@ public class PhotoUploadServlet extends HttpServlet {
 			while ((read = fileContent.read(bytes)) != -1){
 				out.write(bytes, 0, read);
 			}
-			writer.println("Nieuw Bestand: " + fileName + "Gemaakt in : " + destinationdir);
+
+			final String message = "Bestand " + fileName + " is toegevoegd";
+			request.setAttribute("message", message);
+
 		} catch (FileNotFoundException e ){
 			System.out.println("DEBUG: Bestand niet gevonden");
 			e.printStackTrace();
-			writer.println("Bestand uploaden niet gelukt"); 
+			final String message = "Uploading file failed";
+			request.setAttribute("message", message);
 		} finally {
 			if(	out != null ) {
 				out.close(); 
@@ -70,9 +72,8 @@ public class PhotoUploadServlet extends HttpServlet {
 			if( fileContent != null ) {
 				fileContent.close();
 			}
-			if( writer != null ) {
-				writer.close();
-			}
 		}
+
+		request.getRequestDispatcher("/WEB-INF/addPhoto.jsp").forward(request, response);
 	}
 }
