@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nl.amsta09.app;
 
 import java.applet.Applet;
@@ -36,16 +31,14 @@ public final class Slideshow extends JFrame implements KeyListener {
     URL url;
     AudioClip clip;
 
+    List<URL> list;
 
-   List<URL> list;
-
-   public Slideshow() throws MalformedURLException {
+    public Slideshow() throws MalformedURLException {
         super("Java SlideShow");
         this.url = new File("Resources/Sounds/duck.wav").toURI().toURL();
         clip = Applet.newAudioClip(url);
         pic = new JLabel();
         pic.setFocusable(true);
-
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         double width = screenSize.getWidth();
@@ -53,12 +46,10 @@ public final class Slideshow extends JFrame implements KeyListener {
 
         pic.setBounds(0, 0, (int) width, (int) height);
 
-        pic.setBounds(0, 0, 1980, 1080);
-
         pic.addKeyListener(this);
         list = new ArrayList<URL>();
         GetAllPictures(list);
-        SetImageSize(1);
+        SetImageSize(0);
 
         tm = new Timer(666666, new ActionListener() {
 
@@ -71,13 +62,12 @@ public final class Slideshow extends JFrame implements KeyListener {
                 }
             }
         });
+
         add(pic);
         tm.start();
         setLayout(null);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
-
         setUndecorated(true); //Zet op false om fullscreen uit te schakelen
-//setSize(1980, 1080);
         getContentPane().setBackground(Color.decode("#bdb67b"));
 
         setUndecorated(false);
@@ -125,8 +115,9 @@ public final class Slideshow extends JFrame implements KeyListener {
     public void keyReleased(KeyEvent e) {
         System.out.println("(Key released)");
     }
+
     /*
-     * krijg alle foto's uit de opgegeven map
+     * Haalt alle foto's uit de opgegeven map en zet die dan in een List
      */
     public void GetAllPictures(List<URL> list) throws MalformedURLException {
 
