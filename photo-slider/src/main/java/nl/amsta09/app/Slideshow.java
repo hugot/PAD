@@ -36,26 +36,25 @@ public final class Slideshow extends JFrame implements KeyListener {
     URL url;
     AudioClip clip;
 
-    List<URL> list;
 
-//    URL[] list = {
-//        new File("Resources/Foto/Cijfer1.png").toURI().toURL(),
-//        new File("Resources/Foto/Cijfer2.jpg").toURI().toURL(),
-//        new File("Resources/Foto/Cijfer3.jpg").toURI().toURL(),
-//        new File("Resources/Foto/Cijfer4.jpg").toURI().toURL()
-//    };
-    public Slideshow() throws MalformedURLException {
+   List<URL> list;
+
+   public Slideshow() throws MalformedURLException {
         super("Java SlideShow");
         this.url = new File("Resources/Sounds/duck.wav").toURI().toURL();
         clip = Applet.newAudioClip(url);
         pic = new JLabel();
         pic.setFocusable(true);
 
+
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         double width = screenSize.getWidth();
         double height = screenSize.getHeight();
 
         pic.setBounds(0, 0, (int) width, (int) height);
+
+        pic.setBounds(0, 0, 1980, 1080);
+
         pic.addKeyListener(this);
         list = new ArrayList<URL>();
         GetAllPictures(list);
@@ -76,9 +75,15 @@ public final class Slideshow extends JFrame implements KeyListener {
         tm.start();
         setLayout(null);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
+
         setUndecorated(true); //Zet op false om fullscreen uit te schakelen
 //setSize(1980, 1080);
         getContentPane().setBackground(Color.decode("#bdb67b"));
+
+        setUndecorated(false);
+        setSize(1980, 1080);
+        getContentPane().setBackground(Color.decode("#190707"));
+
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
