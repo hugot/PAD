@@ -1,14 +1,18 @@
 package nl.amsta09.model;
 
+import java.net.URL;
+
 /**
  * Model voor een foto
  */
 
 public class Photo extends Media{
 
+
 	/**
 	 *
 	 */
-	public Photo() {
+	public Photo(URL url, String name, String theme) {
+		super(url, name, theme);
 	}
 }

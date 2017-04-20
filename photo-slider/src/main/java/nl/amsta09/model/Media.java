@@ -5,10 +5,40 @@
  */
 package nl.amsta09.model;
 
+import java.net.URL;
+
 /**
  *
- * @author Ahmet
+ * @author Hugo Thunnissen
  */
 public abstract class Media {
+	private URL filePath;
+	private String name;
+	private String theme;
+
+	public Media(URL filePath, String name, String theme){
+		this.filePath = filePath;
+		this.name = name;
+		this.theme = theme;
+	}
+
+	public String getName(){
+		return name;
+	}
+
+	public void setName(String name){
+		this.name = name;
+	}
+
+	public String getTheme(){
+		return theme;
+	}
+
+	public void setTheme(String theme){
+		this.theme = theme;
+	}
     
+    public URL getFilePath(){
+    	return this.filePath;
+    }
 }
