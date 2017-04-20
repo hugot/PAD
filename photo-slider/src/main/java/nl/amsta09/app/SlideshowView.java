@@ -4,12 +4,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.*;
 
 /**
@@ -19,6 +15,8 @@ import javax.swing.*;
 public final class SlideshowView extends JFrame {
 
     private JLabel pic;
+    private double width;
+    private double height;
     
 
     public SlideshowView() throws MalformedURLException {
@@ -26,18 +24,18 @@ public final class SlideshowView extends JFrame {
 
         pic = new JLabel();
         pic.setFocusable(true);
+
         //Zet de dimensies
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        double width = screenSize.getWidth();
-        double height = screenSize.getHeight();
+        width = screenSize.getWidth();
+        height = screenSize.getHeight();
+        
         pic.setBounds(0, 0, (int) width, (int) height);
 
-//      pic.addKeyListener(this);
-    
-//        SlideshowController.GetAllPictures(list);
-        SetImageSize(0);
+    }
 
-        add(pic);
+    public void initialize(){
+
         setLayout(null);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setUndecorated(true); //Zet op false om fullscreen uit te schakelen
@@ -49,16 +47,22 @@ public final class SlideshowView extends JFrame {
         setVisible(true);
     }
 
+	/**
+	 * @return pic
+	 */
+	public JLabel getPicture(){
+		return pic;
+	}
+
     /*
      * Zet het scherm op het aangegeven foto
      */
-    public void SetImageSize(int i) {
-
-        ImageIcon icon = new ImageIcon(list.get(i));
+    public void setImage(URL url) {
+        ImageIcon icon = new ImageIcon(url);
         Image img2 = icon.getImage();
         Image newImg = img2.getScaledInstance(pic.getWidth(), pic.getHeight(), Image.SCALE_SMOOTH);
         ImageIcon newImc = new ImageIcon(newImg);
         pic.setIcon(newImc);
-
+        add(pic);
     }
 }
