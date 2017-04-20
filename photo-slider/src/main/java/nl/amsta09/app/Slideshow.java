@@ -68,11 +68,8 @@ public final class Slideshow extends JFrame implements KeyListener {
         setLayout(null);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setUndecorated(true); //Zet op false om fullscreen uit te schakelen
-        getContentPane().setBackground(Color.decode("#bdb67b"));
-
-        setUndecorated(false);
-        setSize(1980, 1080);
-        getContentPane().setBackground(Color.decode("#190707"));
+        setSize((int) width, (int) height);
+        getContentPane().setBackground(Color.BLACK);
 
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -83,12 +80,12 @@ public final class Slideshow extends JFrame implements KeyListener {
      * Gives the images the correct size
      */
     public void SetImageSize(int i) {
+     
         ImageIcon icon = new ImageIcon(list.get(i));
-        Image img = icon.getImage();
-        Image newImg = img.getScaledInstance(pic.getWidth(), pic.getHeight(), Image.SCALE_SMOOTH);
+        Image img2 = icon.getImage();
+        Image newImg = img2.getScaledInstance(pic.getWidth(), pic.getHeight(), Image.SCALE_SMOOTH);
         ImageIcon newImc = new ImageIcon(newImg);
         pic.setIcon(newImc);
-
     }
 
     @Override
