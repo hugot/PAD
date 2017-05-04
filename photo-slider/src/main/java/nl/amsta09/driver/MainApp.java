@@ -2,14 +2,15 @@ package nl.amsta09.driver;
 
 import nl.amsta09.app.SlideShowController;
 import nl.amsta09.app.Slideshow;
+import nl.amsta09.app.SlideshowView;
+import nl.amsta09.data.SqlConnector;
+import nl.amsta09.web.JettyServer;
 
 /**
  * Mainclass van de applicatie.
  *
  */
 
-import nl.amsta09.app.SlideshowView;
-import nl.amsta09.web.JettyServer;
 
 public class MainApp {
     
@@ -20,9 +21,11 @@ public class MainApp {
     	jettyServer.setHandler();
     	jettyServer.start();
 
+    	new SqlConnector();
+
     	//start slideshow
-    	SlideShowController slideshowController = new SlideShowController(new SlideshowView());
-		slideshowController.initialize();
+//    	SlideShowController slideshowController = new SlideShowController(new SlideshowView());
+//		slideshowController.initialize();
 		//new Slideshow();
     }
 }
