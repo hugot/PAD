@@ -14,8 +14,8 @@ public class SqlConnector {
 		Statement hello;
 		ResultSet set;
 		try{
-			connection = DriverManager.getConnection("jdbc:mysql://localhost/photoslider?"
-					+ "user=PAD&password=fissa&useUnicode=true&useJDBCCompliantTimezoneShift=true"
+			connection = DriverManager.getConnection("jdbc:mysql://supersudonator.filmencode.nl/photoslider?"
+					+ "user=PAD&password=fissafissaheey123&useUnicode=true&useJDBCCompliantTimezoneShift=true"
 					+ "&useLegacyDatetimeCode=false&serverTimezone=UTC");
 			hello = connection.createStatement();
 			set = hello.executeQuery("SELECT * FROM theme;");
