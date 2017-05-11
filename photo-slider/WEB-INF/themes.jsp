@@ -1,5 +1,5 @@
 <?PHP
-header("Refresh:0");
+
 ?>
 <%@ page contentType="text/html;Charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="" tagdir="/WEB-INF/tags"%>
@@ -27,33 +27,31 @@ header("Refresh:0");
 		<%@include file="header.jsp"%>
 		<h1>Op deze pagina kunnen de Thema's beheerd worden</h1>
 		<form method="POST" action="${context}/addTheme" enctype="multipart/form-data">			
-			Naam:
-			<input type="text" name="name" id="name"/>
-			<input type="submit" value="voeg_toe" name="voeg_toe" id="voeg_toe" />
-			
-			</br>
-			
-<div id=themaStyle>
-  <select name="Thema's" size="5" id="tabelwidth">
-    <option value="2010" >Fightme1v1_IRL</option>
-    <option value="2011" >Hippopotomonstrosesquippedaliofobie</option>
-    <option value="2012" >2012</option>
-    <option value="2013" >2013</option>
-    <option value="2014" >2014</option>
-    <option value="2010" >2010</option>
-    <option value="2011" >2011</option>
-    <option value="2012" >2012</option>
-    <option value="2013" >2013</option>
-    <option value="2014" >2014</option>
-    <option value="2010" >2010</option>
-    <option value="2011" >2011</option>
-    <option value="2012" >2012</option>
-    <option value="2013" >2013</option>
-    <option value="2014" >2014</option>	
-   </select>
-	</div>
+			Voeg een thema toe:
+			<label for="name"></label> <input id="name" type="text" > 
+			<input type="button" value="Save" onclick="insert()"/>
+			<div>
+				<select name="Thema's" size="5" id="tablewidth">
+				</select> 
+			</div>
 		</form>
 		
 	</body>
 
+	<script>
+		var themes = new Array();
+		function insert(){
+			themes[themes.length]="<option>" + document.getElementById("name").value + "</option>";
+			var content="<br>";
+			for(var i = 0; i < themes.length; i++) {
+			content +=themes[i]+"<br>";
+			}
+			document.getElementById('tablewidth').innerHTML = content;
+		}
+		
+		function show(){
+			
+		}
+	</script>
 </html>
+

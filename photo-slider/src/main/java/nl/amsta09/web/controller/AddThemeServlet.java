@@ -75,6 +75,5 @@ public class AddThemeServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
         System.out.println("end my suffering pls");
-        response.setHeader("Refresh", "0");
     }
 }
