@@ -1,0 +1,9 @@
+#tabelwidth{
+ width:400px;   
+ height: 370px;
+}
+
+#tabelwidth option{
+  width:400px;
+  font-size: 20px;  
+}
