@@ -65,9 +65,9 @@ public class PhotoUploadServlet extends HttpServlet {
 
             final String message = "Bestand " + fileName + " is toegevoegd";
             request.setAttribute("message", message);
-            System.out.println(url
+            System.out.println("\n" + url
              + "\n" + fileName);
-            new SqlConnector().Execute_Insert_Media(url, fileName);
+            new SqlConnector().insertMedia(url, fileName);
 
         } catch (FileNotFoundException e) {
             System.out.println("DEBUG: Bestand niet gevonden");
