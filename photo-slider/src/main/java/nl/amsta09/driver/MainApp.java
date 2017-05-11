@@ -25,9 +25,9 @@ public class MainApp {
 
     	//start slideshow
 
-    	//SlideShowController slideshowController = new SlideShowController(new SlideshowView());
-	//	slideshowController.initialize();
+    	SlideShowController slideshowController = new SlideShowController(new SlideshowView());
+		slideshowController.initialize();
 
-		//new Slideshow();
+		new Slideshow();
     }
 }
