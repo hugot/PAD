@@ -3,13 +3,13 @@ package nl.amsta09.data;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 import java.net.URL;
+import java.util.HashSet;
+import java.util.Set;
 
-import javax.swing.Action;
 import nl.amsta09.model.Media;
 import nl.amsta09.model.Photo;
 
@@ -31,21 +31,22 @@ public class SqlConnector {
     /*
      * Insert een theme naar de database
      */
-    public void Execute_Insert_Theme(String Theme_Name) throws SQLException, ClassNotFoundException {
-
-//            Class.forName("com.mysql.jdbc.Driver");
-//            connection = DriverManager.getConnection("jdbc:mysql://localhost/photoslider", "root", "Aapjes-14");
+    public void insertTheme(String Theme_Name) throws SQLException, ClassNotFoundException {
+        System.out.println("\n----------Execute_Insert_Theme commencing----------");
+        Class.forName("com.mysql.jdbc.Driver");
+        connection = DriverManager.getConnection("jdbc:mysql://localhost/photoslider", "root", "Aapjes-14");
         Statement addThemeStatement = connection.createStatement();
         //Insert de gegevens in de database met een unieke ID
         String sql = ("insert into theme (name) VALUES ('" + Theme_Name + "')");
 
         addThemeStatement.execute(sql);
+
     }
 
     /*
-    Verwijdert de gekozen Thema uit de database
+     * Verwijdert het gekozen Thema uit de database
      */
-    public void Execute_Delete_Theme(int idTheme) throws SQLException, ClassNotFoundException {
+    public void deleteTheme(int idTheme) throws SQLException, ClassNotFoundException {
         Statement deleteThemeStatement = connection.createStatement();
         //Verwijdert de thema uit de tabel Thema
         String sql = ("DELETE FROM Thema"
@@ -54,39 +55,29 @@ public class SqlConnector {
         deleteThemeStatement.execute(sql);
     }
 
-    public void Execute_Activate_Thema(String Theme_Name) throws SQLException {
-
-        Statement activateThemaStatement = connection.createStatement();
-        //Activeert het gekozen thema
-        String sql = ("UPDATE Thema \n"
-                + "SET on/off = 'false'\n"
-                + "WHERE name ='" + Theme_Name + "'");
-
-    }
-
     /*
      * Insert een media file naar de database
      */
-    public void Execute_Insert_Media(String URL, String Media_Name) throws SQLException, ClassNotFoundException {
-
-        URL = URL.replace("\\", "\\\\\\\\");
-        StringBuilder test = new StringBuilder();
-        test.append(URL);
+    public void insertMedia(String URL, String Media_Name) throws SQLException, ClassNotFoundException {
 
         Class.forName("com.mysql.jdbc.Driver");
         connection = DriverManager.getConnection("jdbc:mysql://localhost/photoslider", "root", "Aapjes-14");
+
+        URL = URL.replace("\\", "\\\\\\\\");
 
         Statement addMediaStatement = connection.createStatement();
         //Insert een media file in de database
         String sql = ("INSERT INTO Media (name, URL) VALUES ('" + Media_Name + "','" + URL + "')");
 
         addMediaStatement.execute(sql);
+
+        insertIntoMediaType(Media_Name);
     }
 
     /*
     Verwijdert de gekozen Media uit de database
      */
-    public void Execute_Delete_Media(URL MediaURL) throws SQLException, ClassNotFoundException {
+    public void deleteMedia(URL MediaURL) throws SQLException, ClassNotFoundException {
 
         Statement deleteMediaStatement = connection.createStatement();
 
@@ -99,7 +90,7 @@ public class SqlConnector {
     /*
      * Activeert het gekozen media file
      */
-    public void Execute_Activate_Media(String Media_Name) throws SQLException {
+    public void activateMedia(String Media_Name) throws SQLException {
 
         Statement activateMediaStatement = connection.createStatement();
         //Activeert de gekozen media file
@@ -113,7 +104,7 @@ public class SqlConnector {
     /*
      * Deactiveerd het gekozen media file
      */
-    public void Execute_Disable_Media(String Media_Name) throws SQLException {
+    public void disableMedia(String Media_Name) throws SQLException {
 
         Statement disableMediaStatement = connection.createStatement();
         //Deactiveerd de gekozen media file
@@ -127,7 +118,7 @@ public class SqlConnector {
     /*
     Voegt de Soundeffect toe aan de gekozen Foto
      */
-    public void Execute_Add_Soundeffect_To_Photo(int idPhoto, int idSoundeffect) throws SQLException, ClassNotFoundException {
+    public void addSoundeffectToPhoto(int idPhoto, int idSoundeffect) throws SQLException, ClassNotFoundException {
         Statement addSoundeffectStatement = connection.createStatement();
         //Voegt de Soundeffect id toe aan de Foto
         String sql = ("INSERT INTO Photo VALUES ('" + idPhoto + ", " + idSoundeffect + "')");
@@ -139,7 +130,7 @@ public class SqlConnector {
     /*
      * Activeert het gekozen thema
      */
-    public void Execute_Activate_Theme(String Theme_Name) throws SQLException {
+    public void activateTheme(String Theme_Name) throws SQLException {
 
         Statement activateThemaStatement = connection.createStatement();
         //Activeert het gekozen thema
@@ -153,7 +144,7 @@ public class SqlConnector {
     /*
      * Deactiveerd het gekozen thema
      */
-    public void Execute_Disable_Theme(String Theme_Name) throws SQLException {
+    public void disableTheme(String Theme_Name) throws SQLException {
 
         Statement disableThemaStatement = connection.createStatement();
         //Deactiveerd het gekozen thema
@@ -167,7 +158,7 @@ public class SqlConnector {
     /*
      * Voegt het gekozen media file toe aan een gekozen thema
      */
-    public void Execute_Add_Media_To_Theme(int Theme_Id, int Media_Id) throws SQLException {
+    public void addMediaToTheme(int Theme_Id, int Media_Id) throws SQLException {
 
         Statement addMediaToThemeStatement = connection.createStatement();
         //Voegt gekozen media toe aan gekozen thema
@@ -177,7 +168,7 @@ public class SqlConnector {
 
     }
 
-    public void Execute_Get_All_Photo() throws SQLException {
+    public void getAllPhoto() throws SQLException {
         ResultSet result;
         Media photo;
 
@@ -195,6 +186,34 @@ public class SqlConnector {
             photo = new Photo(result.getURL("URL"), result.getString("name"));
 
         }
+    }
+
+    /*
+     * Zet een media file in de correcte type tabel (photo, sound, soundeffect)
+     */
+    public void insertIntoMediaType(String Name) throws SQLException {
+        String sql;
+        Set<String> imageTypes = new HashSet<String>();
+        imageTypes.add("png");
+        imageTypes.add("jpg");
+        Set<String> soundTypes = new HashSet<String>();
+        soundTypes.add("wav");
+        soundTypes.add("mp3");
+
+        String fileType = null;
+        int i = Name.lastIndexOf('.');
+        if (i > 0) {
+            fileType = Name.substring(i + 1);
+        }
+
+        if (imageTypes.contains(fileType)) {
+            sql = ("INSERT INTO photo VALUES ('LAST_INSERT_ID')");
+        } else {
+            sql = ("INSERT INTO song VALUES ('LAST_INSERT_ID')");
+        }
+        Statement addIntoMediaType = connection.createStatement();
+
+        addIntoMediaType.execute(sql);
     }
 
 }
