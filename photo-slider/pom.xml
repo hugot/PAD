@@ -1,73 +1,67 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-  <groupId>nl.amsta09</groupId>
-  <artifactId>photo-slider</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <packaging>jar</packaging>
+    <groupId>nl.amsta09</groupId>
+    <artifactId>photo-slider</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
 
-  <name>photo-slider-backend</name>
-  <url>http://maven.apache.org</url>
+    <name>photo-slider-backend</name>
+    <url>http://maven.apache.org</url>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
-  <dependencies>
-	<!--Junit-->
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
-	<!--SQLite-->
-	<dependency>
-		<groupId>org.xerial</groupId>
-		<artifactId>sqlite-jdbc</artifactId>
-		<version>3.16.1</version>
-	</dependency>
-	<!-- Jetty Server -->
-	<dependency>
-	    <groupId>org.eclipse.jetty.aggregate</groupId>
-	    <artifactId>jetty-all-server</artifactId>
-	    <version>8.2.0.v20160908</version>
-	</dependency>
-	<!-- Servlet engine -->
-	<dependency>
-	    <groupId>org.apache.tomcat</groupId>
-	    <artifactId>jasper</artifactId>
-	    <version>6.0.51</version>
-	</dependency>
-	<!--Servlet API (Voor de webpagina's)-->
-	<dependency>
-	    <groupId>javax.servlet</groupId>
-	    <artifactId>javax.servlet-api</artifactId>
-	    <version>4.0.0-b03</version>
-	</dependency>
-	<!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-plus -->
-	<dependency>
-	    <groupId>org.eclipse.jetty</groupId>
-	    <artifactId>jetty-plus</artifactId>
-	    <version>8.2.0.v20160908</version>
-	</dependency>
-	<!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-annotations -->
-	<dependency>
-	    <groupId>org.eclipse.jetty</groupId>
-	    <artifactId>jetty-annotations</artifactId>
-	    <version>8.2.0.v20160908</version>
-	</dependency>
-	<!-- Mysql database library --> 
-	<dependency>
-	    <groupId>mysql</groupId>
-	    <artifactId>mysql-connector-java</artifactId>
-	    <version>6.0.6</version>
-	</dependency>
-  </dependencies>
+    <dependencies>
+        <!--Junit-->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.1</version>
+            <scope>test</scope>
+        </dependency>
+        <!--MySql-->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.39</version>
+        </dependency>
+        <!-- Jetty Server -->
+        <dependency>
+            <groupId>org.eclipse.jetty.aggregate</groupId>
+            <artifactId>jetty-all-server</artifactId>
+            <version>8.2.0.v20160908</version>
+        </dependency>
+        <!-- Servlet engine -->
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>jasper</artifactId>
+            <version>6.0.51</version>
+        </dependency>
+        <!--Servlet API (Voor de webpagina's)-->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>4.0.0-b03</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-plus -->
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-plus</artifactId>
+            <version>8.2.0.v20160908</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-annotations -->
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-annotations</artifactId>
+            <version>8.2.0.v20160908</version>
+        </dependency>
+    </dependencies>
     <build>
         <plugins>
-			<!--Plugin om het project met maven te runnen-->
+            <!--Plugin om het project met maven te runnen-->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
