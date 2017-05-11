@@ -5,14 +5,18 @@ import java.net.URL;
 /**
  * Model voor een foto
  */
+public class Photo extends Media {
 
-public class Photo extends Media{
-
-
-	/**
-	 *
-	 */
-	public Photo(URL url, String name, String theme) {
-		super(url, name, theme);
-	}
+    /**
+     *
+     */
+    public Photo(URL url, String name, String theme) {
+        super(url, name, theme);
+    }
+    
+    public Photo(URL url, String name) {
+        
+        super(url, name);
+    }
+    
 }

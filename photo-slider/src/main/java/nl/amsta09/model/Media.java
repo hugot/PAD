@@ -12,33 +12,49 @@ import java.net.URL;
  * @author Hugo Thunnissen
  */
 public abstract class Media {
-	private URL filePath;
-	private String name;
-	private String theme;
 
-	public Media(URL filePath, String name, String theme){
-		this.filePath = filePath;
-		this.name = name;
-		this.theme = theme;
-	}
+    private URL filePath;
+    private String name;
+    private String theme = null;
 
-	public String getName(){
-		return name;
-	}
+    public Media(URL filePath, String name, String theme) {
+        this.filePath = filePath;
+        this.name = name;
+        this.theme = theme;
+    }
 
-	public void setName(String name){
-		this.name = name;
-	}
+    public Media(URL filePath, String name) {
+        this.filePath = filePath;
+        this.name = name;
+    }
 
-	public String getTheme(){
-		return theme;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setTheme(String theme){
-		this.theme = theme;
-	}
-    
-    public URL getFilePath(){
-    	return this.filePath;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getTheme() {
+        return theme;
+    }
+
+    public void setTheme(String theme) {
+        this.theme = theme;
+    }
+
+    public URL getFilePath() {
+        return this.filePath;
+    }
+
+    @Override
+    public String toString() {
+        String result;
+
+        result = ("URL: " + getFilePath()
+                + "\nName: " + getName()
+                + "]nTheme: " + getTheme());
+        return result;
     }
 }
