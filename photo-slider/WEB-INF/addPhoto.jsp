@@ -4,7 +4,6 @@
 <html lang="en">
 <head>
 	<link href="${context}/webroot/style/mainstylesheet.css" rel="stylesheet" type="text/css" media="screen" />
-	<script src="${context}/webroot/dropzone.js"></script>
 	<meta charset="UTF-8">
 	<title></title>
 </head>
@@ -12,19 +11,33 @@
 
 	<body>
 		<%@include file="header.jsp"%>
-		<h1>Voeg een foto toe via deze pagina</h1>	
-		<form action="${context}/uploadphoto" class="dropzone" id="dropzone-element">
-		</form>
-		<%--		<form method="POST" action="${context}/uploadphoto" enctype="multipart/form-data">
-					Naam van de foto:
-					<input type="text" name="name" id="name"/>
-					<br/>
-					Kies een foto:
-					<input type="file" name="file" id="file" /> 
-					<br/>
-					<input type="submit" value="upload" name="upload" id="upload" />
-				</form> --%>
+			
+		<section id="main">
+			<h1>Voeg een foto toe via deze pagina</h1>	
+			<script type="text/javascript" src="${context}/webroot/dropzone.js"></script>
+			<script type=text/javascript">
+//				Dropzone.options.uploadForm = {
+//					dictDefaultMessage: "Sleep foto's naar dit vlak om ze te uploaden",
+//					paramName: "photo",
+//					acceptedFiles: 'image/*'
+//				};
+//
+				alert("wtf");
+				//var uploader = document.querySelector('#upload-form');
+				$(document).ready(function(){var uploadform = new Dropzone('form#upload-form', { method: "POST",
+				dictDefaultMessage: "Sleep foto's naar dit vlak om ze te uploaden",
+				paramName: "photo",
+				acceptedFiles: 'image/*'
+				});
+				});
+			</script>
 
+			<div action="${context}/uploadphoto" class="dropzone needsclick dz-clickable" id="upload-form">
+				<span id="explanation">Sleep foto's naar dit vlak om ze te uploaden</span>
+			</div>
+
+
+		</section>
 		<c:if test="${message != null}">
 			<p>${message}</p>
 		</c:if>

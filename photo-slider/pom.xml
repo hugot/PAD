@@ -58,6 +58,12 @@
 	    <artifactId>jetty-annotations</artifactId>
 	    <version>8.2.0.v20160908</version>
 	</dependency>
+	<!-- Mysql database library --> 
+	<dependency>
+	    <groupId>mysql</groupId>
+	    <artifactId>mysql-connector-java</artifactId>
+	    <version>6.0.6</version>
+	</dependency>
   </dependencies>
     <build>
         <plugins>

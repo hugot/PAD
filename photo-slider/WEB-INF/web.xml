@@ -8,11 +8,11 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 		<welcome-file>WEB-INF/index.jsp</welcome-file> 
 	</welcome-file-list>
 	<servlet>
-		<servlet-name>PhotoUploadServlet</servlet-name>
-		<servlet-class>nl.amsta09.web.controller.PhotoUploadServlet</servlet-class>
+		<servlet-name>FileUploadServlet</servlet-name>
+		<servlet-class>nl.amsta09.web.controller.FileUploadServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>PhotoUploadServlet</servlet-name>
+		<servlet-name>FileUploadServlet</servlet-name>
 		<url-pattern>/uploadphoto</url-pattern>
 		</servlet-mapping>
 </web-app>

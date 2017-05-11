@@ -21,7 +21,7 @@ public class SqlConnector {
 			set = hello.executeQuery("SELECT * FROM theme;");
 			ResultSetMetaData setMeta = set.getMetaData();
 			int columns = setMeta.getColumnCount();
-			
+
 			while(set.next()){
 				for(int i = 1; i < columns; i++){
 					String value = set.getString(i);
