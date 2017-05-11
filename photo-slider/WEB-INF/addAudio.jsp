@@ -26,5 +26,4 @@
 			<p>${message}</p>
 		</c:if>
 	</body>
-
 </html>
