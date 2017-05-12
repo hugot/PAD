@@ -30,7 +30,7 @@ public class SlideShowController implements KeyListener{
 	public void initialize(){
 		view.initialize();
 		view.getPicture().addKeyListener(this);
-		view.setImage(getAllPictures().get(0).getFilePath());
+		view.setImage(getAllPictures().get(0).getURL());
 	}
 
 	/**
@@ -44,11 +44,7 @@ public class SlideShowController implements KeyListener{
 
 		for (File file : folder.listFiles()) {
 			if (file.isFile()) {
-				try {
-					photos.add(new Photo(file.toURI().toURL(), file.getName(), "theme"));
-				} catch (MalformedURLException ex){
-					ex.printStackTrace();
-				}
+				photos.add(new Photo(file.getAbsolutePath(), file.getName(), "theme"));
 				System.out.println(file.getName());
 			}
 		}

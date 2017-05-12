@@ -21,7 +21,7 @@ USE `photoslider` ;
 -- Table `photoslider`.`theme`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `photoslider`.`theme` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   `on/off` TINYINT(1) NOT NULL,
   PRIMARY KEY (`id`))
@@ -32,7 +32,7 @@ ENGINE = InnoDB;
 -- Table `photoslider`.`media`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `photoslider`.`media` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO INCREMENT,
   `name` VARCHAR(45) NULL,
   `URL` VARCHAR(45) NULL,
   `active` TINYINT(1) NULL,
@@ -50,8 +50,8 @@ CREATE TABLE IF NOT EXISTS `photoslider`.`soundeffect` (
   CONSTRAINT `fk_Soundeffect_Media1`
     FOREIGN KEY (`id`)
     REFERENCES `photoslider`.`media` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -67,8 +67,8 @@ CREATE TABLE IF NOT EXISTS `photoslider`.`photo` (
   CONSTRAINT `fk_Photo_Media1`
     FOREIGN KEY (`id`)
     REFERENCES `photoslider`.`media` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_Photo_Soundeffect1`
     FOREIGN KEY (`Soundeffect_id`)
     REFERENCES `photoslider`.`soundeffect` (`id`)
@@ -87,8 +87,8 @@ CREATE TABLE IF NOT EXISTS `photoslider`.`song` (
   CONSTRAINT `fk_Song_Media1`
     FOREIGN KEY (`id`)
     REFERENCES `photoslider`.`media` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 

@@ -5,6 +5,8 @@
  */
 package nl.amsta09.model;
 
+import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
@@ -12,18 +14,24 @@ import java.net.URL;
  * @author Hugo Thunnissen
  */
 public abstract class Media {
-	private URL filePath;
+	private URL url;
+	private String relativePath;
 	private String name;
 	private String theme;
 
-	public Media(URL filePath, String name){
-		this.filePath = filePath;
+	public Media(String relativePath, String name){
+		try {
+			this.url = new File(relativePath).toURI().toURL();
+		}
+		catch(MalformedURLException e){
+			e.printStackTrace();
+		}
+		this.relativePath = relativePath;
 		this.name = name;
 	}
 
-	public Media(URL filePath, String name, String theme){
-		this.filePath = filePath;
-		this.name = name;
+	public Media(String relativePath, String name, String theme){
+		this(relativePath, name);
 		this.theme = theme;
 	}
 
@@ -42,9 +50,21 @@ public abstract class Media {
 	public void setTheme(String theme){
 		this.theme = theme;
 	}
+
+	public void setURL(URL url){
+		this.url = url;
+	}
     
-    public URL getFilePath(){
-    	return this.filePath;
+    public URL getURL(){
+    	return url;
+	}
+
+	public String getRelativePath(){
+		return relativePath;
+	}
+
+	public void setRelativePath(String relativePath){
+		this.relativePath = relativePath;
 	}
 
     @Override

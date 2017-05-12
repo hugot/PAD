@@ -6,7 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URL;
+import java.sql.SQLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
+import nl.amsta09.data.SqlConnector;
 import nl.amsta09.model.Audio;
 import nl.amsta09.model.Media;
 import nl.amsta09.model.Photo;
@@ -36,7 +37,8 @@ import nl.amsta09.model.Photo;
 public class FileUploadServlet extends HttpServlet { 
 
 	/**
-	 * Haal een bestand op uit de html form en plaats dit in de daarvoor bestemde app
+	 * Deze methode ontvangt een bestand in een httprequest en plaatst deze in de daarvoor bestemde map
+	 * alvorens het bestand toe te voegen aan de database.
 	 *
 	 * @param request
 	 * @param response
@@ -45,42 +47,52 @@ public class FileUploadServlet extends HttpServlet {
 			throws IOException, ServletException{
 		response.setContentType("text/html;charset=UTF-8");
 
+		System.out.println("ben begonnen");
 		// Het media object en de attributen waar het mee geinstantieerd wordt
 		boolean savingFileSucceeded = false;
 		Part filePart = null;
 		String fileName;
 		String destinationdir = "Resources" + File.separator;
 		Media media;
-		// De in en outputstream voor het lezen en schrijven van het bestand
+
+		// De in- en outputstream voor het lezen en schrijven van het bestand
 		OutputStream out= null;
 		InputStream fileContent = null;
 
+		// Connectie met de database
+		SqlConnector conn = new SqlConnector();
 
 		// Check om wat voor bestand het gaat, instantieer vervolgens een object van het juiste type
 		if(request.getPart("file") != null){
-			 System.out.println("Je gebruikt nog de standaardwaarde *file* voor de filepart naam");
+			 System.out.println("DEBUG: Je gebruikt nog de standaardwaarde *file* voor de filepart naam");
 			 return;
 		}
 		else if(request.getPart("photo") != null){
 			filePart = request.getPart("photo");
 			destinationdir += "Foto" + File.separator;;
 			fileName = getFilenameFromFilePart(filePart);
-			media = new Photo(new URL(destinationdir + fileName), fileName);
+			media = new Photo(destinationdir + fileName, fileName);
 		}
 		else if(request.getPart("sound") != null){
 			filePart = request.getPart("sound");
 			destinationdir += "Audio" + File.separator;;
 			fileName = getFilenameFromFilePart(filePart);
-			media = new Audio(new URL(destinationdir + fileName), fileName);
+			media = new Audio(destinationdir + fileName, fileName);
 		}
 		else {
-			System.out.println("geen filepart met een geldige naam gevonden.");
+			System.out.println("DEBUG: geen filepart met een geldige naam gevonden.");
 			return;
+		}
+
+		// Check of er niet al een bestand bestaat met dezelfde naam
+		while (conn.mediaInDatabase(media)){
+			fileName = "x" + fileName;
+			media.setRelativePath(destinationdir + fileName);
 		}
 
 		// Schrijf het bestand naar de juiste map
 		try {
-			out = new FileOutputStream(new File(media.getFilePath().toString()));
+			out = new FileOutputStream(new File(media.getRelativePath()));
 			fileContent = filePart.getInputStream();
 			int read = 0;
 			final byte[] bytes = new byte[1024];
@@ -101,19 +113,22 @@ public class FileUploadServlet extends HttpServlet {
 
 		// Voeg bestand toe aan de database
 		if(savingFileSucceeded){
-			if(media instanceof Photo){
-				//TODO: Voer query uit om foto aan database toe te voegen 
+			System.out.println("saving succeeded, starting database stuff now");
+			try{
+				conn.insertMedia(media);
 			}
-			if(media  instanceof Audio){
-
-				//TODO: Voer query uit om audio aan database toe te voegen 
+			catch(SQLException e){
+				//TODO: doe hier iets nuttigs met jetty error handling
+				e.printStackTrace();
+				System.out.println("kut database doet t nie");
 			}
 		}
 		else {
-			//TODO: doe hier iets nuttigs
-			return;
+			//TODO: doe hier iets nuttigs met jetty error handling
+			System.out.println("Fuck bestand is nie opgeslagen");
 		}
 
+		request.setAttribute("message", "done");
 		request.getRequestDispatcher("/WEB-INF/addPhoto.jsp").forward(request, response);
 	}
 	
@@ -124,7 +139,6 @@ public class FileUploadServlet extends HttpServlet {
 	 * @return fileName
 	 */
 	private static String getFilenameFromFilePart(Part filePart) {
-		
 		String fileName = null;
 		String header = filePart.getHeader("content-disposition");
 		Pattern filenamePattern = Pattern.compile("filename=\"(.*)\"");
@@ -133,8 +147,7 @@ public class FileUploadServlet extends HttpServlet {
 			fileName = matcher.group(1);
 		}
 		else {
-			//TODO schrijf een query die de databaseID gebruikt als naam
-			return "default";
+			fileName = "onbekend";
 		}
 		return fileName;
 	}

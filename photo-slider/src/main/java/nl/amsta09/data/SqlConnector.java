@@ -59,8 +59,8 @@ public class SqlConnector {
      */
     public void insertMedia(String URL, String Media_Name) throws SQLException, ClassNotFoundException {
 
-        Class.forName("com.mysql.jdbc.Driver");
-        connection = DriverManager.getConnection("jdbc:mysql://localhost/photoslider", "root", "Aapjes-14");
+//        Class.forName("com.mysql.jdbc.Driver");
+//        connection = DriverManager.getConnection("jdbc:mysql://localhost/photoslider", "root", "Aapjes-14");
 
         URL = URL.replace("\\", "\\\\\\\\");
 
@@ -72,6 +72,15 @@ public class SqlConnector {
 
         insertIntoMediaType(Media_Name);
     }
+
+    /**
+     * Voeg een media bestand toe aan de database.
+     * @argument media
+     */
+	public  void insertMedia(Media media) throws SQLException {
+        executeUpdate(String.format("INSERT INTO media (name, URL) VALUES ('%s','%s')", media.getName(), media.getRelativePath()));
+        insertIntoMediaType(media.getName());
+	}
 
     /*
     Verwijdert de gekozen Media uit de database
@@ -182,7 +191,7 @@ public class SqlConnector {
         result = getAllMediaStatement.executeQuery(sql);
 
         while (result.next()) {
-            photo = new Photo(result.getURL("URL"), result.getString("name"));
+            photo = new Photo(result.getString("URL"), result.getString("name"));
 
         }
     }
@@ -214,6 +223,24 @@ public class SqlConnector {
 
         addIntoMediaType.execute(sql);
     }
+
+	/**
+	 * check of een bestand met een bepaalde naam al bestaat, om te voorkomen dat het bestand overschreven wordt.
+	 * @param media
+	 */
+	public boolean mediaInDatabase(Media media){
+		try{
+			ResultSet set = executeQuery(String.format("SELECT name FROM media WHERE name = '%s';", media.getName()));
+			if(set.next()){
+				return true;
+			}
+			else {
+				return false;
+			}
+		} catch(SQLException e){
+			return false;
+		}
+	}
 
 	/**
 	 * Voer een update uit

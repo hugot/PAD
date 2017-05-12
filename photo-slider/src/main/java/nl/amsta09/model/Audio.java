@@ -5,7 +5,6 @@
  */
 package nl.amsta09.model;
 
-import java.net.URL;
 import  java.io.*;
 import javax.sound.sampled.*;
 /**
@@ -16,17 +15,17 @@ public class Audio extends Media {
     private AudioInputStream audioIn;
     private Clip clip;
     
-    public Audio(URL url, String name, String theme){
-        super(url, name, theme);
+    public Audio(String relativePath, String name, String theme){
+        super(relativePath, name, theme);
     }
     
-    public Audio(URL url, String name) {
-        super(url, name);
+    public Audio(String relativePath, String name) {
+        super(relativePath, name);
     }
     
     public void playSound(){
         try{
-            audioIn = AudioSystem.getAudioInputStream(super.getFilePath());
+            audioIn = AudioSystem.getAudioInputStream(super.getURL());
             clip = AudioSystem.getClip();
             clip.open(audioIn);
          clip.start();
