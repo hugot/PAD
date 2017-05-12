@@ -47,7 +47,6 @@ public class FileUploadServlet extends HttpServlet {
 			throws IOException, ServletException{
 		response.setContentType("text/html;charset=UTF-8");
 
-		System.out.println("ben begonnen");
 		// Het media object en de attributen waar het mee geinstantieerd wordt
 		boolean savingFileSucceeded = false;
 		Part filePart = null;
@@ -113,19 +112,16 @@ public class FileUploadServlet extends HttpServlet {
 
 		// Voeg bestand toe aan de database
 		if(savingFileSucceeded){
-			System.out.println("saving succeeded, starting database stuff now");
 			try{
 				conn.insertMedia(media);
 			}
 			catch(SQLException e){
 				//TODO: doe hier iets nuttigs met jetty error handling
 				e.printStackTrace();
-				System.out.println("kut database doet t nie");
 			}
 		}
 		else {
 			//TODO: doe hier iets nuttigs met jetty error handling
-			System.out.println("Fuck bestand is nie opgeslagen");
 		}
 
 		request.setAttribute("message", "done");

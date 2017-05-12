@@ -57,16 +57,16 @@ public class SqlConnector {
     /*
      * Insert een media file naar de database
      */
-    public void insertMedia(String URL, String Media_Name) throws SQLException, ClassNotFoundException {
+    public void insertMedia(String filePath, String Media_Name) throws SQLException, ClassNotFoundException {
 
 //        Class.forName("com.mysql.jdbc.Driver");
 //        connection = DriverManager.getConnection("jdbc:mysql://localhost/photoslider", "root", "Aapjes-14");
 
-        URL = URL.replace("\\", "\\\\\\\\");
+        filePath = filePath.replace("\\", "\\\\\\\\");
 
         Statement addMediaStatement = connection.createStatement();
         //Insert een media file in de database
-        String sql = ("INSERT INTO Media (name, URL) VALUES ('" + Media_Name + "','" + URL + "')");
+        String sql = ("INSERT INTO Media (name, filePath) VALUES ('" + Media_Name + "','" + filePath + "')");
 
         addMediaStatement.execute(sql);
 
@@ -78,19 +78,19 @@ public class SqlConnector {
      * @argument media
      */
 	public  void insertMedia(Media media) throws SQLException {
-        executeUpdate(String.format("INSERT INTO media (name, URL) VALUES ('%s','%s')", media.getName(), media.getRelativePath()));
+        executeUpdate(String.format("INSERT INTO media (name, filePath) VALUES ('%s','%s')", media.getName(), media.getRelativePath()));
         insertIntoMediaType(media.getName());
 	}
 
     /*
     Verwijdert de gekozen Media uit de database
      */
-    public void deleteMedia(URL MediaURL) throws SQLException, ClassNotFoundException {
+    public void deleteMedia(URL MediafilePath) throws SQLException, ClassNotFoundException {
 
         Statement deleteMediaStatement = connection.createStatement();
 
         String sql = ("DELETE FROM Media"
-                + "WHERE URL = " + "'" + MediaURL + "'");
+                + "WHERE filePath = " + "'" + MediafilePath + "'");
 
         deleteMediaStatement.execute(sql);
     }
@@ -104,7 +104,7 @@ public class SqlConnector {
         //Activeert de gekozen media file
         String sql = ("UPDATE Media"
                 + "SET active = 'true'"
-                + "WHERE URL ='" + Media_Name + "'");
+                + "WHERE filePath ='" + Media_Name + "'");
 
         activateMediaStatement.execute(sql);
     }
@@ -118,7 +118,7 @@ public class SqlConnector {
         //Deactiveerd de gekozen media file
         String sql = ("UPDATE Media"
                 + "SET active = 'disable'"
-                + "WHERE URL ='" + Media_Name + "'");
+                + "WHERE filePath ='" + Media_Name + "'");
 
         disableMediaStatement.execute(sql);
     }
@@ -182,7 +182,7 @@ public class SqlConnector {
 
         Statement getAllMediaStatement = connection.createStatement();
         //Krijgt alle media uit de database
-        String sql = ("SELECT name, URL \n"
+        String sql = ("SELECT name, filePath \n"
                 + "FROM media A \n"
                 + "WHERE EXISTS (SELECT 1 \n"
                 + "FROM   photo B\n"
@@ -191,7 +191,7 @@ public class SqlConnector {
         result = getAllMediaStatement.executeQuery(sql);
 
         while (result.next()) {
-            photo = new Photo(result.getString("URL"), result.getString("name"));
+            photo = new Photo(result.getString("filePath"), result.getString("name"));
 
         }
     }
@@ -215,9 +215,9 @@ public class SqlConnector {
         }
 
         if (imageTypes.contains(fileType)) {
-            sql = ("INSERT INTO photo VALUES ('LAST_INSERT_ID')");
+            sql = ("INSERT INTO photo (id) VALUES ((SELECT id AS lastID FROM media ORDER BY id DESC LIMIT 1))");
         } else {
-            sql = ("INSERT INTO song VALUES ('LAST_INSERT_ID')");
+            sql = ("INSERT INTO song (id) VALUES ('LAST_INSERT_ID')");
         }
         Statement addIntoMediaType = connection.createStatement();
 
@@ -230,7 +230,7 @@ public class SqlConnector {
 	 */
 	public boolean mediaInDatabase(Media media){
 		try{
-			ResultSet set = executeQuery(String.format("SELECT name FROM media WHERE name = '%s';", media.getName()));
+			ResultSet set = executeQuery(String.format("SELECT name FROM media WHERE filePath = '%s';", media.getRelativePath()));
 			if(set.next()){
 				return true;
 			}
