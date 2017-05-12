@@ -9,7 +9,7 @@ import java.sql.Statement;
 import java.net.URL;
 
 public class SqlConnector {
-    Connection connection;
+   private static Connection connection;
 
     public SqlConnector() {
         try {
@@ -111,5 +111,26 @@ public class SqlConnector {
         String sql = ("INSERT INTO Photo VALUES ('" + idPhoto + ", " + idSoundeffect + "')");
         
         addSoundeffectStatement.execute(sql);
+    }
+
+	/**
+	 * Voer een update uit
+	 * @param update
+	 */
+    public static void executeUpdate(String update) throws SQLException {
+        Statement statement = connection.createStatement();
+        statement.execute(update);
+		
+    }
+
+	/**
+	 * Voer een query uit
+	 * @param query
+	 * @return set
+	 */ 
+    public static ResultSet executeQuery(String query) throws SQLException {
+		Statement statement = connection.createStatement();
+		ResultSet set = statement.executeQuery(query);
+		return set;
     }
 }

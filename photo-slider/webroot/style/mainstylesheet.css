@@ -59,7 +59,7 @@ body {
 	width: 100%; 
 }
 
-#upload-form {
+#uploadForm {
 	display: block;
 	width: 700px;
 	min-height: 200px;
@@ -70,26 +70,13 @@ body {
 	box-shadow: 2px 4px 4px 2px rgba(1,1,1,0.5);
 }
 
-#upload-form .dz-preview {
+#uploadForm .dz-preview {
 	position: relative;
 	display: inline-block;
 	margin: 10px;
 }
- #upload-form .dz-success-mark {
-	position: absolute;
-	top: 10px;
-	margin: auto;
- }
 
-#upload-form .dz-error-mark {
-	display: none;
-}
-
-#upload-form .dz-default {
-	display: none;
-}
-
-#upload-form #explanation {
+#uploadForm #explanation {
 	width: 100%;
 	padding: 0;
 	margin: 0;

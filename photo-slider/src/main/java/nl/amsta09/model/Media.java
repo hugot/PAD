@@ -16,6 +16,11 @@ public abstract class Media {
 	private String name;
 	private String theme;
 
+	public Media(URL filePath, String name){
+		this.filePath = filePath;
+		this.name = name;
+	}
+
 	public Media(URL filePath, String name, String theme){
 		this.filePath = filePath;
 		this.name = name;
