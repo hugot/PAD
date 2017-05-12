@@ -21,7 +21,7 @@ USE `photoslider` ;
 -- Table `photoslider`.`theme`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `photoslider`.`theme` (
-  `id` INT NOT NULL AUTO INCREMENT,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   `on/off` TINYINT(1) NOT NULL,
   PRIMARY KEY (`id`))
@@ -32,9 +32,9 @@ ENGINE = InnoDB;
 -- Table `photoslider`.`media`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `photoslider`.`media` (
-  `id` INT NOT NULL AUTO INCREMENT,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NULL,
-  `URL` VARCHAR(45) NULL,
+  `filePath` VARCHAR(150) NULL,
   `active` TINYINT(1) NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
@@ -60,7 +60,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `photoslider`.`photo` (
   `id` INT NOT NULL,
-  `Soundeffect_id` INT NOT NULL,
+  `Soundeffect_id` INT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_Photo_Media1_idx` (`id` ASC),
   INDEX `fk_Photo_Soundeffect1_idx` (`Soundeffect_id` ASC),
