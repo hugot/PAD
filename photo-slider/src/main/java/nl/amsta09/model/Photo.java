@@ -5,8 +5,7 @@ import java.net.URL;
 /**
  * Model voor een foto
  */
-
-public class Photo extends Media{
+public class Photo extends Media {
 
 
 	/**

@@ -21,11 +21,12 @@ public class MainApp {
     	jettyServer.setHandler();
     	jettyServer.start();
 
-    	new SqlConnector();
+		new SqlConnector();
 
     	//start slideshow
-//    	SlideShowController slideshowController = new SlideShowController(new SlideshowView());
-//		slideshowController.initialize();
-		//new Slideshow();
+    	SlideShowController slideshowController = new SlideShowController(new SlideshowView());
+		slideshowController.initialize();
+
+		new Slideshow();
     }
 }

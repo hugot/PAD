@@ -45,5 +45,15 @@ public abstract class Media {
     
     public URL getFilePath(){
     	return this.filePath;
+	}
+
+    @Override
+    public String toString() {
+        String result;
+
+        result = ("URL: " + getFilePath()
+                + "\nName: " + getName()
+                + "]nTheme: " + getTheme());
+        return result;
     }
 }

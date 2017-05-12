@@ -51,7 +51,7 @@ public class AddThemeServlet extends HttpServlet {
 
         try {
 
-            new SqlConnector().Execute_Insert_Theme(ThemeName);
+            new SqlConnector().insertTheme(ThemeName);
 //            Class.forName("com.mysql.jdbc.Driver");
 //            connection = DriverManager.getConnection("jdbc:mysql://localhost/photoslider", "root", "Aapjes-14");
 //
