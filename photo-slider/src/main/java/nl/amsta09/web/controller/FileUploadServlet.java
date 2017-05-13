@@ -110,22 +110,22 @@ public class FileUploadServlet extends HttpServlet {
 			}
 		}
 
-		// Voeg bestand toe aan de database
+		// Check of opslaan bestand gelukt is en voeg het toe aan de database
 		if(savingFileSucceeded){
 			try{
 				conn.insertMedia(media);
 			}
 			catch(SQLException e){
-				//TODO: doe hier iets nuttigs met jetty error handling
+				sendErrorMessage(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+						"Het is niet gelukt om bestand " + media.getName() + " aan de database toe te voegen");
 				e.printStackTrace();
 			}
 		}
 		else {
-			//TODO: doe hier iets nuttigs met jetty error handling
+			sendErrorMessage(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+					"Het is niet gelukt om bestand " + media.getName() + " op te slaan, probeer het alstublieft opnieuw");
 		}
 
-		request.setAttribute("message", "done");
-		request.getRequestDispatcher("/WEB-INF/addPhoto.jsp").forward(request, response);
 	}
 	
 	/**
@@ -146,5 +146,17 @@ public class FileUploadServlet extends HttpServlet {
 			fileName = "onbekend";
 		}
 		return fileName;
+	}
+
+	/**
+	 * Stuur een HttpResponse met een error code en een bericht.
+	 * @param response
+	 * @param status
+	 * @param message
+	 */
+	private static void sendErrorMessage(HttpServletResponse response, int status, String message) throws IOException {
+		response.setStatus(status);
+		response.getWriter().write(message);
+		response.flushBuffer();
 	}
 }
