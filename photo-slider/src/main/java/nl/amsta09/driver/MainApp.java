@@ -22,7 +22,7 @@ public class MainApp {
         jettyServer.start();
 
         //start slideshow
-        SlideShowController slideshowController = new SlideShowController(new SlideshowView());
-        slideshowController.initialize();
+//        SlideShowController slideshowController = new SlideShowController(new SlideshowView());
+//        slideshowController.initialize();
     }
 }

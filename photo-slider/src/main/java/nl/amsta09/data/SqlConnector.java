@@ -32,14 +32,13 @@ public class SqlConnector {
     /*
      * Insert een theme naar de database
      */
-    public void insertTheme(String Theme_Name) throws SQLException, ClassNotFoundException {
+    public void insertTheme(String themeName) throws SQLException, ClassNotFoundException {
         System.out.println("\n----------insertTheme commencing----------");
-        Class.forName("com.mysql.jdbc.Driver");
-        connection = DriverManager.getConnection("jdbc:mysql://localhost/photoslider", "root", "Aapjes-14");
 
         Statement addThemeStatement = connection.createStatement();
         //Insert de gegevens in de database met een unieke ID
-        String sql = ("insert into theme (name) VALUES ('" + Theme_Name + "')");
+        String on = "true";
+        String sql =  String.format("insert into theme (name, on) VALUES ('%s', '%s')", themeName, on);
 
         addThemeStatement.execute(sql);
 
