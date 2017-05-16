@@ -24,9 +24,7 @@ public class MainApp {
 		new SqlConnector();
 
     	//start slideshow
-    	SlideShowController slideshowController = new SlideShowController(new SlideshowView());
-		slideshowController.initialize();
-
-		new Slideshow();
+//    	SlideShowController slideshowController = new SlideShowController(new SlideshowView());
+//		slideshowController.initialize();
     }
 }
