@@ -14,64 +14,64 @@ import java.net.URL;
  * @author Hugo Thunnissen
  */
 public abstract class Media {
-	private URL url;
-	private String relativePath;
-	private String name;
-	private String theme;
 
-	public Media(String relativePath, String name){
-		try {
-			this.url = new File(relativePath).toURI().toURL();
-		}
-		catch(MalformedURLException e){
-			e.printStackTrace();
-		}
-		this.relativePath = relativePath;
-		this.name = name;
-	}
+    private URL url;
+    private String relativePath;
+    private String name;
+    private String theme;
 
-	public Media(String relativePath, String name, String theme){
-		this(relativePath, name);
-		this.theme = theme;
-	}
+    public Media(String relativePath, String name) {
+        try {
+            this.url = new File(relativePath).toURI().toURL();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        this.relativePath = relativePath;
+        this.name = name;
+    }
 
-	public String getName(){
-		return name;
-	}
+    public Media(String relativePath, String name, String theme) {
+        this(relativePath, name);
+        this.theme = theme;
+    }
 
-	public void setName(String name){
-		this.name = name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getTheme(){
-		return theme;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setTheme(String theme){
-		this.theme = theme;
-	}
+    public String getTheme() {
+        return theme;
+    }
 
-	public void setURL(URL url){
-		this.url = url;
-	}
-    
-    public URL getURL(){
-    	return url;
-	}
+    public void setTheme(String theme) {
+        this.theme = theme;
+    }
 
-	public String getRelativePath(){
-		return relativePath;
-	}
+    public void setURL(URL url) {
+        this.url = url;
+    }
 
-	public void setRelativePath(String relativePath){
-		this.relativePath = relativePath;
-	}
+    public URL getURL() {
+        return url;
+    }
+
+    public String getRelativePath() {
+        return relativePath;
+    }
+
+    public void setRelativePath(String relativePath) {
+        this.relativePath = relativePath;
+    }
 
     @Override
     public String toString() {
         String result;
 
-        result = ("URL: " + getFilePath()
+        result = ("URL: " + getURL()
                 + "\nName: " + getName()
                 + "]nTheme: " + getTheme());
         return result;

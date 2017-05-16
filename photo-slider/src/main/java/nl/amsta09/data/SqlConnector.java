@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,7 +15,8 @@ import nl.amsta09.model.Media;
 import nl.amsta09.model.Photo;
 
 public class SqlConnector {
-   private static Connection connection;
+
+    private static Connection connection;
 
     public SqlConnector() {
         try {
@@ -31,9 +33,10 @@ public class SqlConnector {
      * Insert een theme naar de database
      */
     public void insertTheme(String Theme_Name) throws SQLException, ClassNotFoundException {
-        System.out.println("\n----------Execute_Insert_Theme commencing----------");
+        System.out.println("\n----------insertTheme commencing----------");
         Class.forName("com.mysql.jdbc.Driver");
         connection = DriverManager.getConnection("jdbc:mysql://localhost/photoslider", "root", "Aapjes-14");
+
         Statement addThemeStatement = connection.createStatement();
         //Insert de gegevens in de database met een unieke ID
         String sql = ("insert into theme (name) VALUES ('" + Theme_Name + "')");
@@ -61,7 +64,6 @@ public class SqlConnector {
 
 //        Class.forName("com.mysql.jdbc.Driver");
 //        connection = DriverManager.getConnection("jdbc:mysql://localhost/photoslider", "root", "Aapjes-14");
-
         filePath = filePath.replace("\\", "\\\\\\\\");
 
         Statement addMediaStatement = connection.createStatement();
@@ -75,12 +77,13 @@ public class SqlConnector {
 
     /**
      * Voeg een media bestand toe aan de database.
-     * @argument media
+     *
+     * @param media
      */
-	public  void insertMedia(Media media) throws SQLException {
+    public void insertMedia(Media media) throws SQLException {
         executeUpdate(String.format("INSERT INTO media (name, filePath) VALUES ('%s','%s')", media.getName(), media.getRelativePath()));
         insertIntoMediaType(media.getName());
-	}
+    }
 
     /*
     Verwijdert de gekozen Media uit de database
@@ -176,24 +179,33 @@ public class SqlConnector {
 
     }
 
-    public void getAllPhoto() throws SQLException {
+    public ArrayList<Photo> getAllPhoto(ArrayList<Photo> photoList) throws SQLException, ClassNotFoundException {
+        System.out.println("\n----------getAllPhoto commencing----------");
         ResultSet result;
-        Media photo;
+        Photo photo;
+
+        Class.forName("com.mysql.jdbc.Driver");
+        connection = DriverManager.getConnection("jdbc:mysql://localhost/photoslider", "root", "Aapjes-14");
 
         Statement getAllMediaStatement = connection.createStatement();
         //Krijgt alle media uit de database
         String sql = ("SELECT name, filePath \n"
                 + "FROM media A \n"
                 + "WHERE EXISTS (SELECT 1 \n"
-                + "FROM   photo B\n"
+                + "FROM   photo B \n"
                 + "WHERE  A.Id = B.Id)");
 
         result = getAllMediaStatement.executeQuery(sql);
-
+        System.out.println("test1");
         while (result.next()) {
             photo = new Photo(result.getString("filePath"), result.getString("name"));
 
+            System.out.println(photo.getURL());
+            photoList.add(photo);
         }
+        System.out.println("test2");
+        return photoList;
+
     }
 
     /*
@@ -201,10 +213,10 @@ public class SqlConnector {
      */
     public void insertIntoMediaType(String Name) throws SQLException {
         String sql;
-        Set<String> imageTypes = new HashSet<String>();
+        Set<String> imageTypes = new HashSet<>();
         imageTypes.add("png");
         imageTypes.add("jpg");
-        Set<String> soundTypes = new HashSet<String>();
+        Set<String> soundTypes = new HashSet<>();
         soundTypes.add("wav");
         soundTypes.add("mp3");
 
@@ -224,42 +236,45 @@ public class SqlConnector {
         addIntoMediaType.execute(sql);
     }
 
-	/**
-	 * check of een bestand met een bepaalde naam al bestaat, om te voorkomen dat het bestand overschreven wordt.
-	 * @param media
-	 */
-	public boolean mediaInDatabase(Media media){
-		try{
-			ResultSet set = executeQuery(String.format("SELECT name FROM media WHERE filePath = '%s';", media.getRelativePath()));
-			if(set.next()){
-				return true;
-			}
-			else {
-				return false;
-			}
-		} catch(SQLException e){
-			return false;
-		}
-	}
+    /**
+     * check of een bestand met een bepaalde naam al bestaat, om te voorkomen
+     * dat het bestand overschreven wordt.
+     *
+     * @param media
+     */
+    public boolean mediaInDatabase(Media media) {
+        try {
+            ResultSet set = executeQuery(String.format("SELECT name FROM media WHERE filePath = '%s';", media.getRelativePath()));
+            if (set.next()) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+            return false;
+        }
+    }
 
-	/**
-	 * Voer een update uit
-	 * @param update
-	 */
+    /**
+     * Voer een update uit
+     *
+     * @param update
+     */
     public static void executeUpdate(String update) throws SQLException {
         Statement statement = connection.createStatement();
         statement.execute(update);
-		
+
     }
 
-	/**
-	 * Voer een query uit
-	 * @param query
-	 * @return set
-	 */ 
+    /**
+     * Voer een query uit
+     *
+     * @param query
+     * @return set
+     */
     public static ResultSet executeQuery(String query) throws SQLException {
-		Statement statement = connection.createStatement();
-		ResultSet set = statement.executeQuery(query);
-		return set;
+        Statement statement = connection.createStatement();
+        ResultSet set = statement.executeQuery(query);
+        return set;
     }
 }
