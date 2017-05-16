@@ -45,7 +45,6 @@ public class AddThemeServlet extends HttpServlet {
 
         //Haalt de naam op		
         final String ThemeName = request.getParameter("name");
-        Connection connection = null;
 
         System.out.println("INPUT: " + ThemeName);
 
@@ -71,9 +70,4 @@ public class AddThemeServlet extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/themes.jsp").forward(request, response);
     }
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws IOException, ServletException {
-        System.out.println("end my suffering pls");
-    }
 }
