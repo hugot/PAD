@@ -5,6 +5,7 @@
 	<head>
 		<link href="${context}/webroot/style/mainstylesheet.css" rel="stylesheet" type="text/css" media="screen" />
 		<link href="${context}/webroot/style/dropzone.css" rel="stylesheet" type="text/css" media="screen" />
+		<link href="${context}/webroot/style/ThemeSettings.css" rel="stylesheet" type="text/css" media="screen" />
 		<meta charset="UTF-8">
 			<title></title>
 		</head>
