@@ -37,8 +37,8 @@ public class SqlConnector {
 
         Statement addThemeStatement = connection.createStatement();
         //Insert de gegevens in de database met een unieke ID
-        String on = "true";
-        String sql =  String.format("insert into theme (name, on) VALUES ('%s', '%s')", themeName, on);
+        String on = "1";
+        String sql =  String.format("INSERT INTO theme (name, `on`) VALUES ('%s', %s)", themeName, on);
 
         addThemeStatement.execute(sql);
 
