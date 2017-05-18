@@ -260,11 +260,11 @@ public class SqlConnector {
     	return set.getInt("id");
     }
 
-	public Theme getThemeById(int id) throws ThemeNotFoundException, SQLException {
+	public Theme getActiveThemeById(int id) throws ThemeNotFoundException, SQLException {
 		Theme theme;
-		ResultSet themeSet = executeQuery("SELECT * FROM theme WHERE id =" + id);
+		ResultSet themeSet = executeQuery("SELECT * FROM theme INNER JOIN theme_has_media ON theme.id = theme_has_media.theme_id WHERE theme.`on` = 0 AND theme.id =" + id);
 		if(themeSet.next()){
-			theme = new Theme(themeSet.getString("name"));
+			theme = new Theme(themeSet.getString("theme.name"), themeSet.getInt("theme.id"));
 		}
 		else{
 			throw new ThemeNotFoundException("Thema niet gevonden");

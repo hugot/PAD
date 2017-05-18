@@ -125,7 +125,6 @@ public class FileUploadServlet extends HttpServlet {
 			sendErrorMessage(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
 					"Het is niet gelukt om bestand " + media.getName() + " op te slaan, probeer het alstublieft opnieuw");
 		}
-
 	}
 	
 	/**

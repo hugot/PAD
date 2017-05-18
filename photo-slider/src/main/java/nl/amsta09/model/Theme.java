@@ -18,9 +18,10 @@ public class Theme {
     private int id;
     private ArrayList<Photo> photos;
     
-    public Theme(String name){
+    public Theme(String name, int id){
         photos = new ArrayList<Photo>();
-        name = this.name;
+        this.name = name;
+        this.id = id;
     }
     
     public String getName(){
@@ -28,7 +29,7 @@ public class Theme {
     }
     
     public void setName(String name){
-        name = this.name;
+        this.name = name;
     }
     
     public boolean getActive(){
@@ -47,7 +48,7 @@ public class Theme {
         return photos;
     }
     
-    public void setPhotoList(ArrayList list){
+    public void setPhotoList(ArrayList<Photo> list){
         photos = list;
     }
     
@@ -56,6 +57,6 @@ public class Theme {
     }
     
     public void setId(int id){
-        id = this.id;
+        this.id = id;
     }
 }

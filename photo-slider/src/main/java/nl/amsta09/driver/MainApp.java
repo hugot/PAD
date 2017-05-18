@@ -1,29 +1,34 @@
 package nl.amsta09.driver;
 
+import javafx.application.Application;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 
-import java.net.MalformedURLException;
 import java.util.Optional;
-
-import javafx.application.Application;
 
 import nl.amsta09.app.SlideShowController;
 import nl.amsta09.web.JettyServer;
 
 /**
- * Mainclass van de applicatie.
+ * Main class van de applicatie.
  *
+ * @author Hugo Thunnissen
  */
 public class MainApp extends Application{
+	public static int SECONDS = 10;
+	private static SlideShowController slideShowController;
 
-
+	/**
+	 * Start zowel de javafx applicatie als de webserver.
+	 * @param primaryStage
+	 */
 	@Override
-	public void start(Stage primaryStage) throws MalformedURLException {
+	public void start(Stage primaryStage) {
 		
-		new SlideShowController(primaryStage);
+		slideShowController = new SlideShowController(primaryStage);
+		slideShowController.initialize();
 		
         //Maak server aan en start de server (default port 4848)
         JettyServer jettyServer = new JettyServer();
@@ -36,9 +41,21 @@ public class MainApp extends Application{
 				" Start het apparaat alstublieft opnieuw op.");
         }
 	}
+
+	/**
+	 * Main methode.
+	 * @param args
+	 */
     public static void main(String[] args) {
         //start slideshow
         launch(args);
+	}
+
+	/**
+	 * Toegang tot de slideShowController vanuit de rest van de applicatie.
+	 */
+	public static SlideShowController getSlideShowController(){
+		return slideShowController;
 	}
 
 	/**
