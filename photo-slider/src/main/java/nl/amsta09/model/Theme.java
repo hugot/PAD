@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class Theme {
     
     private String name;
+    private boolean active;
     private ArrayList<Photo> photos;
     
     public Theme(String name){
@@ -27,6 +28,14 @@ public class Theme {
     
     public void setName(String name){
         name = this.name;
+    }
+    
+    public boolean getActive(){
+        return active;
+    }
+    
+    public void setActive(boolean set){
+        active = set;
     }
     
     public void addPhoto(Photo photo){
