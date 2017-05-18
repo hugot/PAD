@@ -15,6 +15,7 @@ public class Theme {
     
     private String name;
     private boolean active;
+    private int id;
     private ArrayList<Photo> photos;
     
     public Theme(String name){
@@ -48,5 +49,13 @@ public class Theme {
     
     public void setPhotoList(ArrayList list){
         photos = list;
+    }
+    
+    public int getId(){
+        return id;
+    }
+    
+    public void setId(int id){
+        id = this.id;
     }
 }
