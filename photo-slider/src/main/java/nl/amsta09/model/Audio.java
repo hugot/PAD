@@ -17,14 +17,11 @@ public class Audio extends Media {
     private int id;
     
     public Audio(String relativePath, String name, int id, String theme){
-        super(relativePath, name, theme);
-        id = this.id;
+        super(relativePath, name, id, theme);
     }
     
     public Audio(String relativePath, String name, int id) {
-        super(relativePath, name);
-        
-        id = this.id;
+        super(relativePath, name, id);
     }
     
     public void playSound(){

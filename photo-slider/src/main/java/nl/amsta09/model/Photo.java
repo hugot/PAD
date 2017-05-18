@@ -9,13 +9,11 @@ public class Photo extends Media {
     private int id;
     
     public Photo(String relativePath, String name, int id) {
-        super(relativePath, name);
-        id = this.id;
+        super(relativePath, name, id);
     }
 
     public Photo(String relativePath, String name, int id, String theme) {
-        super(relativePath, name, theme);
-        id = this.id;
+        super(relativePath, name, id,  theme);
     }
         
     public void setSoundEffect(Audio soundObject){

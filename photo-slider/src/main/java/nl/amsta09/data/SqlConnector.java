@@ -13,6 +13,7 @@ import java.util.Set;
 
 import nl.amsta09.model.Media;
 import nl.amsta09.model.Photo;
+import nl.amsta09.model.Theme;
 import nl.amsta09.model.Audio;
 
 public class SqlConnector {
@@ -253,6 +254,41 @@ public class SqlConnector {
         }
     }
 
+    public int getMaxThemeId() throws SQLException {
+		ResultSet set = executeQuery("Select id FROM theme ORDER BY id DESC LIMIT 1;");
+    	set.next();
+    	return set.getInt("id");
+    }
+
+	public Theme getThemeById(int id) throws ThemeNotFoundException, SQLException {
+		Theme theme;
+		ResultSet themeSet = executeQuery("SELECT * FROM theme WHERE id =" + id);
+		if(themeSet.next()){
+			theme = new Theme(themeSet.getString("name"));
+		}
+		else{
+			throw new ThemeNotFoundException("Thema niet gevonden");
+		}
+		theme.setPhotoList(getAllPhotosFromTheme(theme));
+		return theme;
+    }
+
+    public ArrayList<Photo> getAllPhotosFromTheme(Theme theme) throws SQLException {
+    	ArrayList<Photo> photos = new ArrayList<>();
+		ResultSet set = executeQuery(String.format("SELECT * FROM photo WHERE id IN (SELECT media_id FROM " +
+					"theme_has_media WHERE theme_id = %s);", theme.getId()));
+		while(set.next()){
+			photos.add(new Photo(set.getString("path"), set.getString("name"), set.getInt("id"), theme.getName()));
+		}
+		return photos;
+    }
+
+    public Photo getPhotoById(int id) throws SQLException {
+		ResultSet set = executeQuery(String.format("SELECT * FROM photo INNER JOIN media ON photo.id = media.id WHERE media.id = %s;",id));
+		set.next();
+		return new Photo(set.getString("media.filepath"), set.getString("media.name"), set.getInt("media.id"), set.getString("media.id"));
+    }
+
     /**
      * Voer een update uit
      *
@@ -275,4 +311,13 @@ public class SqlConnector {
         ResultSet set = statement.executeQuery(query);
         return set;
     }
+
+    public class ThemeNotFoundException extends Exception {
+
+    	public ThemeNotFoundException(String message){
+    		super(message);
+    	}
+
+    }
 }
+

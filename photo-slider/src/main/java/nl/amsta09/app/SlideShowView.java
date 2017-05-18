@@ -20,6 +20,10 @@ public class SlideShowView extends Scene {
 		stackPane.getChildren().add(imageView);
 	}
 
+	/**
+	 * Verander welke foto er weergegeven wordt.
+	 * @param photo
+	 */
 	public void setImage(Photo photo){
 		this.image = new Image(photo.getURL().toString());
 		imageView.setImage(image);

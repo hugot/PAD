@@ -22,7 +22,7 @@ public abstract class Media {
     private int id;
     private boolean valueOnOff;
 
-    public Media(String relativePath, String name) {
+    public Media(String relativePath, String name, int id) {
         try {
             this.url = new File(relativePath).toURI().toURL();
         } catch (MalformedURLException e) {
@@ -30,10 +30,11 @@ public abstract class Media {
         }
         this.relativePath = relativePath;
         this.name = name;
+        this.id = id;
     }
 
-    public Media(String relativePath, String name, String theme) {
-        this(relativePath, name);
+    public Media(String relativePath, String name,int id, String theme) {
+        this(relativePath, name, id);
         this.theme = theme;
     }
 
@@ -67,6 +68,14 @@ public abstract class Media {
 
     public void setRelativePath(String relativePath) {
         this.relativePath = relativePath;
+    }
+
+    public int getId(){
+    	return id;
+    }
+
+    public void setId(int id){
+    	this.id = id;
     }
     
     public boolean getValueOnOff(){

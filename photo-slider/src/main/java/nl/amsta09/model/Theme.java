@@ -43,7 +43,7 @@ public class Theme {
         photos.add(photo);
     }
     
-    public ArrayList getPhotoList(){
+    public ArrayList<Photo> getPhotoList(){
         return photos;
     }
     

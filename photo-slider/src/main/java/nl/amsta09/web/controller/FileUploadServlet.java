@@ -70,13 +70,13 @@ public class FileUploadServlet extends HttpServlet {
 			filePart = request.getPart("photo");
 			destinationdir += "Foto" + File.separator;;
 			fileName = getFilenameFromFilePart(filePart);
-			media = new Photo(destinationdir + fileName, fileName);
+			media = new Photo(destinationdir + fileName, fileName, 1);
 		}
 		else if(request.getPart("sound") != null){
 			filePart = request.getPart("sound");
 			destinationdir += "Audio" + File.separator;;
 			fileName = getFilenameFromFilePart(filePart);
-			media = new Audio(destinationdir + fileName, fileName);
+			media = new Audio(destinationdir + fileName, fileName, 1);
 		}
 		else {
 			System.out.println("DEBUG: geen filepart met een geldige naam gevonden.");
