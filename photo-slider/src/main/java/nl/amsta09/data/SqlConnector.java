@@ -13,6 +13,7 @@ import java.util.Set;
 
 import nl.amsta09.model.Media;
 import nl.amsta09.model.Photo;
+import nl.amsta09.model.Audio;
 
 public class SqlConnector {
 
@@ -100,13 +101,13 @@ public class SqlConnector {
     /*
      * Activeert het gekozen media file
      */
-    public void activateMedia(String Media_Name) throws SQLException {
+    public void activateMedia(Media media) throws SQLException {
 
         Statement activateMediaStatement = connection.createStatement();
         //Activeert de gekozen media file
         String sql = ("UPDATE Media"
                 + "SET active = 'true'"
-                + "WHERE filePath ='" + Media_Name + "'");
+                + "WHERE filePath ='" + media.getName() + "'");
 
         activateMediaStatement.execute(sql);
     }
@@ -114,13 +115,13 @@ public class SqlConnector {
     /*
      * Deactiveerd het gekozen media file
      */
-    public void disableMedia(String Media_Name) throws SQLException {
+    public void disableMedia(Media media) throws SQLException {
 
         Statement disableMediaStatement = connection.createStatement();
         //Deactiveerd de gekozen media file
         String sql = ("UPDATE Media"
                 + "SET active = 'disable'"
-                + "WHERE filePath ='" + Media_Name + "'");
+                + "WHERE filePath ='" + media.getName() + "'");
 
         disableMediaStatement.execute(sql);
     }
@@ -128,13 +129,12 @@ public class SqlConnector {
     /*
     Voegt de Soundeffect toe aan de gekozen Foto
      */
-    public void addSoundeffectToPhoto(int idPhoto, int idSoundeffect) throws SQLException, ClassNotFoundException {
+    public void addSoundeffectToPhoto(Photo photo, Audio soundeffect) throws SQLException, ClassNotFoundException {
         Statement addSoundeffectStatement = connection.createStatement();
         //Voegt de Soundeffect id toe aan de Foto
-        String sql = ("INSERT INTO Photo VALUES ('" + idPhoto + ", " + idSoundeffect + "')");
+        String sql = ("INSERT INTO Photo VALUES ('" + photo.getId() + ", " + soundeffect.getId() + "')");
 
         addSoundeffectStatement.execute(sql);
-
     }
 
     /*
@@ -175,7 +175,6 @@ public class SqlConnector {
         String sql = ("INSERT INTO theme_has_media VALUES ('" + Theme_Id + "','" + Media_Id + "’)");
 
         addMediaToThemeStatement.execute(sql);
-
     }
 
     public ArrayList<Photo> getAllPhoto(ArrayList<Photo> photoList) throws SQLException, ClassNotFoundException {
@@ -188,7 +187,7 @@ public class SqlConnector {
 
         Statement getAllMediaStatement = connection.createStatement();
         //Krijgt alle media uit de database
-        String sql = ("SELECT name, filePath \n"
+        String sql = ("SELECT A.name, A.filePath , B.id\n"
                 + "FROM media A \n"
                 + "WHERE EXISTS (SELECT 1 \n"
                 + "FROM   photo B \n"
@@ -197,7 +196,7 @@ public class SqlConnector {
         result = getAllMediaStatement.executeQuery(sql);
         System.out.println("test1");
         while (result.next()) {
-            photo = new Photo(result.getString("filePath"), result.getString("name"));
+            photo = new Photo(result.getString("filePath"), result.getString("name"), result.getInt("id"));
 
             System.out.println(photo.getURL());
             photoList.add(photo);

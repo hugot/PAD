@@ -19,6 +19,8 @@ public abstract class Media {
     private String relativePath;
     private String name;
     private String theme;
+    private int id;
+    private boolean valueOnOff;
 
     public Media(String relativePath, String name) {
         try {
@@ -66,6 +68,14 @@ public abstract class Media {
     public void setRelativePath(String relativePath) {
         this.relativePath = relativePath;
     }
+    
+    public boolean getValueOnOff(){
+        return valueOnOff;
+    }
+    
+    public void setValueOnOff(boolean set){
+        valueOnOff = set;
+    }
 
     @Override
     public String toString() {
@@ -76,4 +86,7 @@ public abstract class Media {
                 + "]nTheme: " + getTheme());
         return result;
     }
+    
+    
+    
 }

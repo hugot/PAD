@@ -14,13 +14,17 @@ import javax.sound.sampled.*;
 public class Audio extends Media {
     private AudioInputStream audioIn;
     private Clip clip;
+    private int id;
     
-    public Audio(String relativePath, String name, String theme){
+    public Audio(String relativePath, String name, int id, String theme){
         super(relativePath, name, theme);
+        id = this.id;
     }
     
-    public Audio(String relativePath, String name) {
+    public Audio(String relativePath, String name, int id) {
         super(relativePath, name);
+        
+        id = this.id;
     }
     
     public void playSound(){
@@ -40,5 +44,13 @@ public class Audio extends Media {
     
     public void stopSound(){
         clip.stop();
+    }
+    
+    public void setId(int id){
+        id = this.id;
+    }
+    
+    public int getId(){
+        return id;
     }
 }
