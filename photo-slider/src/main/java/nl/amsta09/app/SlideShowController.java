@@ -6,7 +6,12 @@ import java.util.ListIterator;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-import nl.amsta09.data.SqlConnector; import nl.amsta09.data.SqlConnector.ThemeNotFoundException; import nl.amsta09.driver.MainApp; import nl.amsta09.model.Photo; import nl.amsta09.model.Theme; 
+import nl.amsta09.data.SqlConnector; 
+import nl.amsta09.data.SqlConnector.ThemeNotFoundException; 
+import nl.amsta09.driver.MainApp; 
+import nl.amsta09.model.Photo; 
+import nl.amsta09.model.Theme; 
+
 public class SlideShowController {
 	private Theme theme;
 	private ListIterator<Photo> photos;
@@ -48,7 +53,7 @@ public class SlideShowController {
 		try {
 			//TODO: zorg dat dit random wordt (kan niet aan de hand van id,
 			//die telt nmlk ook door voor inactieve themes
-			setTheme(conn.getActiveThemeById(1));
+			setTheme(conn.getActiveThemeById(1)); //dit is voor nu even het thema waar alle foto's aan toegevoegd worden
 		} catch (ThemeNotFoundException | SQLException e) {
 			// TODO Doe hier iets nuttigs
 			e.printStackTrace();

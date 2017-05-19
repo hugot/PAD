@@ -4,9 +4,6 @@ xmlns:xsi="http://java.sun.com/xml/ns/j2ee"
 xmlns:web="http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd" 
 xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
 http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
-	-<welcome-file-list>
-		<welcome-file>WEB-INF/index.jsp</welcome-file> 
-	</welcome-file-list>
 	<servlet>
 		<servlet-name>FileUploadServlet</servlet-name>
 		<servlet-class>nl.amsta09.web.controller.FileUploadServlet</servlet-class>
@@ -33,5 +30,23 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 	<servlet-mapping>
 		<servlet-name>AddSessionToThemeServlet</servlet-name>
 		<url-pattern>/addsessiontotheme</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>HomePageServlet</servlet-name>
+		<servlet-class>nl.amsta09.web.controller.HomePageServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>HomePageServlet</servlet-name>
+		<url-pattern></url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>ThemeManagementServlet</servlet-name>
+		<servlet-class>nl.amsta09.web.controller.ThemeManagementServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ThemeManagementServlet</servlet-name>
+		<url-pattern>/thememanagement</url-pattern>
 	</servlet-mapping>
 </web-app>

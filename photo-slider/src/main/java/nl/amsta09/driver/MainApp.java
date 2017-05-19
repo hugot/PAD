@@ -19,6 +19,7 @@ import nl.amsta09.web.SessionManager;
  */
 public class MainApp extends Application{
 	public static int SECONDS = 10;
+	public static int SESSIONEXPIRATIONTIME = 1800;
 	private static SlideShowController slideShowController;
 	private static SessionManager sessionManager;
 
