@@ -19,9 +19,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
 import nl.amsta09.data.SqlConnector;
+import nl.amsta09.data.SqlConnector.ThemeNotFoundException;
+import nl.amsta09.driver.MainApp;
 import nl.amsta09.model.Audio;
 import nl.amsta09.model.Media;
 import nl.amsta09.model.Photo;
+import nl.amsta09.model.Theme;
+import nl.amsta09.web.SessionManager.Session;
 
 /**
  *
@@ -36,6 +40,21 @@ import nl.amsta09.model.Photo;
 @MultipartConfig
 public class FileUploadServlet extends HttpServlet { 
 
+	protected void doGet(HttpServletRequest request, HttpServletResponse response){
+		if(request.getAttribute("sessionId") == null){
+			request.setAttribute("sessionId",MainApp.getSessionManager().newSession().getId());
+		}
+
+		request.setAttribute("themeId", 1);
+
+		try {
+			request.getRequestDispatcher("/WEB-INF/addPhoto.jsp").forward(request, response);
+		} catch (ServletException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
 	/**
 	 * Deze methode ontvangt een bestand in een httprequest en plaatst deze in de daarvoor bestemde map
 	 * alvorens het bestand toe te voegen aan de database.
@@ -46,6 +65,10 @@ public class FileUploadServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException{
 		response.setContentType("text/html;charset=UTF-8");
+
+		// De sessie van de gebruiker
+		String sessionId = request.getParameter("sessionId");
+		Session session = MainApp.getSessionManager().getSessionById(Integer.parseInt(sessionId));
 
 		// Het media object en de attributen waar het mee geinstantieerd wordt
 		boolean savingFileSucceeded = false;
@@ -110,10 +133,17 @@ public class FileUploadServlet extends HttpServlet {
 			}
 		}
 
-		// Check of opslaan bestand gelukt is en voeg het toe aan de database
+		// Check of opslaan bestand gelukt is en voeg het toe aan de database en sessie
 		if(savingFileSucceeded){
 			try{
 				conn.insertMedia(media);
+				System.out.println("ik haal nu de id op");
+				System.out.println("media id is:" + conn.getMediaIdFrom(media));
+				media.setId(conn.getMediaIdFrom(media));
+				System.out.println("media toevoegen aan session");
+				session.getAddedMedia().add(media);
+				System.out.println("sessie aan het updaten");
+				MainApp.getSessionManager().updateSession(session);
 			}
 			catch(SQLException e){
 				sendErrorMessage(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
@@ -126,6 +156,7 @@ public class FileUploadServlet extends HttpServlet {
 					"Het is niet gelukt om bestand " + media.getName() + " op te slaan, probeer het alstublieft opnieuw");
 		}
 	}
+
 	
 	/**
 	 * Deze methode haalt de naam van het bestand uit de content-disposition header van

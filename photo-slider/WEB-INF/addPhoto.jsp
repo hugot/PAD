@@ -20,10 +20,19 @@
 
 				<form action="${context}/uploadphoto" class="dropzone needsclick dz-clickable" id="uploadForm">
 				</form>
+
+				<form method="POST" action="${context}/addsessiontotheme">
+					<input type="text" value="${themeId}" name="themeId" id="themeId"/>
+					<input type="text" value="${sessionId}" name="sessionId" id="sessionId"/>
+					<input type="text" value="hallo" name="addtotheme" id="addtotheme"/>
+					<input type="submit" value="upload" name="upload" id="upload" />
+				</form>
+				
 			</section>
-			<c:if test="${message != null}">
-				<p>${message}</p>
+			<c:if test="${sessionId != null}">
+				<p>whaddup ${sessionId}</p>
 			</c:if>
+			<script type="text/javascript">var sessionId = ${sessionId}</script>
 			<script type="text/javascript" src="${context}/webroot/dropzoneconfig.js"></script>
 		</body>
 

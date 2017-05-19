@@ -9,9 +9,12 @@
 
 		Dropzone.autoDiscover = false;
 		var dropzoneOptions = {
-				dictDefaultMessage: "Sleep foto's naar dit vlak om ze te uploaden",
+				dictDefaultMessage: "Sleep foto's naar dit vlak om ze te uploaden", 
 				paramName: "photo",
 				acceptedFiles: "image/*"
 		}
 		var myDropzone = new Dropzone("form#uploadForm", dropzoneOptions);
+		myDropzone.on('sending', function(file, xhr, formData){
+						formData.append("sessionId", sessionId.toString());
+		});
 })();

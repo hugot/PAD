@@ -173,7 +173,8 @@ public class SqlConnector {
 
         Statement addMediaToThemeStatement = connection.createStatement();
         //Voegt gekozen media toe aan gekozen thema
-        String sql = ("INSERT INTO theme_has_media VALUES ('" + Theme_Id + "','" + Media_Id + "’)");
+        String sql = ("INSERT INTO theme_has_media VALUES ('" + Theme_Id + "','" + Media_Id + "')");
+        System.out.println(sql);
 
         addMediaToThemeStatement.execute(sql);
     }
@@ -182,9 +183,6 @@ public class SqlConnector {
         System.out.println("\n----------getAllPhoto commencing----------");
         ResultSet result;
         Photo photo;
-
-        Class.forName("com.mysql.jdbc.Driver");
-        connection = DriverManager.getConnection("jdbc:mysql://localhost/photoslider", "root", "Aapjes-14");
 
         Statement getAllMediaStatement = connection.createStatement();
         //Krijgt alle media uit de database
@@ -254,15 +252,30 @@ public class SqlConnector {
         }
     }
 
-    public int getMaxThemeId() throws SQLException {
+	public int getMediaIdFrom(Media media) throws SQLException{
+	   	ResultSet set = executeQuery(String.format("SELECT id FROM media WHERE name = '%s';", media.getName()));
+	   	set.next();
+		return set.getInt("id");
+    }
+
+	/**
+	 * De hoogste theme id die in de database aanwezig is.
+	 * @return maxThemeId
+	 */
+    public int getMaxThemeId() throws SQLException, ThemeNotFoundException {
 		ResultSet set = executeQuery("Select id FROM theme ORDER BY id DESC LIMIT 1;");
     	set.next();
     	return set.getInt("id");
     }
 
-	public Theme getActiveThemeById(int id) throws ThemeNotFoundException, SQLException {
+	/**
+	 * Theme dat bij de id hoort.
+	 * @param id
+	 * @return theme;
+	 */
+    public Theme getThemeById(int id)throws SQLException, ThemeNotFoundException {
 		Theme theme;
-		ResultSet themeSet = executeQuery("SELECT * FROM theme INNER JOIN theme_has_media ON theme.id = theme_has_media.theme_id WHERE theme.`on` = 0 AND theme.id =" + id);
+		ResultSet themeSet = executeQuery("SELECT * FROM theme WHERE id = " + id);
 		if(themeSet.next()){
 			theme = new Theme(themeSet.getString("theme.name"), themeSet.getInt("theme.id"));
 		}
@@ -273,20 +286,48 @@ public class SqlConnector {
 		return theme;
     }
 
+	/**
+	 * Haal een actief theme op.
+	 * @param id
+	 * @return theme
+	 */
+	public Theme getActiveThemeById(int id) throws ThemeNotFoundException, SQLException {
+		Theme theme;
+		ResultSet themeSet = executeQuery("SELECT * FROM theme INNER JOIN theme_has_media ON theme.id = theme_has_media.theme_id WHERE theme.id =" + id);
+		if(themeSet.next()){
+			theme = new Theme(themeSet.getString("theme.name"), themeSet.getInt("theme.id"));
+		}
+		else{
+			throw new ThemeNotFoundException("Thema niet gevonden");
+		}
+		theme.setPhotoList(getAllPhotosFromTheme(theme));
+		return theme;
+    }
+
+	/**
+	 * Haal alle foto;s van een bepaald theme op
+	 * @param theme
+	 * @return photos
+	 */
     public ArrayList<Photo> getAllPhotosFromTheme(Theme theme) throws SQLException {
     	ArrayList<Photo> photos = new ArrayList<>();
-		ResultSet set = executeQuery(String.format("SELECT * FROM photo WHERE id IN (SELECT media_id FROM " +
+		ResultSet set = executeQuery(String.format("SELECT * FROM photo INNER JOIN media ON photo.id = media.id WHERE media.id IN (SELECT media_id FROM " +
 					"theme_has_media WHERE theme_id = %s);", theme.getId()));
 		while(set.next()){
-			photos.add(new Photo(set.getString("path"), set.getString("name"), set.getInt("id"), theme.getName()));
+			photos.add(new Photo(set.getString("media.filePath"), set.getString("media.name"), set.getInt("media.id"), theme.getName()));
 		}
 		return photos;
     }
 
+	/**
+	 * Haal een foto uit de database aan de hand van de opgegeven id.
+	 * @param id
+	 * @return photo
+	 */
     public Photo getPhotoById(int id) throws SQLException {
 		ResultSet set = executeQuery(String.format("SELECT * FROM photo INNER JOIN media ON photo.id = media.id WHERE media.id = %s;",id));
 		set.next();
-		return new Photo(set.getString("media.filepath"), set.getString("media.name"), set.getInt("media.id"), set.getString("media.id"));
+		return new Photo(set.getString("media.filePath"), set.getString("media.name"), set.getInt("media.id"), set.getString("media.id"));
     }
 
     /**

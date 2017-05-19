@@ -10,6 +10,7 @@ import java.util.Optional;
 
 import nl.amsta09.app.SlideShowController;
 import nl.amsta09.web.JettyServer;
+import nl.amsta09.web.SessionManager;
 
 /**
  * Main class van de applicatie.
@@ -19,6 +20,7 @@ import nl.amsta09.web.JettyServer;
 public class MainApp extends Application{
 	public static int SECONDS = 10;
 	private static SlideShowController slideShowController;
+	private static SessionManager sessionManager;
 
 	/**
 	 * Start zowel de javafx applicatie als de webserver.
@@ -26,11 +28,11 @@ public class MainApp extends Application{
 	 */
 	@Override
 	public void start(Stage primaryStage) {
-		
+		// Maak slideshow aan en start deze
 		slideShowController = new SlideShowController(primaryStage);
 		slideShowController.initialize();
 		
-        //Maak server aan en start de server (default port 4848)
+        // Maak server aan en start de server (default port 4848)
         JettyServer jettyServer = new JettyServer();
         jettyServer.setHandler();
         try {
@@ -40,6 +42,9 @@ public class MainApp extends Application{
         	die("Opstarten webserver mislukt", "Het opstarten van de ingebouwde webserver is mislukt." +
 				" Start het apparaat alstublieft opnieuw op.");
         }
+
+        // Instantieer de session manager
+        sessionManager = new SessionManager();
 	}
 
 	/**
@@ -47,15 +52,23 @@ public class MainApp extends Application{
 	 * @param args
 	 */
     public static void main(String[] args) {
-        //start slideshow
         launch(args);
 	}
 
 	/**
 	 * Toegang tot de slideShowController vanuit de rest van de applicatie.
+	 * @return slideShowController
 	 */
 	public static SlideShowController getSlideShowController(){
 		return slideShowController;
+	}
+
+	/**
+	 * Toegang tot de sessionManager vanuit de rest van de applicatie.
+	 * @return sessionManager
+	 */
+	public static SessionManager getSessionManager(){
+		return sessionManager;
 	}
 
 	/**

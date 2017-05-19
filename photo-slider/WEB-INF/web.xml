@@ -17,13 +17,21 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 		<url-pattern>/uploadphoto</url-pattern>
 	</servlet-mapping>
 
-        <servlet>
+	<servlet>
 		<servlet-name>AddThemeServlet</servlet-name>
 		<servlet-class>nl.amsta09.web.controller.AddThemeServlet</servlet-class>
 	</servlet>
-
 	<servlet-mapping>
 		<servlet-name>AddThemeServlet</servlet-name>
 		<url-pattern>/addtheme</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>AddSessionToThemeServlet</servlet-name>
+		<servlet-class>nl.amsta09.web.controller.AddSessionToThemeServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>AddSessionToThemeServlet</servlet-name>
+		<url-pattern>/addsessiontotheme</url-pattern>
 	</servlet-mapping>
 </web-app>

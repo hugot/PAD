@@ -1,20 +1,13 @@
 package nl.amsta09.app;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.sql.SQLException;
 import java.util.ListIterator;
 
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-import nl.amsta09.data.SqlConnector;
-import nl.amsta09.data.SqlConnector.ThemeNotFoundException;
-import nl.amsta09.driver.MainApp;
-import nl.amsta09.model.Photo;
-import nl.amsta09.model.Theme;
-
-public class SlideShowController implements KeyListener {
+import nl.amsta09.data.SqlConnector; import nl.amsta09.data.SqlConnector.ThemeNotFoundException; import nl.amsta09.driver.MainApp; import nl.amsta09.model.Photo; import nl.amsta09.model.Theme; 
+public class SlideShowController {
 	private Theme theme;
 	private ListIterator<Photo> photos;
 	private SlideShowView view;
@@ -29,7 +22,7 @@ public class SlideShowController implements KeyListener {
 	public SlideShowController(Stage stage){
 		conn = new SqlConnector();
 		StackPane stackPane = new StackPane();
-		view = new SlideShowView(stackPane);
+		view = new SlideShowView(stackPane, this);
 		this.stage = stage;
 		timer = new Timer(this);
 	}
@@ -39,12 +32,14 @@ public class SlideShowController implements KeyListener {
 	 */
 	public void initialize() {
 		setRandomTheme();
+		view.setKeyListener();
 		photos = theme.getPhotoList().listIterator();
 		view.setImage(photos.next());
 		timer.start();
 		stage.setScene(view);
 		stage.show();
 	}
+
 
 	/**
 	 * Haal een random thema op om foto's van weer te geven.
@@ -84,20 +79,13 @@ public class SlideShowController implements KeyListener {
 	}
 
 	/**
-	 * Ga naar de volgende foto als er op een knop gedrukt wordt.
-	 */
-	@Override
-	public void keyPressed(KeyEvent e) {
-		showNextImage();
-		timer.reset();
-	}
-
-	/**
 	 * Deze class dient voor het timen van de de duratie dat een foto getoond wordt.
 	 */
 	private class Timer {
 		private int secondsToGo;
 		private SlideShowController slideShowController;
+		Thread timerThread;
+		private boolean isRunning;
 
 		/**
 		 * Initialiseer de Timer.
@@ -113,18 +101,25 @@ public class SlideShowController implements KeyListener {
 		 * Begin met timen.
 		 */
 		public void start(){
-			while(true){
-				while(secondsToGo > 0){
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e) {
-						break;
+			Runnable runnable = new Runnable(){
+				public void run(){
+					while(isRunning()){
+						while(secondsToGo > 0){
+							try {
+								Thread.sleep(1000);
+							} catch (InterruptedException e) {
+								break;
+							}
+							secondsToGo--;
+						}
+						slideShowController.showNextImage();
+						reset();
 					}
-					secondsToGo--;
 				}
-				slideShowController.showNextImage();
-				reset();
-			}
+			};
+			isRunning = true;
+			timerThread = new Thread(runnable);
+			timerThread.start();
 		}
 
 		/**
@@ -133,15 +128,13 @@ public class SlideShowController implements KeyListener {
 		public void reset(){
 			secondsToGo = MainApp.SECONDS;
 		}
-	}
 
-	@Override
-	public void keyTyped(KeyEvent e) {
-		// Doe niets
-	}
+		public boolean isRunning(){
+			return isRunning;
+		}
 
-	@Override
-	public void keyReleased(KeyEvent e) {
-		// Doe niets
+		public void stop(){
+			isRunning = false;
+		}
 	}
 }
