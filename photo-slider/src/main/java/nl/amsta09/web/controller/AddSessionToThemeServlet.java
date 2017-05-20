@@ -15,13 +15,19 @@ import nl.amsta09.model.Media;
 import nl.amsta09.model.Photo;
 import nl.amsta09.model.Theme;
 import nl.amsta09.web.SessionManager.Session;
+import nl.amsta09.web.SessionManager.SessionNotFoundException;
 
 public class AddSessionToThemeServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response){
 		SqlConnector conn = new SqlConnector();
 		// De sessie van de gebruiker
 		String sessionId = request.getParameter("sessionId");
-		Session session = MainApp.getSessionManager().getSessionById(Integer.parseInt(sessionId));
+		Session session = null;
+		try {
+			session = MainApp.getSessionManager().getSessionById(Integer.parseInt(sessionId));
+		} catch(SessionNotFoundException e){
+			//Doe niets
+		}
 
 		String themeId = request.getParameter("themeId");
 		System.out.println("here we goo");

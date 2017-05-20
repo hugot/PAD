@@ -26,6 +26,7 @@ import nl.amsta09.model.Media;
 import nl.amsta09.model.Photo;
 import nl.amsta09.model.Theme;
 import nl.amsta09.web.SessionManager.Session;
+import nl.amsta09.web.SessionManager.SessionNotFoundException;
 
 /**
  *
@@ -68,7 +69,13 @@ public class FileUploadServlet extends HttpServlet {
 
 		// De sessie van de gebruiker
 		String sessionId = request.getParameter("sessionId");
-		Session session = MainApp.getSessionManager().getSessionById(Integer.parseInt(sessionId));
+		Session session;
+		try {
+			session = MainApp.getSessionManager().getSessionById(Integer.parseInt(sessionId));
+		} catch (NumberFormatException | SessionNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
 		// Het media object en de attributen waar het mee geinstantieerd wordt
 		boolean savingFileSucceeded = false;

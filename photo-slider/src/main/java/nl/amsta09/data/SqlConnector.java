@@ -330,6 +330,19 @@ public class SqlConnector {
 		return new Photo(set.getString("media.filePath"), set.getString("media.name"), set.getInt("media.id"), set.getString("media.id"));
     }
 
+	/**
+	 * Alle thema's in de database.
+	 * @return themes
+	 */
+	public ArrayList<Theme> getAllThemes() throws SQLException{
+		ArrayList<Theme> themes = new ArrayList<>();
+		ResultSet set = executeQuery("SELECT * FROM theme;");
+		while(set.next()){
+			themes.add(new Theme(set.getString("name"), set.getInt("id")));
+		}
+		return themes;
+	}
+
     /**
      * Voer een update uit
      *

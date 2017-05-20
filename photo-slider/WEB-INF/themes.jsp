@@ -37,12 +37,8 @@ Via deze view kunnen de thema's beheerd worden
 					<h3>Thema selectie</h3>
 				</header>
 				<ul>
-					<li>thema</li>
-					<li>thema</li>
-					<li>thema</li>
-					<li>thema</li>
-					<li>thema</li>
-					<li><button onclick="createThemePopup();">Maak een nieuw thema</button>
+					${themes}
+					<li><button onclick="createThemePopup();">Maak een nieuw thema</button></li>
 				</ul>
 			</section>
 
@@ -70,7 +66,8 @@ Via deze view kunnen de thema's beheerd worden
 				<li>Slideshow timer <input type="text" id="timer"> </li>
 			</ul>
 		</section>
-		<form id="hiddenpopup" method="POST" action="${context}/addtheme">
+		${popup}
+		<form id="hiddenpopup" method="POST" action="/addtheme">
 			<header>
 				<h3>Maak een thema aan</h3>
 			</header>

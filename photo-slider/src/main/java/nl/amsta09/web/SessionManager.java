@@ -50,9 +50,16 @@ public class SessionManager {
 	 * Return een session aan de hand van de gegeven id.
 	 * @param sessionId
 	 * @return session;
+	 * @throws SessionNotFoundException
 	 */
-	public Session getSessionById(int sessionId){
-		return sessions.get(sessionId);
+	public Session getSessionById(int sessionId) throws SessionNotFoundException{
+		Session session = sessions.get(sessionId);
+		if(session == null){
+			throw new SessionNotFoundException();
+		}
+		else {
+			return sessions.get(sessionId);
+		}
 	}
 
 	/**
@@ -139,6 +146,20 @@ public class SessionManager {
 		 */
 		private Session getSession(){
 			return this;
+		}
+	}
+
+	/**
+	 * Exceptie als een sessie niet gevonden kan worden
+	 */
+	public class SessionNotFoundException extends Exception {
+
+		/**
+		 * Instantieer de exceptie.
+		 * @param message
+		 */
+		public SessionNotFoundException(){
+			super("Sessie niet gevonden!!");
 		}
 	}
 }
