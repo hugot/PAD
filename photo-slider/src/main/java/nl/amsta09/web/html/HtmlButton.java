@@ -1,6 +1,6 @@
 package nl.amsta09.web.html;
 
-public class Button extends HtmlElement {
+public class HtmlButton extends HtmlElement {
 	
 	final String TOP = "<button class=\"%s\" onClick=\"%s\">";
 	final String BOTTOM = "</button>";
@@ -11,7 +11,7 @@ public class Button extends HtmlElement {
 	 * @param action
 	 * @param text
 	 */
-	public Button(String elementClass, String action, String text){
+	public HtmlButton(String elementClass, String action, String text){
 		super("", elementClass);
 		top = String.format(TOP, elementClass, action);
 		this.addContent(text);

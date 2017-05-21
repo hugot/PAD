@@ -10,61 +10,60 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import nl.amsta09.data.SqlConnector;
-import nl.amsta09.driver.MainApp;
 import nl.amsta09.model.Theme;
-import nl.amsta09.web.html.Popup;
+import nl.amsta09.web.Content;
+import nl.amsta09.web.html.HtmlButton;
+import nl.amsta09.web.html.HtmlForm;
+import nl.amsta09.web.html.HtmlList;
 
 public class ThemeManagementServlet extends HttpServlet {
-	private String html= "";
+	private final String JSP = "/WEB-INF/themes.jsp";
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response){
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException{
+		Content content = new Content(request, response);
 		SqlConnector conn = new SqlConnector();
 
 		// Check of er een sessionId is, zoniet, dan wordt er een sessie aangemaakt
-		if(request.getAttribute("sessionId") == null){
-			request.setAttribute("sessionId",MainApp.getSessionManager().newSession().getId());
-		}
+		content.parseSession();
 
 		ListIterator<Theme> themes;
 		try {
 			themes = conn.getAllThemes().listIterator();
-		} catch (SQLException e1) {
-			request.setAttribute("message","Het is niet gelukt om de thema's op te halen uit de database, " +
+		} catch (SQLException e) {
+			content.add("message","Het is niet gelukt om de thema's op te halen uit de database, " +
 					"probeer de pagina te vernieuwen");
+			content.sendUsing(JSP);
 			return;
 		}
 
+		HtmlList themeList = new HtmlList("", "");
 		themes.forEachRemaining((Theme theme)-> {
-			html += String.format("<li><form action=\"/thememanagement\" method=\"post\"" +
-					" class=\"listitem\"> " +
-					" <input type=\"hidden\" name=\"themename\" id=\"themename\" value=\"%s\"/>" +
-					" <button type=\"submit\" name=\"submit\" id=\"submit\" class=\"listitembutton\">" +
-					"%s</button> </form></li>\n", theme.getName(), theme.getId());
+			HtmlForm form = new HtmlForm("theme", "" + theme.getId(), "/thememanagement", "post");
+			form.addInput("hidden", "themeName", theme.getName());
+			form.addInput("hidden", "themeId", "" + theme.getId());
+			form.addElement(new HtmlButton("select-theme-button", "submit", theme.getName()));
+			themeList.addItem(form);
 		});
 
-		 System.out.println(html);
-	 
-
-		request.setAttribute("themes", html);
-
-		Popup popup = new Popup("heey het lukte!", "wat mooi zeg", "hihi");
-
-		request.setAttribute("popup", popup.getHtml());
-
-		// Antwoord met de "themes" servlet. 
-		sendContent(request, response);
+		System.out.println(themeList.getHtml());
+		content.add("themes", themeList);
+		content.add("selectedThemeId", "" + parseSelectedThemeId(request));
+		content.sendUsing(JSP);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response){
 		System.out.println(request.getParameter("themename").toString());
 	}
 
-	private void sendContent(HttpServletRequest request, HttpServletResponse response){
+	protected static int parseSelectedThemeId(HttpServletRequest request){
+		int themeId;
 		try {
-			request.getRequestDispatcher("/WEB-INF/themes.jsp").forward(request, response);
-		} catch (ServletException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			themeId = Integer.parseInt(request.getAttribute("selectedTheme").toString());
+		} catch(NumberFormatException | NullPointerException e){
+			themeId = 1;
 		}
+		return themeId;
 	}
+
 }

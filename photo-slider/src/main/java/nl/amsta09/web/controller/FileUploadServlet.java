@@ -75,6 +75,7 @@ public class FileUploadServlet extends HttpServlet {
 		} catch (NumberFormatException | SessionNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
+			return;
 		}
 
 		// Het media object en de attributen waar het mee geinstantieerd wordt

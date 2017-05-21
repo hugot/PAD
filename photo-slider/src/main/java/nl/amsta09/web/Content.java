@@ -10,7 +10,14 @@ import javax.servlet.http.HttpServletResponse;
 import nl.amsta09.driver.MainApp;
 import nl.amsta09.web.SessionManager.Session;
 import nl.amsta09.web.SessionManager.SessionNotFoundException;
+import nl.amsta09.web.html.HtmlElement;
 	
+/**
+ * Deze class dient voor het beheren van de content die als gevolg van een httpreqeust
+ * wordt opgestuurd naar de gebruiker in een response.
+ * 
+ * @author Hugo Thunnissen
+ */
 public class Content {
 	private Session session;
 	private HttpServletRequest request;
@@ -35,7 +42,7 @@ public class Content {
 			sessionId = Integer.parseInt(request.getAttribute("sessionId").toString());
 			session = MainApp.getSessionManager().getSessionById(sessionId);
 		}
-		catch(SessionNotFoundException | NumberFormatException e){
+		catch(NullPointerException | SessionNotFoundException | NumberFormatException e){
 			session = MainApp.getSessionManager().newSession();
 		}
 		request.setAttribute("sessionId", session.getId());
@@ -48,6 +55,21 @@ public class Content {
 	 */
 	public void add(String attribute, String value){
 		request.setAttribute(attribute, value);
+	}
+
+	public void add(String attribute, HtmlElement element){
+		request.setAttribute(attribute, element.getHtml());
+	}
+
+	
+	/**
+	 * Voeg alle attributen aan een request to, en forward deze vervolgens naar de response.
+	 * @param attributes
+	 */
+	public void addAllElements(Hashtable<String,HtmlElement> attributes){
+		attributes.forEach((String attribute, HtmlElement value) -> {
+			add(attribute, value);
+		});
 	}
 
 	/**

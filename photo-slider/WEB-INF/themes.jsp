@@ -34,12 +34,11 @@ Via deze view kunnen de thema's beheerd worden
 
 			--%><section id="selection-bar">
 				<header> 
-					<h3>Thema selectie</h3>
+					<h3 style="display: inline-block;">Thema selectie</h3>
+					<button style="float: right; height: 60px;" onclick="createThemePopup();">Nieuw thema</button>
 				</header>
-				<ul>
+
 					${themes}
-					<li><button onclick="createThemePopup();">Maak een nieuw thema</button></li>
-				</ul>
 			</section>
 
 			<section id="middle-section">
@@ -66,6 +65,9 @@ Via deze view kunnen de thema's beheerd worden
 				<li>Slideshow timer <input type="text" id="timer"> </li>
 			</ul>
 		</section>
+		<script> var selectedtheme = document.getElementById(${selectedThemeId});
+				 selectedtheme.id = "selected-theme";
+		</script>
 		${popup}
 		<form id="hiddenpopup" method="POST" action="/addtheme">
 			<header>

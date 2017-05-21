@@ -1,6 +1,6 @@
 package nl.amsta09.web.html;
 
-public class Popup extends Form {
+public class HtmlPopup extends HtmlForm {
 
 	private final String HEADER = "<header> <h3>%s</h3> </header>";
 
@@ -10,7 +10,7 @@ public class Popup extends Form {
 	 * @param text
 	 * @param button
 	 */
-	public Popup(String title, String text, String button){
+	public HtmlPopup(String title, String text, String button){
 		super("", "popup", "", "");
 		this.addContent(String.format(HEADER, title));
 		this.addContent("<br>" + text);

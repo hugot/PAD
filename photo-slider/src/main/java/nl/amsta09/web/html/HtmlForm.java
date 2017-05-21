@@ -1,10 +1,10 @@
 package nl.amsta09.web.html;
 
-	public class Form extends HtmlElement {
+	public class HtmlForm extends HtmlElement {
 		private String method;
 		private String action;
 
-		private final String TOP = "<form id=\"%s\" method=\"%s\" action=\"%s\">\n";
+		private final String TOP = "<form class=\"%s\" id=\"%s\" method=\"%s\" action=\"%s\">\n";
 		private final String BOTTOM = "</form>\n";
 		private final String INPUT = "<input type=\"%s\" name=\"%s\" id=\"%s\" " +
 			"value=\"%s\"/>";
@@ -15,11 +15,11 @@ package nl.amsta09.web.html;
 		 * @param method
 		 * @param action
 		 */
-		public Form(String elementClass, String id, String method, String action){
+		public HtmlForm(String elementClass, String id, String method, String action){
 			super(elementClass, id);
 			this.method = method;
 			this.action = action;
-			top = String.format(TOP, id, method, action);
+			top = String.format(TOP, elementClass, id, method, action);
 			bottom = BOTTOM;
 		}
 
