@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import nl.amsta09.driver.MainApp;
 import nl.amsta09.model.Media;
+import nl.amsta09.model.Theme;
 
 /**
  * Deze class dient voor het instantieren van de session manager die de sessies bijhoudt van bezoekers
@@ -91,6 +92,7 @@ public class SessionManager {
 	public class Session {
 		private int sessionId;
 		private ArrayList<Media> addedMedia;
+		private Theme managedTheme;
 		private SessionManager sessionManager;
 		private Thread expirationCounter;
 
@@ -122,6 +124,21 @@ public class SessionManager {
 			};
 			expirationCounter = new Thread(counter);
 			expirationCounter.start();
+		}
+
+		/**
+		 * Stel het thema in dat tijdens deze sessie beheerd wordt.
+		 * @param managedTheme
+		 */
+		public void setManagedTheme(Theme managedTheme){
+			this.managedTheme = managedTheme;
+		}
+
+		/**
+		 * Het thema dat tijdens deze sessie beheerd wordt.
+		 */
+		public Theme getManagedTheme(){
+			return managedTheme;
 		}
 
 		/**

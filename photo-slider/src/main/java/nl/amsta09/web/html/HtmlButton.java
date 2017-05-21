@@ -1,8 +1,7 @@
 package nl.amsta09.web.html;
 
-public class HtmlButton extends HtmlElement {
+public class HtmlButton extends HtmlElement implements HtmlElementInterface {
 	
-	final String TOP = "<button class=\"%s\" onClick=\"%s\">";
 	final String BOTTOM = "</button>";
 
 	/**
@@ -12,10 +11,22 @@ public class HtmlButton extends HtmlElement {
 	 * @param text
 	 */
 	public HtmlButton(String elementClass, String action, String text){
-		super("", elementClass);
-		top = String.format(TOP, elementClass, action);
-		this.addContent(text);
-		bottom = BOTTOM;
+		super("", elementClass, "button");
+		addAttribute("onClick", action);
+		addContent(text);
+	}
+
+	/**
+	 * Stel het button type in.
+	 * @param type
+	 */
+	public void setType(String type){
+		addAttribute("type", type);
+	}
+
+	@Override
+	protected String generateBottom() {
+		return BOTTOM;
 	}
 
 }

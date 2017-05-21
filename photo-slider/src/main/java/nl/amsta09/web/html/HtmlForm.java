@@ -1,26 +1,35 @@
 package nl.amsta09.web.html;
 
-	public class HtmlForm extends HtmlElement {
-		private String method;
-		private String action;
-
-		private final String TOP = "<form class=\"%s\" id=\"%s\" method=\"%s\" action=\"%s\">\n";
+	public class HtmlForm extends HtmlElement implements HtmlElementInterface {
 		private final String BOTTOM = "</form>\n";
-		private final String INPUT = "<input type=\"%s\" name=\"%s\" id=\"%s\" " +
-			"value=\"%s\"/>";
 
+		/**
+		 * Maak een formulier aan zonder attributen.
+		 */
+		public HtmlForm(){
+			super("form");
+		}
+
+		/**
+		 * Maak een formulier aan met alleen maar de methode en de actie gedefineerd.
+		 * @param method
+		 * @param action
+		 */
+		public HtmlForm(String method, String action){
+			super("form");
+			addAttribute("method", method);
+			addAttribute("action", action);
+		}
 		/**
 		 * Deze methode maakt het formulier aan.
 		 * @param elementClass
 		 * @param method
 		 * @param action
 		 */
-		public HtmlForm(String elementClass, String id, String method, String action){
-			super(elementClass, id);
-			this.method = method;
-			this.action = action;
-			top = String.format(TOP, elementClass, id, method, action);
-			bottom = BOTTOM;
+		public HtmlForm(String id, String elementClass, String method, String action){
+			super(id, elementClass,"form");
+			addAttribute("method", method);
+			addAttribute("action", action);
 		}
 
 		/**
@@ -28,7 +37,7 @@ package nl.amsta09.web.html;
 		 * @param action
 		 */
 		public void setAction(String action){
-			top = String.format(TOP, method, action);
+			addAttribute("action", action);
 		}
 
 		/**
@@ -36,7 +45,7 @@ package nl.amsta09.web.html;
 		 * @param method
 		 */
 		public void setMethod(String method){
-			top = String.format(TOP, method, action);
+			addAttribute("method", method);
 		}
 
 		/**
@@ -45,7 +54,7 @@ package nl.amsta09.web.html;
 		 * @param name
 		 */
 		public void addInput(String type, String name){
-			middle += String.format(INPUT, type, name, name, "");
+			addElement(new Input(type, name));
 		}
 
 		/**
@@ -55,7 +64,10 @@ package nl.amsta09.web.html;
 		 * @param value
 		 */
 		public void addInput(String type, String name, String value){
-			middle += String.format(INPUT, type, name, name, value);
+			Input input = new Input(type, name);
+			input.setId(name);
+			input.addAttribute("value", value);
+			addElement(input);
 		}
 
 		/**
@@ -65,6 +77,42 @@ package nl.amsta09.web.html;
 		 * @param value
 		 */
 		public void addValue(String name, String value){
-			middle += String.format(INPUT, "hidden", name, name, value);
+			Input input = new Input("hidden", name);
+			input.addAttribute("value", value);
+			input.setId(name);
+			addElement(input);
+	}
+
+	@Override
+	protected String generateBottom() {
+		return BOTTOM;
+	}
+
+	private class Input extends HtmlElement implements HtmlElementInterface {
+
+		/**
+		 * Maak een input veld aan
+		 */
+		public Input(String type, String name){
+			super("input");
+			addAttribute("type", type);
+			addAttribute("name", name);
+			closingTag = "/" + closingTag;
 		}
+
+		/**
+		 * {@InheritDoc}
+		 */
+		@Override
+		public String generateHtml(){
+			return super.generateHtml();
+		}
+
+		/**
+		 * {@InheritDoc}
+		 */
+		protected String generateBottom(){
+			return " ";
+		}
+	}
 }

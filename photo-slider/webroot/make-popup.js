@@ -6,13 +6,13 @@
  */
   'use strict';
   
-  function createThemePopup(){
-    var popup = document.getElementById("hiddenpopup");
-    popup.id = "popup";
+  function showPopup(popupId){
+    var popup = document.getElementById(popupId);
+    popup.className = "popup";
   }
   
-  function hideCreateThemePopup(){
-    var popup = document.getElementById("popup");
-    popup.id = "hiddenpopup";
+  function hidePopup(popupId){
+    var popup = document.getElementById(popupId);
+    popup.className = "hiddenpopup";
   }
     

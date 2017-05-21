@@ -1,8 +1,19 @@
 package nl.amsta09.web.html;
 
-public class HtmlList extends HtmlElement {
-	private final String TOP = "<ul id=\"%s\" class=\"%s\" >";
+/**
+ * Deze class dient voor het aanmaken van een lijst in html.
+ *
+ * @author Hugo Thunnissen
+ */
+public class HtmlList extends HtmlElement implements HtmlElementInterface {
 	private final String BOTTOM = "</ul>";
+
+	/**
+	 * Maak de lijst aan.
+	 */
+	public HtmlList(){
+		super("ul");
+	}
 
 	/**
 	 * Maak een html lijst aan
@@ -10,29 +21,37 @@ public class HtmlList extends HtmlElement {
 	 * @param element
 	 */
 	public HtmlList(String id, String elementClass) {
-		super(id, elementClass);
-		top = String.format(TOP, id, elementClass);
-		bottom = BOTTOM;
+		super(id, elementClass, "ul");
 	}
 
 	/**
 	 * Voeg een item toe met tekst.
 	 * @param content
 	 */
-	public void additem(String content){
-		middle += new ListItem(content).getHtml();
+	public void addItem(String content){
+		addElement(new ListItem(content));
 	}
 
 	/**
 	 * Voeg een item toe met een html element.
 	 * @param element
 	 */
-	public void addItem(HtmlElement element){
-		middle += new ListItem(element).getHtml();
+	public void addItem(HtmlElementInterface element){
+		addElement(new ListItem(element));
 	}
 
-	private class ListItem extends HtmlElement {
-		private final String TOP = "<li>";
+	/**
+	 * {@InheritDoc}
+	 */
+	@Override
+	protected String generateBottom() {
+		return BOTTOM;
+	}
+
+	/**
+	 * Deze class dient voor het aanmaken van een item in een html lijst.
+	 */
+	private class ListItem extends HtmlElement implements HtmlElementInterface {
 		private final String BOTTOM = "</li>";
 
 		/**
@@ -40,21 +59,23 @@ public class HtmlList extends HtmlElement {
 		 * @param content
 		 */
 		public ListItem(String content){
-			super("", "");
-			top = TOP;
-			bottom = BOTTOM;
-			middle = content;
+			super("li");
+			addContent(content);
 		}
 
 		/**
 		 * Instantieer een list item met een html element erin.
 		 * @param element
 		 */
-		public ListItem(HtmlElement element){
-			super("", "");
-			top = TOP;
-			bottom = BOTTOM;
-			middle = element.getHtml();
+		public ListItem(HtmlElementInterface element){
+			super("li");
+			addElement(element);
+		}
+
+		@Override
+		protected String generateBottom() {
+			return BOTTOM;
 		}
 	}
+
 }
