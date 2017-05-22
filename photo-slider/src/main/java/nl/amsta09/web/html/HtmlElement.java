@@ -106,5 +106,9 @@ public abstract class HtmlElement {
 		addAttribute("id", id);
 	}
 
+	/**
+	 * Genereer de onderkant van het element.
+	 * @return bottom
+	 */
 	protected abstract String generateBottom();
 }

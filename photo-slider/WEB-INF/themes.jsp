@@ -21,8 +21,10 @@ Via deze view kunnen de thema's beheerd worden
 		<section id="main-section">
 			<section id="selection-bar">
 				<header> 
-					<h3 style="display: inline-block;">Thema selectie</h3>
-					<button style="float: right; height: 60px;" onclick="showPopup('theme-creation-popup');">Nieuw thema</button>
+					<h3>Thema selectie</h3>
+					<form class="big-button-form" style="float:right;">
+						<button type="button" class="big-button" onclick="showPopup('theme-creation-popup');">Nieuw thema</button>
+					</form>
 				</header>
 				<%-- --------------------------- LIJST MET THEMA'S -------------------------------- --%>
 													${themes}
@@ -31,8 +33,10 @@ Via deze view kunnen de thema's beheerd worden
 			<section id="middle-section">
 				<header>
 					<h3> ${theme} | Foto's</h3>
+					<form class="big-button-form" style="float: right;" action="/uploadphoto" method="get">
+						<button class="big-button">Voeg een foto toe</button>
+					</form>
 				</header>
-				Voeg een Foto toe: <input type="button" value="Voeg toe">
 					<%-- ---------------------- LIJST MET FOTO'S --------------------- --%>
 													${photos}
 			</section>

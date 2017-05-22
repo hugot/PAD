@@ -122,6 +122,11 @@ section header {
 section header h3 {
 	margin:0;
 	padding: 0;
+	display: inline-block;
+}
+
+#photo-list li {
+	max-height: none;
 }
 
 #middle-section {
@@ -185,4 +190,17 @@ section header h3 {
 
 form {
 	text-align:center;
+}
+
+.big-button-form {
+	max-height:60px;
+	margin: 0;
+	padding: 0;
+}
+
+.big-button {
+	max-height:60px;
+	line-height: 60px;
+	margin: 0;
+	padding: 0;
 }

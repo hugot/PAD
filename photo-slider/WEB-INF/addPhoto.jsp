@@ -21,7 +21,7 @@
 				<form action="${context}/uploadphoto" class="dropzone needsclick dz-clickable" id="uploadForm">
 				</form>
 
-				<form class="hidden-form" method="POST" action="${context}/addsessiontotheme">
+				<form class="hidden-form" method="GET" action="${context}/addsessiontotheme">
 					Wilt u de foto's meteen aan een thema toevoegen? <br>
 					<input type="submit" value="Voeg toe aan thema" name="Voeg toe aan thema" id="big-button" />
 				</form>
