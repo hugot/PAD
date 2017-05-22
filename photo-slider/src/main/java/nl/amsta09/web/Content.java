@@ -27,6 +27,8 @@ import nl.amsta09.web.html.HtmlList;
  */
 public class Content {
 	public static final String SELECTED_THEME_ID = "selectedThemeId";
+	public static final String INDEX_JSP = "/WEB-INF/index.jsp";
+
 	private Session session;
 	private HttpServletRequest request;
 	private HttpServletResponse response;

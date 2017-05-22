@@ -4,11 +4,11 @@ xmlns:xsi="http://java.sun.com/xml/ns/j2ee"
 xmlns:web="http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd" 
 xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
 http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+
 	<servlet>
 		<servlet-name>FileUploadServlet</servlet-name>
 		<servlet-class>nl.amsta09.web.controller.FileUploadServlet</servlet-class>
 	</servlet>
-
 	<servlet-mapping>
 		<servlet-name>FileUploadServlet</servlet-name>
 		<url-pattern>/uploadaudio</url-pattern>
@@ -49,5 +49,14 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 	<servlet-mapping>
 		<servlet-name>ThemeManagementServlet</servlet-name>
 		<url-pattern>/thememanagement</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>PhotoSelectionServlet</servlet-name>
+		<servlet-class>nl.amsta09.web.controller.PhotoSelectionServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>PhotoSelectionServlet</servlet-name>
+		<url-pattern>/photoselection</url-pattern>
 	</servlet-mapping>
 </web-app>

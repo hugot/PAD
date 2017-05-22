@@ -76,7 +76,7 @@ package nl.amsta09.web.html;
 		 * @param name
 		 * @param value
 		 */
-		public void addValue(String name, String value){
+		public void addHiddenValue(String name, String value){
 			Input input = new Input("hidden", name);
 			input.addAttribute("value", value);
 			input.setId(name);

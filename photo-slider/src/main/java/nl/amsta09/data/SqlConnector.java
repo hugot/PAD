@@ -168,31 +168,6 @@ public class SqlConnector {
         addMediaToThemeStatement.execute(sql);
     }
 
-    public ArrayList<Photo> getAllPhoto(ArrayList<Photo> photoList) throws SQLException, ClassNotFoundException {
-        System.out.println("\n----------getAllPhoto commencing----------");
-        ResultSet result;
-        Photo photo;
-
-        Statement getAllMediaStatement = connection.createStatement();
-        //Krijgt alle media uit de database
-        String sql = ("SELECT A.name, A.filePath , B.id\n"
-                + "FROM media A \n"
-                + "WHERE EXISTS (SELECT 1 \n"
-                + "FROM   photo B \n"
-                + "WHERE  A.Id = B.Id)");
-
-        result = getAllMediaStatement.executeQuery(sql);
-        System.out.println("test1");
-        while (result.next()) {
-            photo = new Photo(result.getString("filePath"), result.getString("name"), result.getInt("id"));
-
-            System.out.println(photo.getURL());
-            photoList.add(photo);
-        }
-        System.out.println("test2");
-        return photoList;
-
-    }
 
     /*
      * Zet een media file in de correcte type tabel (photo, sound, soundeffect)
@@ -359,6 +334,23 @@ public class SqlConnector {
 		}
 		return themes;
 	}
+
+	/**
+	 * Haal alle foto's op uit de database.
+	 * @return photos
+	 */
+    public ArrayList<Photo> getAllPhoto() throws SQLException, ClassNotFoundException {
+        ArrayList<Photo> photoList = new ArrayList<>();
+        ResultSet result = executeQuery("SELECT * FROM media INNER JOIN photo ON media.id = photo.id;");
+        while (result.next()) {
+            photoList.add(new Photo(
+            			result.getString("media.filePath"), 
+            			result.getString("media.name"), 
+            			result.getInt("media.id")));
+        }
+        return photoList;
+
+    }
 
     /**
      * Voeg een media bestand toe aan de database.

@@ -33,7 +33,7 @@ Via deze view kunnen de thema's beheerd worden
 			<section id="middle-section">
 				<header>
 					<h3> ${theme} | Foto's</h3>
-					<form class="big-button-form" style="float: right;" action="/uploadphoto" method="get">
+					<form class="big-button-form" style="float: right;" action="/photoselection" method="get">
 						<button class="big-button">Voeg een foto toe</button>
 					</form>
 				</header>

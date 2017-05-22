@@ -1,4 +1,5 @@
 /*
+ * 
  * mainstylesheet.css
  * 
  * Author: Hugo Thunnissen
@@ -203,4 +204,27 @@ form {
 	line-height: 60px;
 	margin: 0;
 	padding: 0;
+}
+
+.floating-image {
+	display: inline-block;
+	width: 250px;
+	border: black solid 1px;
+	margin-top: 10px;
+	margin-left: 5px;
+	margin-right: 5px;
+	padding: 10px;
+}
+
+.floating-image p {
+	height: 20px;
+	overflow: hidden;
+}
+
+.photo-container {
+	width: 220px;
+	overflow: hidden;
+	height:150px;
+	border: black solid 3px;
+	display: inline-block;
 }
