@@ -17,6 +17,10 @@ header h1{
 	margin:0;
 }
 
+header h3 {
+	margin: 0;
+}
+
 header {
 	background-color: #4286f4;
 	color: white;
@@ -57,10 +61,6 @@ header {
 
 #navBar li a:hover {
 	background-color: black;
-}
-
-#main {
-	width: 100%; 
 }
 
 #uploadForm {
@@ -151,6 +151,7 @@ section header h3 {
 	min-height: 40px;
 	height: auto;
 	line-height: 40px;
+	margin: 0;
  }
 
  .theme .select-theme-button {
@@ -170,3 +171,18 @@ section header h3 {
 	background-color: lightblue;
 	color: white;
  }
+
+.hidden-button {
+	visibility: hidden;
+	position: absolute;
+	top: -9999px;
+}
+
+.visible-button {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+form {
+	text-align:center;
+}

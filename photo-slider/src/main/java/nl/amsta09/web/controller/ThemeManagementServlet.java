@@ -42,7 +42,7 @@ public class ThemeManagementServlet extends HttpServlet {
 		}
 
 		Theme startingTheme = themes.get(STARTING_THEME);
-		content.addThemeList(themes);
+		content.addThemeList(themes, request.getServletPath());
 		content.addToSession(SELECTED_THEME_ID, "" + startingTheme.getId()); 
 		content.addToSession(THEME, startingTheme.getName());
 

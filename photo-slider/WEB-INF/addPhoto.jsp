@@ -14,26 +14,22 @@
 		<body>
 			<%@include file="header.jsp"%>
 
-			<section id="main">
+			<section id="main-section">
 				<h1>Voeg een foto toe via deze pagina</h1>	
 				<script type="text/javascript" src="${context}/webroot/dropzone.js"></script>
 
 				<form action="${context}/uploadphoto" class="dropzone needsclick dz-clickable" id="uploadForm">
 				</form>
 
-				<form method="POST" action="${context}/addsessiontotheme">
-					<input type="text" value="${themeId}" name="themeId" id="themeId"/>
-					<input type="text" value="${sessionId}" name="sessionId" id="sessionId"/>
-					<input type="text" value="hallo" name="addtotheme" id="addtotheme"/>
-					<input type="submit" value="upload" name="upload" id="upload" />
+				<form class="hidden-form" method="POST" action="${context}/addsessiontotheme">
+					Wilt u de foto's meteen aan een thema toevoegen? <br>
+					<input type="submit" value="Voeg toe aan thema" name="Voeg toe aan thema" id="big-button" />
 				</form>
-				
-			</section>
-			<c:if test="${sessionId != null}">
-				<p>whaddup ${sessionId}</p>
-			</c:if>
+
 			<script type="text/javascript">var sessionId = ${sessionId}</script>
 			<script type="text/javascript" src="${context}/webroot/dropzoneconfig.js"></script>
+
+			<%@include file="footer.jsp"%>
 		</body>
 
 	</html>

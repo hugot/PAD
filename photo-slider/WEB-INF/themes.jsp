@@ -18,7 +18,6 @@ Via deze view kunnen de thema's beheerd worden
 
 	<body>
 		<%@include file="header.jsp"%>
-		<script src="${context}/webroot/make-popup.js"></script>
 		<section id="main-section">
 			<section id="selection-bar">
 				<header> 
@@ -40,7 +39,7 @@ Via deze view kunnen de thema's beheerd worden
 
 			<section id="right-section">
 				<header>
-					<h3>Thema X | Options</h3>
+					<h3> ${theme} | Options</h3>
 				</header>
 				<ul>
 					<li>Zet thema aan/uit <input type="button" value="X"> </li>
@@ -51,8 +50,6 @@ Via deze view kunnen de thema's beheerd worden
 				<li>Slideshow timer <input type="text" id="timer"> </li>
 			</ul>
 		</section>
-		<%-- POPUP --%>
-		   ${popup}
 		<form id="theme-creation-popup" class="hidden-popup" method="POST" action="/addtheme">
 			<header>
 				<h3>Maak een thema aan</h3>
@@ -67,6 +64,7 @@ Via deze view kunnen de thema's beheerd worden
 	<script> var selectedtheme = document.getElementById('${selectedThemeId}');
 										 selectedtheme.id = "selected-theme";
 	</script>
+	<%@include file="footer.jsp"%>
 </body>
 </html>
 

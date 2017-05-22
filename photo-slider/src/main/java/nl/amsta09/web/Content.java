@@ -27,6 +27,7 @@ import nl.amsta09.web.html.HtmlList;
  * @author Hugo Thunnissen
  */
 public class Content {
+	public static final String SELECTED_THEME_ID = "selectedThemeId";
 	private Session session;
 	private HttpServletRequest request;
 	private HttpServletResponse response;
@@ -56,6 +57,25 @@ public class Content {
 			request.getSession().setAttribute("sessionId", session.getId());
 		}
 		return session;
+	}
+
+	/**
+	 * Check of de request een sessie id bevat.
+	 * @return hasSession
+	 */
+	public boolean hasSession(){
+		if(session != null){
+			return true;
+		}
+		else {
+			try {
+				int sessionId = Integer.parseInt(request.getSession().getAttribute("sessionId").toString());
+				MainApp.getSessionManager().getSessionById(sessionId);
+				return true;
+			} catch(SessionNotFoundException | NullPointerException | NumberFormatException e){
+				return false;
+			}
+		}
 	}
 
 	/**
@@ -129,10 +149,10 @@ public class Content {
 	 * Genereer een html lijst van themes en voeg deze aan de content toe.
 	 * @param themes
 	 */
-	public void addThemeList(ArrayList<Theme> themes){
+	public void addThemeList(ArrayList<Theme> themes, String formAction){
 		HtmlList themeList = new HtmlList();
 		themes.listIterator().forEachRemaining((Theme theme)-> {
-			HtmlForm form = new HtmlForm("" + theme.getId(), "theme", "post", "/thememanagement");
+			HtmlForm form = new HtmlForm("" + theme.getId(), "theme", "post", formAction); 
 			form.addInput("hidden", "themeName", theme.getName());
 			form.addInput("hidden", "selectedThemeId", "" + theme.getId());
 			form.addElement(new HtmlButton("select-theme-button", "submit", theme.getName()));

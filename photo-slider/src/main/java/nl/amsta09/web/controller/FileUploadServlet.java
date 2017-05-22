@@ -25,6 +25,7 @@ import nl.amsta09.model.Audio;
 import nl.amsta09.model.Media;
 import nl.amsta09.model.Photo;
 import nl.amsta09.model.Theme;
+import nl.amsta09.web.Content;
 import nl.amsta09.web.SessionManager.Session;
 import nl.amsta09.web.SessionManager.SessionNotFoundException;
 
@@ -40,21 +41,24 @@ import nl.amsta09.web.SessionManager.SessionNotFoundException;
 @WebServlet("/uploadphoto")
 @MultipartConfig
 public class FileUploadServlet extends HttpServlet { 
+	private static final String PHOTO_UPLOAD_JSP = "/WEB-INF/addPhoto.jsp";
+	private static final String AUDIO_UPLOAD_JSP = "/WEB-INF/addAudio.jsp";
+	private static final String AUDIO_UPLOAD_MAPPING = "/uploadaudio";
+	private static final String PHOTO_UPLOAD_MAPPING = "/uploadphoto";
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response){
-		if(request.getAttribute("sessionId") == null){
-			request.setAttribute("sessionId",MainApp.getSessionManager().newSession().getId());
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException{
+		Content content = new Content(request, response);
+		content.parseSession();
+
+		// Verwijs de gebruiker door naar de juiste jsp
+		String requestMapping = request.getServletPath();
+		if(requestMapping.equals(PHOTO_UPLOAD_MAPPING)){
+			content.sendUsing(PHOTO_UPLOAD_JSP);
+		} 
+		else if (requestMapping.equals(AUDIO_UPLOAD_MAPPING)){
+			content.sendUsing(AUDIO_UPLOAD_JSP);
 		}
-
-		request.setAttribute("themeId", 1);
-
-		try {
-			request.getRequestDispatcher("/WEB-INF/addPhoto.jsp").forward(request, response);
-		} catch (ServletException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
 	}
 	/**
 	 * Deze methode ontvangt een bestand in een httprequest en plaatst deze in de daarvoor bestemde map
@@ -145,12 +149,8 @@ public class FileUploadServlet extends HttpServlet {
 		if(savingFileSucceeded){
 			try{
 				conn.insertMedia(media);
-				System.out.println("ik haal nu de id op");
-				System.out.println("media id is:" + conn.getMediaIdFrom(media));
 				media.setId(conn.getMediaIdFrom(media));
-				System.out.println("media toevoegen aan session");
 				session.getAddedMedia().add(media);
-				System.out.println("sessie aan het updaten");
 				MainApp.getSessionManager().updateSession(session);
 			}
 			catch(SQLException e){

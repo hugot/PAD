@@ -13,6 +13,6 @@
   
   function hidePopup(popupId){
     var popup = document.getElementById(popupId);
-    popup.className = "hiddenpopup";
+    popup.className = "hidden-popup";
   }
     
