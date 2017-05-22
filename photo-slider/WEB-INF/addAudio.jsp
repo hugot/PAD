@@ -15,7 +15,7 @@
 			<%@include file="header.jsp"%>
 
 			<section id="main-section">
-				<h1>Voeg een foto toe via deze pagina</h1>	
+				<h1>Voeg audio toe via deze pagina</h1>	
 				<script type="text/javascript" src="${context}/webroot/dropzone.js"></script>
 
 				<form action="${context}/uploadphoto" class="dropzone needsclick dz-clickable" id="uploadForm">
