@@ -7,7 +7,6 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import nl.amsta09.data.SqlConnector; 
-import nl.amsta09.data.SqlConnector.ThemeNotFoundException; 
 import nl.amsta09.driver.MainApp; 
 import nl.amsta09.model.Photo; 
 import nl.amsta09.model.Theme; 
@@ -38,11 +37,10 @@ public class SlideShowController {
 	public void initialize() {
 		setRandomTheme();
 		view.setKeyListener();
-		photos = theme.getPhotoList().listIterator();
-		view.setImage(photos.next());
 		timer.start();
 		stage.setScene(view);
 		stage.show();
+		showNextImage();
 	}
 
 
@@ -50,15 +48,17 @@ public class SlideShowController {
 	 * Haal een random thema op om foto's van weer te geven.
 	 */
 	public void setRandomTheme(){
+
 		try {
 			//TODO: zorg dat dit random wordt (kan niet aan de hand van id,
 			//die telt nmlk ook door voor inactieve themes
-			setTheme(conn.getActiveThemeById(1)); //dit is voor nu even het thema waar alle foto's aan toegevoegd worden
-		} catch (ThemeNotFoundException | SQLException e) {
+			setTheme(conn.getRandomTheme());
+		} catch (SQLException e) {
 			// TODO Doe hier iets nuttigs
 			e.printStackTrace();
 		}
 	}
+
 
 	/**
 	 * Verander het thema waarvan de foto's weergegeven worden.
@@ -66,6 +66,7 @@ public class SlideShowController {
 	 */
 	public void setTheme(Theme theme){
 		this.theme = theme;
+		this.photos = theme.getPhotoList().listIterator();
 	}
 
 	/**
@@ -80,7 +81,25 @@ public class SlideShowController {
 	 * Laat de volgende foto van het thema zien.
 	 */
 	public void showNextImage(){
-		setImage(photos.next());
+		if(photos.hasNext()){
+			setImage(photos.next());
+		}
+		else {
+			setNextTheme();
+		}
+	}
+
+	/**
+	 * Verander het thema naar een nieuw thema.
+	 */
+	public void setNextTheme(){
+		try {
+			setTheme(conn.getRandomThemeThatIsNot(theme));
+			showNextImage();
+		} catch (SQLException e) {
+			//TODO: doe iets nuttigs.
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -109,7 +128,7 @@ public class SlideShowController {
 			Runnable runnable = new Runnable(){
 				public void run(){
 					while(isRunning()){
-						while(secondsToGo > 0){
+						while(getSecondsToGo() > 0){
 							try {
 								Thread.sleep(1000);
 							} catch (InterruptedException e) {
@@ -136,6 +155,10 @@ public class SlideShowController {
 
 		public boolean isRunning(){
 			return isRunning;
+		}
+
+		public int getSecondsToGo(){
+			return secondsToGo;
 		}
 
 		public void stop(){

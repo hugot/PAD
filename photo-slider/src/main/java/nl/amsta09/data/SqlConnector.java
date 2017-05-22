@@ -63,8 +63,6 @@ public class SqlConnector {
      */
     public void insertMedia(String filePath, String Media_Name) throws SQLException, ClassNotFoundException {
 
-//        Class.forName("com.mysql.jdbc.Driver");
-//        connection = DriverManager.getConnection("jdbc:mysql://localhost/photoslider", "root", "Aapjes-14");
         filePath = filePath.replace("\\", "\\\\\\\\");
 
         Statement addMediaStatement = connection.createStatement();
@@ -76,15 +74,6 @@ public class SqlConnector {
         insertIntoMediaType(Media_Name);
     }
 
-    /**
-     * Voeg een media bestand toe aan de database.
-     *
-     * @param media
-     */
-    public void insertMedia(Media media) throws SQLException {
-        executeUpdate(String.format("INSERT INTO media (name, filePath) VALUES ('%s','%s')", media.getName(), media.getRelativePath()));
-        insertIntoMediaType(media.getName());
-    }
 
     /*
     Verwijdert de gekozen Media uit de database
@@ -287,6 +276,34 @@ public class SqlConnector {
     }
 
 	/**
+	 * Random thema.
+	 * @return randomTheme
+	 */
+	public Theme getRandomTheme() throws SQLException{
+		ResultSet themeSet = executeQuery("SELECT * FROM theme ORDER BY RAND() LIMIT 1;");
+		themeSet.next();
+		Theme theme = new Theme(themeSet.getString("theme.name"), themeSet.getInt("theme.id"));
+		theme.setPhotoList(getAllPhotosFromTheme(theme));
+		return theme;
+    }
+
+    /**
+	 * Theme met een ander id.
+	 * @param theme
+	 * @return otherTheme
+	 * @throws SQLException
+	 */
+	public Theme getRandomThemeThatIsNot(Theme theme) throws SQLException {
+		Theme otherTheme;
+		ResultSet themeSet = executeQuery("SELECT * FROM theme WHERE id != " + theme.getId() + 
+				" ORDER BY RAND() LIMIT 1;");
+		themeSet.next();
+		otherTheme = new Theme(themeSet.getString("theme.name"), themeSet.getInt("theme.id"));
+		otherTheme.setPhotoList(getAllPhotosFromTheme(otherTheme));
+		return otherTheme;
+    }
+
+	/**
 	 * Haal een actief theme op.
 	 * @param id
 	 * @return theme
@@ -342,6 +359,16 @@ public class SqlConnector {
 		}
 		return themes;
 	}
+
+    /**
+     * Voeg een media bestand toe aan de database.
+     *
+     * @param media
+     */
+    public void insertMedia(Media media) throws SQLException {
+        executeUpdate(String.format("INSERT INTO media (name, filePath) VALUES ('%s','%s')", media.getName(), media.getRelativePath()));
+        insertIntoMediaType(media.getName());
+    }
 
     /**
      * Voer een update uit
