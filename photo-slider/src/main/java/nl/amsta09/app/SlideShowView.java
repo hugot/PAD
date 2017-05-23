@@ -15,6 +15,7 @@ public class SlideShowView extends Scene {
 	private ImageView imageView;
 	private StackPane stackPane;
 	private SlideShowController controller;
+        private Photo photo;
 
 	public SlideShowView(Parent root, SlideShowController controller) {
 		super(root);
@@ -29,16 +30,26 @@ public class SlideShowView extends Scene {
 	 * @param photo
 	 */
 	public void setImage(Photo photo){
+                this.photo = photo;
 		this.image = new Image(photo.getURL().toString());
 		imageView.setImage(image);
 	}
+        
+        public Photo getPhoto(){
+            return photo;
+        }
 
 	public void setKeyListener(){
 		EventHandler<KeyEvent> eventHandler = new EventHandler<KeyEvent>() {
 			
 			@Override
 			public void handle(KeyEvent k){
-				controller.showNextImage();
+                                if(photo.getPlayedSoundEffect() == false && photo.getSoundEffect() != null){
+                                    photo.getSoundEffect().playSound();
+                                    photo.setPlayedSoundEffect(true);
+                                }else{
+                                    controller.showNextImage();
+                                }
 			}
 		};
 		this.setOnKeyPressed(eventHandler);
