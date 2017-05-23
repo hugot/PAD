@@ -14,6 +14,7 @@ import nl.amsta09.model.Theme;
 public class SlideShowController {
 	private Theme theme;
 	private ListIterator<Photo> photos;
+        private Photo photo;
 	private SlideShowView view;
 	private Stage stage;
 	private SqlConnector conn;
@@ -68,6 +69,10 @@ public class SlideShowController {
 		this.theme = theme;
 		this.photos = theme.getPhotoList().listIterator();
 	}
+        
+        public Theme getTheme(){
+            return theme;
+        }
 
 	/**
 	 * Verander welke foto er weergegeven wordt.
@@ -82,7 +87,9 @@ public class SlideShowController {
 	 */
 	public void showNextImage(){
 		if(photos.hasNext()){
+                        photo = photos.next();
 			setImage(photos.next());
+                        photo.getSoundEffect().playSound();
 		}
 		else {
 			setNextTheme();
@@ -95,6 +102,7 @@ public class SlideShowController {
 	public void setNextTheme(){
 		try {
 			setTheme(conn.getRandomThemeThatIsNot(theme));
+                        theme.getMusic().playSound();
 			showNextImage();
 		} catch (SQLException e) {
 			//TODO: doe iets nuttigs.
