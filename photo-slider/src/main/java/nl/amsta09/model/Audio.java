@@ -29,7 +29,7 @@ public class Audio extends Media {
             audioIn = AudioSystem.getAudioInputStream(super.getURL());
             clip = AudioSystem.getClip();
             clip.open(audioIn);
-         clip.start();
+            clip.start();
         }catch (UnsupportedAudioFileException e) {
             e.printStackTrace();
         }catch (IOException e) {

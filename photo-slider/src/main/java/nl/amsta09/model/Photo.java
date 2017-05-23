@@ -6,6 +6,7 @@ package nl.amsta09.model;
 public class Photo extends Media {
         
     private Audio soundeffect;
+    private boolean playedSoundEffect;
     
     public Photo(String relativePath, String name, int id) {
         super(relativePath, name, id);
@@ -21,5 +22,13 @@ public class Photo extends Media {
     
     public Audio getSoundEffect(){
         return soundeffect;
+    }
+    
+    public void setPlayedSoundEffect(boolean set){
+        playedSoundEffect = set;
+    }
+    
+    public boolean getPlayedSoundEffect(){
+        return playedSoundEffect;
     }
 }

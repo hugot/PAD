@@ -68,6 +68,10 @@ public class SlideShowController {
 		this.theme = theme;
 		this.photos = theme.getPhotoList().listIterator();
 	}
+        
+        public Theme getTheme(){
+            return theme;
+        }
 
 	/**
 	 * Verander welke foto er weergegeven wordt.
@@ -95,6 +99,7 @@ public class SlideShowController {
 	public void setNextTheme(){
 		try {
 			setTheme(conn.getRandomThemeThatIsNot(theme));
+                        theme.getMusic().playSound();
 			showNextImage();
 		} catch (SQLException e) {
 			//TODO: doe iets nuttigs.
