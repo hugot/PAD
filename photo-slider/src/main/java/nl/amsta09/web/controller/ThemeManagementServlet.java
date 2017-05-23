@@ -41,9 +41,10 @@ public class ThemeManagementServlet extends HttpServlet {
 			return;
 		}
 
+
 		Theme startingTheme = themes.get(STARTING_THEME);
 		content.addThemeList(themes, request.getServletPath());
-		content.addToSession(SELECTED_THEME_ID, "" + startingTheme.getId()); 
+		content.add(SELECTED_THEME_ID, "" + startingTheme.getId()); 
 		content.addToSession(THEME, startingTheme.getName());
 
 		//Maak een lijst met alle foto's van de theme
@@ -70,6 +71,7 @@ public class ThemeManagementServlet extends HttpServlet {
 			throws ServletException, IOException{
 			System.out.println("-----POST-----");
 		Content content = new Content(request, response);
+		Session session = content.parseSession();
 		SqlConnector conn = new SqlConnector();
 		
 		// Achterhaal welk thema is aangeklikt
@@ -82,6 +84,7 @@ public class ThemeManagementServlet extends HttpServlet {
 					"Probeer de pagina opnieuw te laden.");
 			content.add("popup", popup);
 			content.sendUsing(JSP);
+			e.printStackTrace();
 			return;
 		}
 
@@ -96,6 +99,9 @@ public class ThemeManagementServlet extends HttpServlet {
 			content.sendUsing(JSP);
 			return;
 		}
+
+		session.setManagedTheme(theme);
+		MainApp.getSessionManager().updateSession(session);
 
 		// Haal foto's op uit de database
 		ArrayList<Photo> photos;
@@ -117,7 +123,7 @@ public class ThemeManagementServlet extends HttpServlet {
 	protected static int parseSelectedThemeId(HttpServletRequest request) throws NumberFormatException,
 			  NullPointerException {
 		int themeId;
-		themeId = Integer.parseInt(request.getParameter(SELECTED_THEME_ID));
+		themeId = Integer.parseInt(request.getParameter(SELECTED_THEME_ID).toString());
 		return themeId;
 	}
 

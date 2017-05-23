@@ -59,4 +59,15 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 		<servlet-name>PhotoSelectionServlet</servlet-name>
 		<url-pattern>/photoselection</url-pattern>
 	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>AddMediaToThemeServlet</servlet-name>
+		<servlet-class>nl.amsta09.web.controller.AddMediaToThemeServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>AddMediaToThemeServlet</servlet-name>
+		<url-pattern>/addmediatotheme</url-pattern>
+	</servlet-mapping>
+
+	
 </web-app>

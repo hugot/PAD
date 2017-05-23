@@ -16,7 +16,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import nl.amsta09.data.SqlConnector;
+import nl.amsta09.web.Content;
+import nl.amsta09.web.SessionManager.Session;
+import nl.amsta09.web.html.HtmlPopup;
 
 /**
  *
@@ -42,32 +46,29 @@ public class AddThemeServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
         response.setContentType("text/html;charset=UTF-8");
+        SqlConnector conn = new SqlConnector();
+        Content content = new Content(request, response);
 
         //Haalt de naam op		
         final String ThemeName = request.getParameter("name");
 
-        System.out.println("INPUT: " + ThemeName);
 
         try {
-
-            new SqlConnector().insertTheme(ThemeName);
-//            Class.forName("com.mysql.jdbc.Driver");
-//            connection = DriverManager.getConnection("jdbc:mysql://localhost/photoslider", "root", "Aapjes-14");
-//
-//            Statement addThemeStatement = connection.createStatement();
-//            //Insert de gegevens in de database met een unieke ID
-//            String sql = ("insert into theme (name) VALUES ('" + ThemeName + "')");
-//
-//            addThemeStatement.execute(sql);
-        } catch (SQLException e) {
-            System.out.println("DEBUG: fout in query");
+            conn.insertTheme(ThemeName);
+		} catch (NullPointerException | SQLException | ClassNotFoundException e) {
+			HtmlPopup popup = new HtmlPopup("error", "Fout bij verbinding met de database", 
+					"Het is niet gelukt om verbinding te maken met de database, probeer het alstublieft opnieuw");
+			content.add("popup", popup);
+			content.sendUsing(Content.THEME_MANAGEMENT_JSP);
             e.printStackTrace();
-            final String message = "Thema toevoegen mislukt";
-            request.setAttribute("message", message);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(AddThemeServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        request.getRequestDispatcher("/WEB-INF/themes.jsp").forward(request, response);
+			return;
+        }  
+
+		HtmlPopup popup = new HtmlPopup("succes", "Succes!", 
+				"Thema '" + ThemeName + "' is toegevoegd");
+		content.add("popup", popup);
+		content.add("origin", "addTheme");
+		new ThemeManagementServlet().doGet(content.getRequest(), content.getResponse());
     }
 
 }

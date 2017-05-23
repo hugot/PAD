@@ -49,7 +49,7 @@ public class PhotoSelectionServlet extends HttpServlet {
 		// Maak de html elementen aan voor alle foto's
 		HtmlSection photoSection = new HtmlSection("main-section", "main-section");
 		photoList.listIterator().forEachRemaining((Photo photo) -> {
-			HtmlForm form = new HtmlForm("" + photo.getId(), "floating-image", "post", "/photoselection");
+			HtmlForm form = new HtmlForm("" + photo.getId(), "floating-image", "post", "/addmediatotheme");
 			HtmlImage image = new HtmlImage("" + photo.getId(), "photo", photo.getRelativePath());
 			image.setHeight(150);
 			HtmlDiv photoDiv = new HtmlDiv();

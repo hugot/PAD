@@ -62,7 +62,7 @@ Via deze view kunnen de thema's beheerd worden
 			<input name="name" id="name" placeholder="Thema-naam" type="text"/>
 			<br><br>
 			<input type="submit" value="Maak thema" name="maak-thema" id="maak-thema" />
-			<button name="annuleer" id="annuleer" onclick="hidePopup('theme-creation-popup');">Annuleer</button>
+			<button name="annuleer" type="button" id="annuleer" onclick="hidePopup('theme-creation-popup');">Annuleer</button>
 		</form>
 	</section>
 	<script> var selectedtheme = document.getElementById('${selectedThemeId}');
