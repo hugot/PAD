@@ -46,14 +46,35 @@ Via deze view kunnen de thema's beheerd worden
 					<h3> ${theme} | Options</h3>
 				</header>
 				<ul>
-					<li>Zet thema aan/uit <input type="button" value="X"> </li>
-					<li>Voeg muziek toe aan het thema <input type="button" value="Voeg toe"> </li>
-					<li>Zet muziek aan/uit <input type="button" value="X"> </li>
-					<li>Verwijder muziek van thema <input type="button" value="X"> </li>
-					<li>Volume: <input type="button" value="-">X <input type="button" value="+"> </li>
-				<li>Slideshow timer <input type="text" id="timer"> </li>
-			</ul>
-		</section>
+					<li>
+						<form class="small-button-form" style="float: center;" action="/setThemeOnOff" method="get">
+							<button class="small-button">Zet het thema aan/uit.</button>
+						</form></li>
+					<li>
+						<form class="small-button-form" style="float: center;" action="/audioselection" method="get">
+							<button class="small-button">Voeg muziek toe aan het thema.</button>
+						</form> 
+					</li>
+					<li>
+						<form class="small-button-form" style="float: center;" action="/setMusicOnOff" method="get">
+							<button class="small-button">Zet de muziek aan/uit.</button>
+						</form> 
+					</li>
+					<li>
+						<form class="small-button-form" style="float: center;" action="/removeMusicFromTheme" method="get">
+							<button class="small-button">Verwijder muziek van het thema.</button>
+						</form> </li>
+					<li>Volume: $AudioVolume
+						<form class="small-button-form" style="float: left;" action="/LowerMusicVolume" method="get">
+							<button class="small-button">-</button>
+						</form> 
+						<form class="small-button-form" style="float: right;" action="/UpperMusicVolume" method="get">
+							<button class="small-button">+</button>
+						</form> 
+					</li> 
+					<li>Slideshow timer <input type="text" id="timer"> </li>
+				</ul>
+			</section>
 		<form id="theme-creation-popup" class="hidden-popup" method="POST" action="/addtheme">
 			<header>
 				<h3>Maak een thema aan</h3>

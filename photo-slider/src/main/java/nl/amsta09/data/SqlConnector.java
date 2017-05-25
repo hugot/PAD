@@ -321,6 +321,12 @@ public class SqlConnector {
 		set.next();
 		return new Photo(set.getString("media.filePath"), set.getString("media.name"), set.getInt("media.id"), set.getString("media.id"));
     }
+    
+    public Audio getMusicById(int id) throws SQLException {
+		ResultSet set = executeQuery(String.format("SELECT * FROM song INNER JOIN media ON photo.id = media.id WHERE media.id = %s;",id));
+		set.next();
+		return new Audio(set.getString("media.filePath"), set.getString("media.name"), set.getInt("media.id"), set.getString("media.id"));
+    }
 
 	/**
 	 * Alle thema's in de database.
@@ -349,7 +355,18 @@ public class SqlConnector {
             			result.getInt("media.id")));
         }
         return photoList;
-
+    }
+    
+    public ArrayList<Audio> getAllAudio() throws SQLException, ClassNotFoundException {
+        ArrayList<Audio> audioList = new ArrayList<>();
+        ResultSet result = executeQuery("SELECT * FROM media INNER JOIN photo ON media.id = photo.id;");
+        while (result.next()) {
+            audioList.add(new Audio(
+            			result.getString("media.filePath"), 
+            			result.getString("media.name"), 
+            			result.getInt("media.id")));
+        }
+        return audioList;
     }
 
     /**

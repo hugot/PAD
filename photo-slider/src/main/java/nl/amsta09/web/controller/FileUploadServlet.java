@@ -60,7 +60,7 @@ public class FileUploadServlet extends HttpServlet {
 			content.sendUsing(AUDIO_UPLOAD_JSP);
 		}
 	}
-	/**
+	/** 
 	 * Deze methode ontvangt een bestand in een httprequest en plaatst deze in de daarvoor bestemde map
 	 * alvorens het bestand toe te voegen aan de database.
 	 *
@@ -108,7 +108,7 @@ public class FileUploadServlet extends HttpServlet {
 			media = new Photo(destinationdir + fileName, fileName, 1);
 		}
 		else if(request.getPart("audio") != null){
-			filePart = request.getPart("sound");
+			filePart = request.getPart("audio");
 			destinationdir += "Audio" + File.separator;;
 			fileName = getFilenameFromFilePart(filePart);
 			media = new Audio(destinationdir + fileName, fileName, 1);

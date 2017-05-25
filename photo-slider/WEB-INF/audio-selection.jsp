@@ -3,15 +3,15 @@
 
 <html lang="en">
 <head>
-	<meta charset="UTF-8">	
+	<meta charset="UTF-8">
 	<title></title>
 	<link href="${context}/webroot/style/mainstylesheet.css" rel="stylesheet" type="text/css" media="screen" />
 </head>
 <body>
 	<%@include file="header.jsp"%>
 	
-	<%-- ------- DE FOTO'S ------ --%>
-				 ${photos}
+	<%-- ------- DE AUDIO FILES'S ------ --%>
+				 ${audios}
 
 	<%@include file="footer.jsp"%>
 </body>

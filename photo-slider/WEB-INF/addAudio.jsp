@@ -18,7 +18,7 @@
 				<h1>Voeg audio toe via deze pagina</h1>	
 				<script type="text/javascript" src="${context}/webroot/dropzone.js"></script>
 
-				<form action="${context}/uploadphoto" class="dropzone needsclick dz-clickable" id="uploadForm">
+				<form action="${context}/uploadaudio" class="dropzone needsclick dz-clickable" id="uploadForm">
 				</form>
 
 				<form class="hidden-form" method="GET" action="${context}/addsessiontotheme">
