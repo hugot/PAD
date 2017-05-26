@@ -323,7 +323,7 @@ public class SqlConnector {
     }
     
     public Audio getMusicById(int id) throws SQLException {
-		ResultSet set = executeQuery(String.format("SELECT * FROM song INNER JOIN media ON photo.id = media.id WHERE media.id = %s;",id));
+		ResultSet set = executeQuery(String.format("SELECT * FROM song INNER JOIN media ON song.id = media.id WHERE media.id = %s;",id));
 		set.next();
 		return new Audio(set.getString("media.filePath"), set.getString("media.name"), set.getInt("media.id"), set.getString("media.id"));
     }
@@ -359,7 +359,7 @@ public class SqlConnector {
     
     public ArrayList<Audio> getAllAudio() throws SQLException, ClassNotFoundException {
         ArrayList<Audio> audioList = new ArrayList<>();
-        ResultSet result = executeQuery("SELECT * FROM media INNER JOIN photo ON media.id = photo.id;");
+        ResultSet result = executeQuery("SELECT * FROM media INNER JOIN song ON media.id = song.id;");
         while (result.next()) {
             audioList.add(new Audio(
             			result.getString("media.filePath"), 

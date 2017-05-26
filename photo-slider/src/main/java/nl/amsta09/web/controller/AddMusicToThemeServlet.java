@@ -26,7 +26,7 @@ public class AddMusicToThemeServlet extends HttpServlet {
 		Audio selectedAudio;
 
 		try {
-			selectedAudioId = Integer.parseInt(request.getParameter(Content.SELECTED_PHOTO_ID));
+			selectedAudioId = Integer.parseInt(request.getParameter(Content.SELECTED_AUDIO_ID));
 			selectedAudio = conn.getMusicById(selectedAudioId);
 		} catch(SQLException | NullPointerException | NumberFormatException e){
 			HtmlPopup popup = new HtmlPopup("error", "Fout bij verwerken van request", 

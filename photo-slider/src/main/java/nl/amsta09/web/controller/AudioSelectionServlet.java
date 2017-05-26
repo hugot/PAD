@@ -46,11 +46,11 @@ public class AudioSelectionServlet extends HttpServlet {
 		}
 
 
-		// Maak de html elementen aan voor alle foto's
+		// Maak de html elementen aan voor alle audio.
 		HtmlSection audioSection = new HtmlSection("main-section", "main-section");
 		audioList.listIterator().forEachRemaining((Audio audio) -> {
 			HtmlForm form = new HtmlForm("" + audio.getId(), "floating-image", "post", "/addmediatotheme");
-			HtmlImage image = new HtmlImage("" + audio.getId(), "photo", audio.getRelativePath());
+			HtmlImage image = new HtmlImage("" + audio.getId(), "audio", audio.getRelativePath());
 			image.setHeight(150);
 			HtmlDiv audioDiv = new HtmlDiv();
 			audioDiv.setClass("audio-container");
@@ -61,7 +61,7 @@ public class AudioSelectionServlet extends HttpServlet {
 			form.addInput("submit", "kies" ,"kies");
 			audioSection.addElement(form);
 		});
-		content.add("photos", audioSection);
+		content.add("audio", audioSection);
 		content.sendUsing(AUDIO_SELECTION_JSP);
 	}
 }

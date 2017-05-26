@@ -11,7 +11,7 @@
 	<%@include file="header.jsp"%>
 	
 	<%-- ------- DE AUDIO FILES'S ------ --%>
-				 ${audios}
+				 ${audio}
 
 	<%@include file="footer.jsp"%>
 </body>
