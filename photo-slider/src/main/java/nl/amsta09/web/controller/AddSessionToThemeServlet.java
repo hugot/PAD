@@ -8,87 +8,92 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import nl.amsta09.data.SqlConnector;
 import nl.amsta09.data.SqlConnector.ThemeNotFoundException;
-import nl.amsta09.driver.MainApp;
 import nl.amsta09.model.Media;
 import nl.amsta09.model.Photo;
 import nl.amsta09.model.Theme;
-import nl.amsta09.web.Content;
-import nl.amsta09.web.SessionManager.Session;
-import nl.amsta09.web.SessionManager.SessionNotFoundException;
 import nl.amsta09.web.html.HtmlPopup;
+import nl.amsta09.web.util.RequestWrapper;
 
+/**
+ * Deze class dient voor het toevoegen van de media die tijdens een sessie is toegevoegd
+ * aan een thema.
+ *
+ * @author Hugo Thunnissen
+ */
 public class AddSessionToThemeServlet extends HttpServlet {
-	private static final String HOME_JSP = "/WEB-INF/index.jsp";
-	private static final String THEME_SELECTION_JSP = "/WEB-INF/theme-selection.jsp";
 
+	/**
+	 * Laad een lijst met beschikbare thema's om de foto's aan toe te voegen.
+	 * @param request
+	 * @param response
+	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException{
-		Content content = new Content(request, response);
-		SqlConnector conn = new SqlConnector();
+		RequestWrapper requestWrapper = new RequestWrapper(request);
 		
 		// Check of er een geldige sessie is voor de gebruiker.
-		if(content.hasSession()){
+		if(requestWrapper.getSession().hasMediaSession()){
 			try {
-				content.addThemeList(conn.getAllThemes(), request.getServletPath());
-				content.sendUsing(THEME_SELECTION_JSP);
+				requestWrapper.getContent().addThemeList(
+						requestWrapper.getSqlConnector().getAllThemes(), request.getServletPath());
+				requestWrapper.respondUsing(RequestWrapper.THEME_SELECTION_JSP, response);
 				return;
 			}
 			catch(SQLException e){
-				content.add("popup", new HtmlPopup("error", "Database probleem",
+				requestWrapper.getContent().add("popup", new HtmlPopup("error", "Database probleem",
 							"Er heeft zich een probleem voorgedaan waardoor de thema's" +
 							"niet uit de database opgehaald kunnen worden, herlaad de pagina " +
 							"om het opnieuw te proberen"));
-				content.sendUsing(THEME_SELECTION_JSP);
+				requestWrapper.respondUsing(RequestWrapper.THEME_SELECTION_JSP, response);
 				e.printStackTrace();
 				return;
 			}
 		}
 		else {
-			content.sendUsing(HOME_JSP);
+			requestWrapper.respondUsing(RequestWrapper.INDEX_JSP, response);
 		}
 	}
 
+	/**
+	 * Achterhaal welk thema gekozen is en voeg de media hieraan toe.
+	 * @param request
+	 * @param response
+	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException{
-		Content content = new Content(request, response);
-		SqlConnector conn = new SqlConnector();
+		RequestWrapper requestWrapper = new RequestWrapper(request);
 
 		//Check of er een geldige sessie actief is voor de gebruiker.
-		if(!content.hasSession()){
-			content.sendUsing(HOME_JSP);
+		if(!requestWrapper.getSession().hasMediaSession()){
+			requestWrapper.respondUsing(RequestWrapper.INDEX_JSP, response);
 			return;
 		}
 
-		// De sessie van de gebruiker
-		Session session = content.parseSession();
-
-		String themeId = request.getParameter(Content.SELECTED_THEME_ID);
+		// Achterhaal welk thema gekozen is
+		String themeId = requestWrapper.getParameter(RequestWrapper.SELECTED_THEME_ID);
 		Theme theme;
 		try {
-			theme = conn.getThemeById(Integer.parseInt(themeId));
+			theme = requestWrapper.getSqlConnector().getThemeById(Integer.parseInt(themeId));
 		} catch (SQLException | NullPointerException | NumberFormatException | ThemeNotFoundException e) {
-			HtmlPopup popup = new HtmlPopup("error", "Er is iets misgegaan", 
-					"Probeer de pagina opnieuw te laden.");
-			content.add("popup", popup);
-			content.sendUsing(THEME_SELECTION_JSP);
+			requestWrapper.getContent().add(HtmlPopup.CLASS, new HtmlPopup("error", "Er is iets misgegaan", 
+					"Probeer de pagina opnieuw te laden."));
+			requestWrapper.respondUsing(RequestWrapper.THEME_SELECTION_JSP, response);
 			e.printStackTrace();
 			return;
 		}
 
-
+		// Voeg de media toe aan het thema.
 		if(theme != null){
-			for(Media media : session.getAddedMedia()){
+			for(Media media : requestWrapper.getSession().getMediaSession().getAddedMedia()){
 				if(media instanceof Photo){
 					try {
-						conn.addMediaToTheme(theme.getId(), media.getId());
+						requestWrapper.getSqlConnector().addMediaToTheme(theme.getId(), media.getId());
 						request.setAttribute("message", "media toegevoegd aan thema");
 					} catch (SQLException e) {
-						HtmlPopup popup = new HtmlPopup("error", "Er is iets misgegaan", 
-								"Het is niet gelukt om verbinding te maken met de database.");
-						content.add("popup", popup);
-						content.sendUsing(THEME_SELECTION_JSP);
+						requestWrapper.getContent().add(HtmlPopup.CLASS, new HtmlPopup("error", "Er is iets misgegaan",
+								"Het is niet gelukt om verbinding te maken met de database."));
+						requestWrapper.respondUsing(RequestWrapper.THEME_SELECTION_JSP, response);
 						e.printStackTrace();
 						return;
 					}
@@ -96,9 +101,8 @@ public class AddSessionToThemeServlet extends HttpServlet {
 			}
 		}
 		
-		HtmlPopup popup = new HtmlPopup("confirmation", "Media toegevoegd", 
-				"De media is toegevoegd aan het thema.");
-		content.add("popup", popup);
-		content.sendUsing(THEME_SELECTION_JSP);
+		requestWrapper.getContent().add(HtmlPopup.CLASS, new HtmlPopup("confirmation", "Media toegevoegd", 
+				"De media is toegevoegd aan het thema."));
+		requestWrapper.respondUsing(RequestWrapper.THEME_SELECTION_JSP, response);
 	}
 }

@@ -1,6 +1,6 @@
 package nl.amsta09.web.html;
 
-public class HtmlButton extends HtmlElement implements HtmlElementInterface {
+public class HtmlButton extends HtmlElement<HtmlButton> implements HtmlElementInterface {
 	
 	final String BOTTOM = "</button>";
 
@@ -20,8 +20,9 @@ public class HtmlButton extends HtmlElement implements HtmlElementInterface {
 	 * Stel het button type in.
 	 * @param type
 	 */
-	public void setType(String type){
+	public HtmlButton setType(String type){
 		addAttribute("type", type);
+		return this;
 	}
 
 	@Override

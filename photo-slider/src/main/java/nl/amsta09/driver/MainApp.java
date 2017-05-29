@@ -10,7 +10,7 @@ import java.util.Optional;
 
 import nl.amsta09.app.SlideShowController;
 import nl.amsta09.web.JettyServer;
-import nl.amsta09.web.SessionManager;
+import nl.amsta09.web.util.MediaSessionManager;
 
 /**
  * Main class van de applicatie.
@@ -21,7 +21,7 @@ public class MainApp extends Application{
 	public static int SECONDS = 10;
 	public static int SESSIONEXPIRATIONTIME = 1800;
 	private static SlideShowController slideShowController;
-	private static SessionManager sessionManager;
+	private static MediaSessionManager mediaSessionManager;
 
 	/**
 	 * Start zowel de javafx applicatie als de webserver.
@@ -45,7 +45,7 @@ public class MainApp extends Application{
         }
 
         // Instantieer de session manager
-        sessionManager = new SessionManager();
+        mediaSessionManager = new MediaSessionManager();
 	}
 
 	/**
@@ -68,8 +68,8 @@ public class MainApp extends Application{
 	 * Toegang tot de sessionManager vanuit de rest van de applicatie.
 	 * @return sessionManager
 	 */
-	public static SessionManager getSessionManager(){
-		return sessionManager;
+	public static MediaSessionManager getSessionManager(){
+		return mediaSessionManager;
 	}
 
 	/**

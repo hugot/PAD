@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import nl.amsta09.data.SqlConnector;
 import nl.amsta09.model.Photo;
 import nl.amsta09.model.Theme;
-import nl.amsta09.web.Content;
+import nl.amsta09.web.util.RequestWrapper;
 import nl.amsta09.web.html.HtmlPopup;
 
 public class AddMediaToThemeServlet extends HttpServlet {
@@ -19,38 +19,45 @@ public class AddMediaToThemeServlet extends HttpServlet {
         
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException{
-		Content content = new Content(request, response);
-		SqlConnector conn = new SqlConnector();
-		Theme theme = content.parseSession().getManagedTheme();
+		RequestWrapper requestWrapper = new RequestWrapper(request);
+
+		// Stuur door naar index als geen mediasessie actief is.
+		if(requestWrapper.redirectToIndexIf(
+					!requestWrapper.getSession().hasMediaSession(), response))
+			return;
+
+		// Thema dat op dit moment beheerd wordt.
+		Theme theme = requestWrapper.getSession().getMediaSession().getManagedTheme();
 		int selectedPhotoId;
-		Photo selectedPhoto;
 
 		try {
-			selectedPhotoId = Integer.parseInt(request.getParameter(Content.SELECTED_PHOTO_ID));
-			selectedPhoto = conn.getPhotoById(selectedPhotoId);
+			selectedPhotoId = Integer.parseInt(requestWrapper.getParameter(
+						RequestWrapper.SELECTED_PHOTO_ID));
+			requestWrapper.getSqlConnector().getPhotoById(selectedPhotoId);
 		} catch(SQLException | NullPointerException | NumberFormatException e){
-			HtmlPopup popup = new HtmlPopup("error", "Fout bij verwerken van request", 
-					"Het is niet gelukt om uw request te verwerken, probeer het alstublieft opnieuw");
-			content.add("popup", popup);
-			content.sendUsing(Content.THEME_MANAGEMENT_JSP);
+			requestWrapper.getContent().add(HtmlPopup.CLASS, new HtmlPopup("error", 
+						"Fout bij verwerken van request", 
+						"Het is niet gelukt om de door u geselecteerde foto te vinden, probeer het" + 
+						"alstublieft opnieuw"));
+			requestWrapper.respondUsing(RequestWrapper.THEME_MANAGEMENT_JSP, response);
 			e.printStackTrace();
 			return;
 		}
 
 		try {
-			conn.addMediaToTheme(theme.getId(), selectedPhotoId);
+			requestWrapper.getSqlConnector().addMediaToTheme(theme.getId(), selectedPhotoId);
 		} catch (SQLException e){
-			HtmlPopup popup = new HtmlPopup("error", "Fout bij verbinding met de database", 
-					"Het is niet gelukt om verbinding te maken met de database, probeer het alstublieft opnieuw");
-			content.add("popup", popup);
-			content.sendUsing(Content.THEME_MANAGEMENT_JSP);
+			requestWrapper.getContent().add(HtmlPopup.CLASS, new HtmlPopup("error", 
+						"Fout bij verbinding met de database", 
+						"Het is niet gelukt om verbinding te maken met de database, probeer het " +
+						"alstublieft opnieuw"));
+			requestWrapper.respondUsing(RequestWrapper.THEME_MANAGEMENT_JSP, response);
 			e.printStackTrace();
 			return;
 		}
 		
-			HtmlPopup popup = new HtmlPopup("succes", "Succes!", 
-					"De foto is aan het thema " + theme.getName() + " toegevoegd");
-			content.add("popup", popup);
-			new ThemeManagementServlet().doGet(content.getRequest(), content.getResponse());
+			requestWrapper.getContent().add(HtmlPopup.CLASS, new HtmlPopup("succes", "Succes!", 
+					"De foto is aan het thema " + theme.getName() + " toegevoegd"));
+			new ThemeManagementServlet().doGet(requestWrapper.getHttpServletRequest(), response);
 	}
 }

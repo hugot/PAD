@@ -1,4 +1,4 @@
-package nl.amsta09.web;
+package nl.amsta09.web.util;
 
 import java.util.ArrayList;
 
@@ -12,14 +12,14 @@ import nl.amsta09.model.Theme;
  *
  * @author Hugo Thunnissen
  */
-public class SessionManager {
-	ArrayList<Session> sessions;
+public class MediaSessionManager {
+	ArrayList<MediaSession> sessions;
 	
 	/**
-	 * Deze methode instantieert de SessionManager.
+	 * Deze methode instantieert de MediaSessionManager.
 	 */
-	public SessionManager(){
-		sessions = new ArrayList<Session>();
+	public MediaSessionManager(){
+		sessions = new ArrayList<MediaSession>();
 	}
 
 	/**
@@ -28,8 +28,8 @@ public class SessionManager {
 	 * 
 	 * @return session
 	 */
-	public Session newSession(){
-	 	Session session = new Session(firstUnsetIndexOf(sessions), this);
+	public MediaSession newSession(){
+	 	MediaSession session = new MediaSession(firstUnsetIndexOf(sessions), this);
 	 	if(session.getId() == sessions.size()){
 	 		sessions.add(session);
 	 	}
@@ -43,7 +43,7 @@ public class SessionManager {
 	 * Update een sessie met nieuwe data
 	 * @param session
 	 */
-	public void updateSession(Session session){
+	public void updateSession(MediaSession session){
 		sessions.set(session.getId(), session);
 	}
 
@@ -51,12 +51,12 @@ public class SessionManager {
 	 * Return een session aan de hand van de gegeven id.
 	 * @param sessionId
 	 * @return session;
-	 * @throws SessionNotFoundException
+	 * @throws MediaSessionNotFoundException
 	 */
-	public Session getSessionById(int sessionId) throws SessionNotFoundException{
-		Session session = sessions.get(sessionId);
+	public MediaSession getSessionById(int sessionId) throws MediaSessionNotFoundException{
+		MediaSession session = sessions.get(sessionId);
 		if(session == null){
-			throw new SessionNotFoundException();
+			throw new MediaSessionNotFoundException();
 		}
 		else {
 			return sessions.get(sessionId);
@@ -67,7 +67,7 @@ public class SessionManager {
 	 * Sluit een sessie.
 	 * @param session
 	 */
-	public void closeSession(Session session){
+	public void closeSession(MediaSession session){
 		sessions.set(session.getId(), null);
 	}
 
@@ -77,7 +77,7 @@ public class SessionManager {
 	 * @param sessions
 	 * @return firstNullInstance
 	 */
-	private int firstUnsetIndexOf(ArrayList<Session> sessions){
+	private int firstUnsetIndexOf(ArrayList<MediaSession> sessions){
 		for(int i = 0; i < (sessions.size() - 1); i++){
 			if(sessions.get(i) == null){
 				return i;
@@ -89,16 +89,30 @@ public class SessionManager {
 	/**
 	 * Deze class dient voor het instantieren van een sessie door de session manager
 	 */
-	public class Session {
+	public class MediaSession {
 		private int sessionId;
 		private ArrayList<Media> addedMedia;
 		private Theme managedTheme;
-		private SessionManager sessionManager;
+		private MediaSessionManager sessionManager;
 		private Thread expirationCounter;
 
-		public Session(int sessionId, SessionManager sessionManager){
+		/**
+		 * Deze methode instantieert een media sessie.
+		 * @param sessionId
+		 * @param sessionManager
+		 */
+		public MediaSession(int sessionId, MediaSessionManager sessionManager){
 			this.sessionId = sessionId;
-			addedMedia = new ArrayList<Media>();
+			addedMedia = new ArrayList<Media>(){
+				@Override
+				public boolean add(Media m){
+					if(super.add(m)){
+						update();
+						return true;
+					}
+					return false;
+				}
+			};
 			this.sessionManager = sessionManager;
 			countTillExpiration();
 		}
@@ -119,7 +133,7 @@ public class SessionManager {
 						}
 						secondsToGo--;
 					}
-					sessionManager.closeSession(getSession());
+					sessionManager.closeSession(getMediaSession());
 				}
 			};
 			expirationCounter = new Thread(counter);
@@ -132,6 +146,7 @@ public class SessionManager {
 		 */
 		public void setManagedTheme(Theme managedTheme){
 			this.managedTheme = managedTheme;
+			update();
 		}
 
 		/**
@@ -143,6 +158,8 @@ public class SessionManager {
 
 		/**
 		 * Haal ArrayList op met alle media die tijdens deze sessie is toegevoegd.
+		 * NB: Alleen bij het toevoegen van media wordt de sessie autmatisch geupdate,
+		 * bij andere acties zal dit handmatig gedaan moeten worden.
 		 * @return addedMedia
 		 */
 		public ArrayList<Media> getAddedMedia(){
@@ -161,21 +178,26 @@ public class SessionManager {
 		 * De sessie zelf.
 		 * @return this
 		 */
-		private Session getSession(){
+		private MediaSession getMediaSession(){
 			return this;
 		}
+
+		private void update(){
+			sessionManager.updateSession(this);
+		}
+
 	}
 
 	/**
 	 * Exceptie als een sessie niet gevonden kan worden
 	 */
-	public class SessionNotFoundException extends Exception {
+	public class MediaSessionNotFoundException extends Exception {
 
 		/**
 		 * Instantieer de exceptie.
 		 * @param message
 		 */
-		public SessionNotFoundException(){
+		public MediaSessionNotFoundException(){
 			super("Sessie niet gevonden!!");
 		}
 	}

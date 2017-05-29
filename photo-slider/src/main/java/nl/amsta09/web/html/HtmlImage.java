@@ -5,7 +5,7 @@ package nl.amsta09.web.html;
  * 
  * @author Hugo Thunnissen
  */
-public class HtmlImage extends HtmlElement implements HtmlElementInterface {
+public class HtmlImage extends HtmlElement<HtmlImage> implements HtmlElementInterface {
 
 	/**
 	 * maak het img element aan met een hoogte en breedte.
@@ -39,24 +39,27 @@ public class HtmlImage extends HtmlElement implements HtmlElementInterface {
 	 * Stel de source in van het foto bestand.
 	 * @param src
 	 */
-	public void setSource(String src){
+	public HtmlImage setSource(String src){
 		addAttribute("src", src);
+		return this;
 	}
 
 	/**
 	 * Stel de hoogte van de foto in.
 	 * @param height
 	 */
-	public void setHeight(int height){
+	public HtmlImage setHeight(int height){
 		addAttribute("height", "" + height);
+		return this;
 	}
 
 	/**
 	 * Stel de breedte van de foto in.
 	 * @param width
 	 */
-	public void setWidth(int width){
+	public HtmlImage setWidth(int width){
 		addAttribute("width", "" + width);
+		return this;
 	}
 
 	@Override

@@ -9,11 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import nl.amsta09.data.SqlConnector;
-import nl.amsta09.web.Content;
 import nl.amsta09.model.Audio;
 import nl.amsta09.web.html.HtmlPopup;
 import nl.amsta09.web.html.HtmlSection;
+import nl.amsta09.web.util.RequestWrapper;
 import nl.amsta09.web.html.HtmlDiv;
 import nl.amsta09.web.html.HtmlForm;
 import nl.amsta09.web.html.HtmlImage;
@@ -24,23 +23,23 @@ public class AudioSelectionServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException{
-		SqlConnector conn = new SqlConnector();
-		Content content = new Content(request, response);
+		RequestWrapper requestWrapper = new RequestWrapper(request);
 		
-		//check of er een sessie actief is voor de gebruiker.
-		if(!content.hasSession()){
-			content.sendUsing(Content.INDEX_JSP);
+		//check of er een media sessie actief is voor de gebruiker.
+		if(!requestWrapper.getSession().hasMediaSession()){
+			requestWrapper.respondUsing(RequestWrapper.INDEX_JSP, response);
 			return;
 		}
+
 		ArrayList<Audio>  audioList;
 		try {
-			audioList = conn.getAllAudio();
+			audioList = requestWrapper.getSqlConnector().getAllAudio();
 		} catch (ClassNotFoundException | SQLException e) {
 			HtmlPopup popup = new HtmlPopup("error",
 					"Database fout", "het is niet gelukt om de foto's op" +
 					"te halen uit de database. Probeer de pagina opnieuw te laden");
-			content.add("popup", popup);
-			content.sendUsing(AUDIO_SELECTION_JSP);
+			requestWrapper.getContent().add("popup", popup);
+			requestWrapper.respondUsing(AUDIO_SELECTION_JSP, response);
 			e.printStackTrace();
 			return;
 		}
@@ -61,8 +60,8 @@ public class AudioSelectionServlet extends HttpServlet {
 			form.addInput("submit", "kies" ,"kies");
 			audioSection.addElement(form);
 		});
-		content.add("audio", audioSection);
-		content.sendUsing(AUDIO_SELECTION_JSP);
+		requestWrapper.getContent().add("audio", audioSection);
+		requestWrapper.respondUsing(AUDIO_SELECTION_JSP, response);
 	}
 }
 

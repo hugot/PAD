@@ -1,6 +1,6 @@
 package nl.amsta09.web.html;
 
-public class HtmlDiv extends HtmlElement implements HtmlElementInterface {
+public class HtmlDiv extends HtmlElement<HtmlDiv> implements HtmlElementInterface {
 	private static final String BOTTOM = "</div>";
 
 	public HtmlDiv() {

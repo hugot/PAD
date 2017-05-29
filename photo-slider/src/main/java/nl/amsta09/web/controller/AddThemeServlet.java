@@ -1,14 +1,7 @@
 package nl.amsta09.web.controller;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -17,14 +10,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import nl.amsta09.data.SqlConnector;
-import nl.amsta09.web.Content;
-import nl.amsta09.web.SessionManager.Session;
+import nl.amsta09.data.SqlConnector.ThemeNotFoundException;
 import nl.amsta09.web.html.HtmlPopup;
+import nl.amsta09.web.util.RequestWrapper;
 
 /**
  *
- * @author Marco Bergsma
+ * @author Marco Bergsma, Hugo Thunnissen
  *
  * Deze class maakt het voor de client mogelijk om een Thema toe te voegen
  *
@@ -45,30 +37,39 @@ public class AddThemeServlet extends HttpServlet {
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
-        response.setContentType("text/html;charset=UTF-8");
-        SqlConnector conn = new SqlConnector();
-        Content content = new Content(request, response);
+        RequestWrapper requestWrapper = new RequestWrapper(request);
 
         //Haalt de naam op		
         final String ThemeName = request.getParameter("name");
 
 
         try {
-            conn.insertTheme(ThemeName);
+            requestWrapper.getSqlConnector().insertTheme(ThemeName);
 		} catch (NullPointerException | SQLException | ClassNotFoundException e) {
-			HtmlPopup popup = new HtmlPopup("error", "Fout bij verbinding met de database", 
-					"Het is niet gelukt om verbinding te maken met de database, probeer het alstublieft opnieuw");
-			content.add("popup", popup);
-			content.sendUsing(Content.THEME_MANAGEMENT_JSP);
+			requestWrapper.getContent().add(HtmlPopup.CLASS, new HtmlPopup("error", 
+						"Fout bij verbinding met de database", 
+						"Het is niet gelukt om verbinding te maken met de database, " + 
+						"probeer het alstublieft opnieuw"));
+			requestWrapper.respondUsing(RequestWrapper.THEME_MANAGEMENT_JSP, response);
             e.printStackTrace();
 			return;
         }  
 
-		HtmlPopup popup = new HtmlPopup("succes", "Succes!", 
-				"Thema '" + ThemeName + "' is toegevoegd");
-		content.add("popup", popup);
-		content.add("origin", "addTheme");
-		new ThemeManagementServlet().doGet(content.getRequest(), content.getResponse());
+		requestWrapper.getContent().add(HtmlPopup.CLASS, new HtmlPopup("succes", "Succes!", 
+				"Thema '" + ThemeName + "' is toegevoegd"));
+
+		requestWrapper.getSession().setMediaSession();
+		try {
+			requestWrapper.getSession().setManagedTheme(
+					requestWrapper.getSqlConnector().getThemeById(
+						requestWrapper.getSqlConnector().getMaxThemeId()));
+		} catch (SQLException | ThemeNotFoundException e) {
+			// TODO doe hier iets nuttigs
+			e.printStackTrace();
+		}
+
+		// Stuur de gebruiker door naar de theme management pagina
+		new ThemeManagementServlet().doGet(requestWrapper.getHttpServletRequest(), response);
     }
 
 }

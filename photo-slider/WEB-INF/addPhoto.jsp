@@ -18,7 +18,7 @@
 				<h1>Voeg een foto toe via deze pagina</h1>	
 				<script type="text/javascript" src="${context}/webroot/dropzone.js"></script>
 
-				<form action="${context}/uploadphoto" class="dropzone needsclick dz-clickable" id="uploadForm">
+				<form method="POST" action="${context}/uploadphoto" class="dropzone needsclick dz-clickable" id="uploadForm">
 				</form>
 
 				<form class="hidden-form" method="GET" action="${context}/addsessiontotheme">
@@ -26,7 +26,7 @@
 					<input type="submit" value="Voeg toe aan thema" name="Voeg toe aan thema" id="big-button" />
 				</form>
 
-			<script type="text/javascript">var sessionId = ${sessionId}</script>
+			<script type="text/javascript">var sessionId = ${mediaSessionId}</script>
 			<script type="text/javascript" src="${context}/webroot/dropzoneconfig.js"></script>
 
 			<%@include file="footer.jsp"%>

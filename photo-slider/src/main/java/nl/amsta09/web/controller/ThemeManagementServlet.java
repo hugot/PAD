@@ -9,122 +9,137 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import nl.amsta09.data.SqlConnector;
 import nl.amsta09.data.SqlConnector.ThemeNotFoundException;
-import nl.amsta09.driver.MainApp;
 import nl.amsta09.model.Photo;
 import nl.amsta09.model.Theme;
-import nl.amsta09.web.Content;
-import nl.amsta09.web.SessionManager.Session;
 import nl.amsta09.web.html.HtmlPopup;
+import nl.amsta09.web.util.RequestWrapper;
 
+/**
+ * Deze class laadt en update de theme management pagina.
+ *
+ * @author: Hugo Thunnissen
+ */
 public class ThemeManagementServlet extends HttpServlet {
-	private static final String JSP = "/WEB-INF/themes.jsp";
-	private static final String SELECTED_THEME_ID = "selectedThemeId";
-	private static final String THEME = "theme";
 	private static final int STARTING_THEME = 0;
+	private RequestWrapper requestWrapper;
+	private ArrayList<Theme> themes;
+	private HttpServletResponse response;
+	private ArrayList<Photo> photos;
+	private Theme selectedTheme;
 
+	/**
+	 * Deze methode rendert de theme management pagina met een lijst van thema's en een lijst
+	 * van de foto's van de geselecteerde thema's.
+	 * @param request
+	 * @param response
+	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException{
-			System.out.println("-----GET-----");
-		Content content = new Content(request, response);
-		SqlConnector conn = new SqlConnector();
-		Session session = content.parseSession();
+		System.out.println("-----GET-----");
+		requestWrapper = new RequestWrapper(request);
+		this.response = response;
+		// Zorg dat de sessie een mediasessie is.
+		requestWrapper.getSession().setMediaSession();
 
-		ArrayList<Theme> themes;
-		try {
-			themes = conn.getAllThemes();
-		} catch (SQLException e) {
-			content.add("message","Het is niet gelukt om de thema's op te halen uit de database, " +
-					"probeer de pagina te vernieuwen");
-			content.sendUsing(JSP);
-			return;
-		}
+		// Laad lijst met thema's
+		if(!refreshThemeList()) return;
+		themes.listIterator().forEachRemaining((Theme theme) -> {
+			System.out.println("theme gevonden");
+		});
 
+		requestWrapper.getContent().addThemeList(themes, request.getServletPath());
 
-		Theme startingTheme = themes.get(STARTING_THEME);
-		content.addThemeList(themes, request.getServletPath());
-		content.add(SELECTED_THEME_ID, "" + startingTheme.getId()); 
-		content.addToSession(THEME, startingTheme.getName());
+		// Geselecteerde thema
+		if(requestWrapper.getSession().hasManagedTheme())
+			selectedTheme = requestWrapper.getSession().getMediaSession().getManagedTheme();
+		else 
+			selectedTheme = themes.get(STARTING_THEME); // Default thema
 
 		//Maak een lijst met alle foto's van de theme
-		ArrayList<Photo> photos;
-		try {
-			photos = conn.getAllPhotosFromTheme(startingTheme);
-		} catch (SQLException e) {
-			HtmlPopup popup = new HtmlPopup("error", "Fout bij ophalen foto's", 
-					"Er is iets fout gegaan bij het ophalen van de foto's, probeer het alstublieft opnieuw");
-			content.add("popup", popup);
-			content.sendUsing(JSP);
-			return;
-		}
+		if(!refreshPhotoList()) return;
 
-		content.addPhotoList(photos);
-		content.add(SELECTED_THEME_ID, "" + startingTheme.getId());
-		content.sendUsing(JSP);
-		
-		session.setManagedTheme(themes.get(STARTING_THEME));
-		MainApp.getSessionManager().updateSession(session);
+		requestWrapper.getContent().addPhotoList(photos);
+		requestWrapper.getSession().setManagedTheme(selectedTheme);
+		requestWrapper.respondUsing(RequestWrapper.THEME_MANAGEMENT_JSP, response);
 	}
 
+	/**
+	 * Deze methode achterhaalt het thema dat geselecteerd is in de theme management
+	 * pagina en laad hiervoor de bijbehorende foto's.
+	 * @param request
+	 * @param response
+	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException{
-			System.out.println("-----POST-----");
-		Content content = new Content(request, response);
-		Session session = content.parseSession();
-		SqlConnector conn = new SqlConnector();
+		System.out.println("-----POST-----");
+		RequestWrapper requestWrapper = new RequestWrapper(request);
+		this.response = response;
+
+		//Redirect naar GET methode als er nog geen mediaSessie actief is.
+		if(!requestWrapper.getSession().hasMediaSession()){
+			doGet(request, response);
+			return;
+		} 
 		
-		// Achterhaal welk thema is aangeklikt
+		// Achterhaal welk thema is aangeklikt en haal het op uit de database
 		int themeId;
 		try {
-			themeId = parseSelectedThemeId(request);
-		}
-		catch (NullPointerException | NumberFormatException e){
-			HtmlPopup popup = new HtmlPopup("error", "Er is iets misgegaan", 
-					"Probeer de pagina opnieuw te laden.");
-			content.add("popup", popup);
-			content.sendUsing(JSP);
-			e.printStackTrace();
-			return;
-		}
-
-		// Haal het thema op uit de database
-		Theme theme;
-		try {
-			theme = conn.getThemeById(themeId);
-		} catch (SQLException | ThemeNotFoundException e) {
+			themeId = Integer.parseInt(requestWrapper.getParameter(RequestWrapper.SELECTED_THEME_ID).toString());
+			selectedTheme = requestWrapper.getSqlConnector().getThemeById(themeId);
+		} catch (NullPointerException | NumberFormatException | SQLException | ThemeNotFoundException e) {
 			HtmlPopup popup = new HtmlPopup("error", "Thema niet gevonden", 
 					"Het thema bestaat niet of er is iets misgegaan, probeer het in dat geval opnieuw.");
-			content.add("popup", popup);
-			content.sendUsing(JSP);
+			requestWrapper.getContent().add(HtmlPopup.CLASS, popup);
+			requestWrapper.respondUsing(RequestWrapper.THEME_MANAGEMENT_JSP, response);
 			return;
 		}
 
-		session.setManagedTheme(theme);
-		MainApp.getSessionManager().updateSession(session);
+		// Laad themalijst opnieuw.
+		if(!refreshThemeList()) return;
 
-		// Haal foto's op uit de database
-		ArrayList<Photo> photos;
+		// Laad lijst met foto's in het geselecteerde thema.
+		if(!refreshPhotoList()) return;
+
+		requestWrapper.getContent().addPhotoList(photos);
+		requestWrapper.getSession().setManagedTheme(selectedTheme);
+		requestWrapper.respondUsing(RequestWrapper.THEME_MANAGEMENT_JSP, response);
+	}
+
+	/**
+	 * (Her)laadt de thema's. 
+	 * @return refreshed geeft aan of de actie geslaagd is of niet.
+	 */
+	private boolean refreshThemeList()
+			throws ServletException, IOException{
+		System.out.println("refreshing themelist");
 		try {
-			photos = conn.getAllPhotosFromTheme(theme);
+			themes = requestWrapper.getSqlConnector().getAllThemes();
+			return true;
+		} catch (SQLException e) {
+			requestWrapper.getContent().add(HtmlPopup.CLASS, new HtmlPopup("error", 
+						"Fout bij ophalen Thema's", 
+						"Er is iets fout gegaan bij het ophalen van de thema's, " + 
+						"probeer het alstublieft opnieuw"));
+			requestWrapper.respondUsing(RequestWrapper.THEME_MANAGEMENT_JSP, response);
+			return false;
+		}
+	}
+
+	/**
+	 * (Her)laadt de foto's die bij het geselecteerde thema horen.
+	 * @return refreshed geeft aan of de actie geslaagd is of niet.
+	 */
+	private boolean refreshPhotoList() throws ServletException, IOException{
+		try {
+			photos = requestWrapper.getSqlConnector().getAllPhotosFromTheme(selectedTheme);
 		} catch (SQLException e) {
 			HtmlPopup popup = new HtmlPopup("error", "Fout bij ophalen foto's", 
 					"Er is iets fout gegaan bij het ophalen van de foto's, probeer het alstublieft opnieuw");
-			content.add("popup", popup);
-			content.sendUsing(JSP);
-			return;
+			requestWrapper.getContent().add("popup", popup);
+			requestWrapper.respondUsing(RequestWrapper.THEME_MANAGEMENT_JSP, response);
+			return false;
 		}
-
-		content.addPhotoList(photos);
-		content.add(SELECTED_THEME_ID, "" + theme.getId());
-		content.sendUsing(JSP);
+		return true;
 	}
-
-	protected static int parseSelectedThemeId(HttpServletRequest request) throws NumberFormatException,
-			  NullPointerException {
-		int themeId;
-		themeId = Integer.parseInt(request.getParameter(SELECTED_THEME_ID).toString());
-		return themeId;
-	}
-
 }

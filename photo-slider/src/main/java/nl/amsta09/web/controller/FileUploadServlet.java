@@ -1,5 +1,6 @@
 package nl.amsta09.web.controller;
 
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -18,16 +19,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
-import nl.amsta09.data.SqlConnector;
-import nl.amsta09.data.SqlConnector.ThemeNotFoundException;
-import nl.amsta09.driver.MainApp;
 import nl.amsta09.model.Audio;
 import nl.amsta09.model.Media;
 import nl.amsta09.model.Photo;
-import nl.amsta09.model.Theme;
-import nl.amsta09.web.Content;
-import nl.amsta09.web.SessionManager.Session;
-import nl.amsta09.web.SessionManager.SessionNotFoundException;
+import nl.amsta09.web.util.RequestWrapper;
 
 /**
  *
@@ -41,25 +36,28 @@ import nl.amsta09.web.SessionManager.SessionNotFoundException;
 @WebServlet("/uploadphoto")
 @MultipartConfig
 public class FileUploadServlet extends HttpServlet { 
-	private static final String PHOTO_UPLOAD_JSP = "/WEB-INF/addPhoto.jsp";
-	private static final String AUDIO_UPLOAD_JSP = "/WEB-INF/addAudio.jsp";
 	private static final String AUDIO_UPLOAD_MAPPING = "/uploadaudio";
 	private static final String PHOTO_UPLOAD_MAPPING = "/uploadphoto";
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException{
-		Content content = new Content(request, response);
-		content.parseSession();
+		RequestWrapper requestWrapper = new RequestWrapper(request);
+		
+		//Zorg dat er een mediasessie geactiveerd wordt
+		requestWrapper.getSession().setMediaSession();
+		System.out.println(requestWrapper.getSession().getMediaSession().getId());
+
 
 		// Verwijs de gebruiker door naar de juiste jsp
 		String requestMapping = request.getServletPath();
 		if(requestMapping.equals(PHOTO_UPLOAD_MAPPING)){
-			content.sendUsing(PHOTO_UPLOAD_JSP);
+			requestWrapper.respondUsing(RequestWrapper.PHOTO_UPLOAD_JSP, response);
 		} 
 		else if (requestMapping.equals(AUDIO_UPLOAD_MAPPING)){
-			content.sendUsing(AUDIO_UPLOAD_JSP);
+			requestWrapper.respondUsing(RequestWrapper.AUDIO_UPLOAD_JSP, response);
 		}
 	}
+
 	/** 
 	 * Deze methode ontvangt een bestand in een httprequest en plaatst deze in de daarvoor bestemde map
 	 * alvorens het bestand toe te voegen aan de database.
@@ -69,32 +67,26 @@ public class FileUploadServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException{
-		response.setContentType("text/html;charset=UTF-8");
+		System.out.println("whaddup1");
 
-		// De sessie van de gebruiker
-		String sessionId = request.getParameter("sessionId");
-		Session session;
-		try {
-			session = MainApp.getSessionManager().getSessionById(Integer.parseInt(sessionId));
-		} catch (NumberFormatException | SessionNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-			return;
-		}
+		RequestWrapper requestWrapper = new RequestWrapper(request);
+		System.out.println("whaddup");
+
+		// Verzeker dat de sessie een mediaSessie is.
+		requestWrapper.getSession().setMediaSession();
+
+		System.out.println(requestWrapper.getSession().getMediaSession().getId());
 
 		// Het media object en de attributen waar het mee geinstantieerd wordt
 		boolean savingFileSucceeded = false;
 		Part filePart = null;
 		String fileName;
-		String destinationdir = "Resources" + File.separator;
+		String destinationDir;
 		Media media;
 
 		// De in- en outputstream voor het lezen en schrijven van het bestand
 		OutputStream out= null;
 		InputStream fileContent = null;
-
-		// Connectie met de database
-		SqlConnector conn = new SqlConnector();
 
 		// Check om wat voor bestand het gaat, instantieer vervolgens een object van het juiste type
 		if(request.getPart("file") != null){
@@ -103,15 +95,15 @@ public class FileUploadServlet extends HttpServlet {
 		}
 		else if(request.getPart("photo") != null){
 			filePart = request.getPart("photo");
-			destinationdir += "Foto" + File.separator;;
+			destinationDir = Photo.DIRECTORY;
 			fileName = getFilenameFromFilePart(filePart);
-			media = new Photo(destinationdir + fileName, fileName, 1);
+			media = new Photo(destinationDir + fileName, fileName, 1);
 		}
 		else if(request.getPart("audio") != null){
 			filePart = request.getPart("audio");
-			destinationdir += "Audio" + File.separator;;
+			destinationDir = Audio.DIRECTORY;
 			fileName = getFilenameFromFilePart(filePart);
-			media = new Audio(destinationdir + fileName, fileName, 1);
+			media = new Audio(destinationDir + fileName, fileName, 1);
 		}
 		else {
 			System.out.println("DEBUG: geen filepart met een geldige naam gevonden.");
@@ -119,9 +111,9 @@ public class FileUploadServlet extends HttpServlet {
 		}
 
 		// Check of er niet al een bestand bestaat met dezelfde naam
-		while (conn.mediaInDatabase(media)){
+		while (requestWrapper.getSqlConnector().mediaInDatabase(media)){
 			fileName = "x" + fileName;
-			media.setRelativePath(destinationdir + fileName);
+			media.setRelativePath(destinationDir + fileName);
 		}
 
 		// Schrijf het bestand naar de juiste map
@@ -148,10 +140,9 @@ public class FileUploadServlet extends HttpServlet {
 		// Check of opslaan bestand gelukt is en voeg het toe aan de database en sessie
 		if(savingFileSucceeded){
 			try{
-				conn.insertMedia(media);
-				media.setId(conn.getMediaIdFrom(media));
-				session.getAddedMedia().add(media);
-				MainApp.getSessionManager().updateSession(session);
+				requestWrapper.getSqlConnector().insertMedia(media);
+				media.setId(requestWrapper.getSqlConnector().getMediaIdFrom(media));
+				requestWrapper.getSession().getMediaSession().getAddedMedia().add(media);
 			}
 			catch(SQLException e){
 				sendErrorMessage(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,

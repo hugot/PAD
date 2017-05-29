@@ -7,11 +7,11 @@ import java.util.HashMap;
  *
  * @author Hugo Thunnissen
  */
-public abstract class HtmlElement {
+public abstract class HtmlElement <Element extends HtmlElement<Element>> implements HtmlElementInterface{
 	protected final String openingTag = "<";
 	protected String closingTag = ">";
 
-	private StringBuilder middle = new StringBuilder();
+	private StringBuilder middle;
 	private String elementName;
 	private HashMap<String,String> attributes;
 
@@ -24,6 +24,7 @@ public abstract class HtmlElement {
 	public HtmlElement(String elementName){
 		attributes = new HashMap<String,String>();
 		this.elementName = elementName;
+		middle = new StringBuilder();
 	}
 
 	/**
@@ -36,14 +37,21 @@ public abstract class HtmlElement {
 		addAttribute("id", id);
 		addAttribute("class", elementClass);
 		this.elementName = elementName;
+		middle = new StringBuilder();
 	}
 
 	/**
 	 * Voeg inhoud aan het element toe.
 	 * @param content
 	 */
-	public void addContent(String content){
+	public Element addContent(String content){
 		middle.append(content);
+		return (Element)this;
+	}
+
+	public Element setContent(String content){
+		middle = new StringBuilder(content);
+		return (Element)this;
 	}
 
 	/**
@@ -51,24 +59,27 @@ public abstract class HtmlElement {
 	 * @param attribute
 	 * @param value
 	 */
-	public void addAttribute(String attribute, String value){
+	public Element addAttribute(String attribute, String value){
 		attributes.put(attribute, "=\"" + value + "\"");
+		return (Element)this;
 	}
 
 	/**
 	 * Stel de styling van het element in.
 	 * @param style
 	 */
-	public void setStyle(String style){
+	public Element setStyle(String style){
 		addAttribute("style", style);
+		return (Element)this;
 	}
 
 	/**
 	 * Voeg een html element aan de inhoud van het element toe.
 	 * @param element
 	 */
-	public void addElement(HtmlElementInterface element){
+	public Element addElement(HtmlElementInterface element){
 		middle.append(element.generateHtml());
+		return (Element)this;
 	}
 	
 	/**
@@ -91,19 +102,29 @@ public abstract class HtmlElement {
 	}
 
 	/**
+	 * De gegenereerde html (Synoniem voor generatehtml).
+	 * @return html
+	 */
+	public String toString(){
+		return generateHtml();
+	}
+
+	/**
 	 * Stel de class van het element in.
 	 * @param elementClass
 	 */
-	public void setClass(String elementClass){
+	public Element setClass(String elementClass){
 		addAttribute("class", elementClass);
+		return (Element)this;
 	}
 
 	/**
 	 * stel de id van het element in.
 	 * @param id
 	 */
-	public void setId(String id){
+	public Element setId(String id){
 		addAttribute("id", id);
+		return (Element)this;
 	}
 
 	/**

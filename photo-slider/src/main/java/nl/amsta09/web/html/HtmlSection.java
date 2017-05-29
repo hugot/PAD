@@ -1,6 +1,6 @@
 package nl.amsta09.web.html;
 
-public class HtmlSection extends HtmlElement implements HtmlElementInterface {
+public class HtmlSection extends HtmlElement<HtmlSection> implements HtmlElementInterface {
 	private static final String BOTTOM = "</section>";
 
 	public HtmlSection(){

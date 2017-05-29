@@ -5,7 +5,7 @@ package nl.amsta09.web.html;
  *
  * @author Hugo Thunnissen
  */
-public class HtmlList extends HtmlElement implements HtmlElementInterface {
+public class HtmlList extends HtmlElement<HtmlList> implements HtmlElementInterface {
 	private final String BOTTOM = "</ul>";
 
 	/**
@@ -28,16 +28,18 @@ public class HtmlList extends HtmlElement implements HtmlElementInterface {
 	 * Voeg een item toe met tekst.
 	 * @param content
 	 */
-	public void addItem(String content){
+	public HtmlList addItem(String content){
 		addElement(new ListItem(content));
+		return this;
 	}
 
 	/**
 	 * Voeg een item toe met een html element.
 	 * @param element
 	 */
-	public void addItem(HtmlElementInterface element){
+	public HtmlList addItem(HtmlElementInterface element){
 		addElement(new ListItem(element));
+		return this;
 	}
 
 	/**
@@ -51,7 +53,7 @@ public class HtmlList extends HtmlElement implements HtmlElementInterface {
 	/**
 	 * Deze class dient voor het aanmaken van een item in een html lijst.
 	 */
-	private class ListItem extends HtmlElement implements HtmlElementInterface {
+	private class ListItem extends HtmlElement<ListItem> implements HtmlElementInterface {
 		private final String BOTTOM = "</li>";
 
 		/**

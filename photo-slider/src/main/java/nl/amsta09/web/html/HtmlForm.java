@@ -1,6 +1,6 @@
 package nl.amsta09.web.html;
 
-	public class HtmlForm extends HtmlElement implements HtmlElementInterface {
+	public class HtmlForm extends HtmlElement<HtmlForm> implements HtmlElementInterface {
 		private final String BOTTOM = "</form>\n";
 
 		/**
@@ -36,16 +36,18 @@ package nl.amsta09.web.html;
 		 * Verander de actie die het formulier triggert.
 		 * @param action
 		 */
-		public void setAction(String action){
+		public HtmlForm setAction(String action){
 			addAttribute("action", action);
+			return this;
 		}
 
 		/**
 		 * Verander de methode die het formulier aanroept (GET of POST).
 		 * @param method
 		 */
-		public void setMethod(String method){
+		public HtmlForm setMethod(String method){
 			addAttribute("method", method);
+			return this;
 		}
 
 		/**
@@ -53,8 +55,9 @@ package nl.amsta09.web.html;
 		 * @param type
 		 * @param name
 		 */
-		public void addInput(String type, String name){
+		public HtmlForm addInput(String type, String name){
 			addElement(new Input(type, name));
+			return this;
 		}
 
 		/**
@@ -63,11 +66,12 @@ package nl.amsta09.web.html;
 		 * @param name
 		 * @param value
 		 */
-		public void addInput(String type, String name, String value){
+		public HtmlForm addInput(String type, String name, String value){
 			Input input = new Input(type, name);
 			input.setId(name);
 			input.addAttribute("value", value);
 			addElement(input);
+			return this;
 		}
 
 		/**
@@ -76,19 +80,20 @@ package nl.amsta09.web.html;
 		 * @param name
 		 * @param value
 		 */
-		public void addHiddenValue(String name, String value){
+		public HtmlForm addHiddenValue(String name, String value){
 			Input input = new Input("hidden", name);
 			input.addAttribute("value", value);
 			input.setId(name);
 			addElement(input);
-	}
+			return this;
+		}
 
 	@Override
 	protected String generateBottom() {
 		return BOTTOM;
 	}
 
-	private class Input extends HtmlElement implements HtmlElementInterface {
+	private class Input extends HtmlElement<Input> implements HtmlElementInterface {
 
 		/**
 		 * Maak een input veld aan
@@ -103,16 +108,10 @@ package nl.amsta09.web.html;
 		/**
 		 * {@InheritDoc}
 		 */
-		@Override
-		public String generateHtml(){
-			return super.generateHtml();
-		}
-
-		/**
-		 * {@InheritDoc}
-		 */
 		protected String generateBottom(){
 			return " ";
 		}
+
 	}
+
 }

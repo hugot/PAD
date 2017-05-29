@@ -14,6 +14,7 @@ import java.net.URL;
  * @author Hugo Thunnissen
  */
 public abstract class Media {
+	public static String DIRECTORY;
 
     private URL url;
     private String relativePath;

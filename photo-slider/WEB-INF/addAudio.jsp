@@ -27,7 +27,7 @@
 				</form>
 				
 			</section>
-			<script type="text/javascript">var sessionId = ${sessionId}</script>
+			<script type="text/javascript">var sessionId = ${mediaSessionId}</script>
 			<script type="text/javascript" src="${context}/webroot/dropzoneconfig-audio.js"></script>
 
 			<%@include file="footer.jsp"%>
