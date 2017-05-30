@@ -40,6 +40,7 @@ public class SlideShowController {
 		timer.start();
 		stage.setScene(view);
 		stage.show();
+                stage.setFullScreen(true);
 		showNextImage();
 	}
 
