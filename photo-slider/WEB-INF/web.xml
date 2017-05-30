@@ -61,6 +61,15 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 	</servlet-mapping>
 
 	<servlet>
+		<servlet-name>SettingManagementServlet</servlet-name>
+		<servlet-class>nl.amsta09.web.controller.SettingManagementServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SettingManagementServlet</servlet-name>
+		<url-pattern>/turnAudioOnOff</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
 		<servlet-name>PhotoSelectionServlet</servlet-name>
 		<servlet-class>nl.amsta09.web.controller.PhotoSelectionServlet</servlet-class>
 	</servlet>

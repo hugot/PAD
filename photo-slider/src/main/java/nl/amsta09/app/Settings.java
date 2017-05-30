@@ -32,7 +32,7 @@ public class Settings {
         return timer;
     }
     
-    public void setMusic(boolean set){
+    public void setSound(boolean set){
         soundOn = set;
     }
     

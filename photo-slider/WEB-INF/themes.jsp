@@ -65,6 +65,11 @@ Via deze view kunnen de thema's beheerd worden
 						</form> 
 					</li>
 					<li>
+						<form class="small-button-form" style="float: center;" action="/turnAudioOnOff" method="post">
+							<button class="small-button">Zet het geluid aan/uit.</button>
+						</form> 
+					</li>
+					<li>
 						<form class="small-button-form" style="float: center;" action="/removeMusicFromTheme" method="get">
 							<button class="small-button">Verwijder muziek van het thema.</button>
 						</form> </li>
