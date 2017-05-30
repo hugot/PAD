@@ -19,7 +19,6 @@ import nl.amsta09.web.html.HtmlImage;
 
 public class AudioSelectionServlet extends HttpServlet {
 	private static final String AUDIO_SELECTION_JSP = "/WEB-INF/audio-selection.jsp";
-	private static final String SELECTED_AUDIO_ID = "selectedAudioId";
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException{
@@ -49,14 +48,14 @@ public class AudioSelectionServlet extends HttpServlet {
 		HtmlSection audioSection = new HtmlSection("main-section", "main-section");
 		audioList.listIterator().forEachRemaining((Audio audio) -> {
 			HtmlForm form = new HtmlForm("" + audio.getId(), "floating-image", "post", "/addmediatotheme");
-			HtmlImage image = new HtmlImage("" + audio.getId(), "audio", audio.getRelativePath());
+			HtmlImage image = new HtmlImage("" + audio.getId(), "image", audio.getRelativePath());
 			image.setHeight(150);
 			HtmlDiv audioDiv = new HtmlDiv();
 			audioDiv.setClass("audio-container");
 			audioDiv.addElement(image);
 			form.addElement(audioDiv);
 			form.addContent("<p>" + audio.getName() + "</p>");
-			form.addHiddenValue(SELECTED_AUDIO_ID, "" + audio.getId());
+			form.addHiddenValue(RequestWrapper.SELECTED_AUDIO_ID, "" + audio.getId());
 			form.addInput("submit", "kies" ,"kies");
 			audioSection.addElement(form);
 		});
