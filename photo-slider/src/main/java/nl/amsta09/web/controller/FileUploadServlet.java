@@ -99,8 +99,8 @@ public class FileUploadServlet extends HttpServlet {
 			fileName = getFilenameFromFilePart(filePart);
 			media = new Photo(destinationDir + fileName, fileName, 1);
 		}
-		else if(request.getPart("audio") != null){
-			filePart = request.getPart("audio");
+		else if(request.getPart("sound") != null){
+			filePart = request.getPart("sound");
 			destinationDir = Audio.DIRECTORY;
 			fileName = getFilenameFromFilePart(filePart);
 			media = new Audio(destinationDir + fileName, fileName, 1);

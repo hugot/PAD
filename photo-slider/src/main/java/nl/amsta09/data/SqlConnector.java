@@ -61,17 +61,17 @@ public class SqlConnector {
     /*
      * Insert een media file naar de database
      */
-    public void insertMedia(String filePath, String Media_Name) throws SQLException, ClassNotFoundException {
+    public void insertMedia(String filePath, Media media) throws SQLException, ClassNotFoundException {
 
         filePath = filePath.replace("\\", "\\\\\\\\");
 
         Statement addMediaStatement = connection.createStatement();
         //Insert een media file in de database
-        String sql = ("INSERT INTO Media (name, filePath) VALUES ('" + Media_Name + "','" + filePath + "')");
+        String sql = ("INSERT INTO Media (name, filePath) VALUES ('" + media.getName() + "','" + filePath + "')");
 
         addMediaStatement.execute(sql);
 
-        insertIntoMediaType(Media_Name);
+        insertIntoMediaType(media);
     }
 
 
@@ -158,11 +158,11 @@ public class SqlConnector {
     /*
      * Voegt het gekozen media file toe aan een gekozen thema
      */
-    public void addMediaToTheme(int Theme_Id, int Media_Id) throws SQLException {
+    public void addMediaToTheme(int Theme_Id, Media media) throws SQLException {
 
         Statement addMediaToThemeStatement = connection.createStatement();
         //Voegt gekozen media toe aan gekozen thema
-        String sql = ("INSERT INTO theme_has_media VALUES ('" + Theme_Id + "','" + Media_Id + "')");
+        String sql = ("INSERT INTO theme_has_media VALUES ('" + Theme_Id + "','" + media.getId() + "')");
         System.out.println(sql);
 
         addMediaToThemeStatement.execute(sql);
@@ -172,29 +172,14 @@ public class SqlConnector {
     /*
      * Zet een media file in de correcte type tabel (photo, sound, soundeffect)
      */
-    public void insertIntoMediaType(String Name) throws SQLException {
-        String sql;
-        Set<String> imageTypes = new HashSet<>();
-        imageTypes.add("png");
-        imageTypes.add("jpg");
-        Set<String> soundTypes = new HashSet<>();
-        soundTypes.add("wav");
-        soundTypes.add("mp3");
-
-        String fileType = null;
-        int i = Name.lastIndexOf('.');
-        if (i > 0) {
-            fileType = Name.substring(i + 1);
+    public void insertIntoMediaType(Media media) throws SQLException {
+        if (media instanceof Photo) {
+            executeUpdate("INSERT INTO photo (id) VALUES ((SELECT id AS lastID FROM media ORDER BY id DESC LIMIT 1))");
+        } else if(media instanceof Audio){
+            executeUpdate("INSERT INTO song (id) VALUES ((SELECT id AS lastID FROM media ORDER BY id DESC LIMIT 1))");
+        }else{
+            System.out.println("Niet gelukt te kijken wat voor media");
         }
-
-        if (imageTypes.contains(fileType)) {
-            sql = ("INSERT INTO photo (id) VALUES ((SELECT id AS lastID FROM media ORDER BY id DESC LIMIT 1))");
-        } else {
-            sql = ("INSERT INTO song (id) VALUES ('LAST_INSERT_ID')");
-        }
-        Statement addIntoMediaType = connection.createStatement();
-
-        addIntoMediaType.execute(sql);
     }
 
     /**
@@ -376,7 +361,7 @@ public class SqlConnector {
      */
     public void insertMedia(Media media) throws SQLException {
         executeUpdate(String.format("INSERT INTO media (name, filePath) VALUES ('%s','%s')", media.getName(), media.getRelativePath()));
-        insertIntoMediaType(media.getName());
+        insertIntoMediaType(media);
     }
 
     /**

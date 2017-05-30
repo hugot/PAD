@@ -88,7 +88,7 @@ public class AddSessionToThemeServlet extends HttpServlet {
 			for(Media media : requestWrapper.getSession().getMediaSession().getAddedMedia()){
 				if(media instanceof Photo){
 					try {
-						requestWrapper.getSqlConnector().addMediaToTheme(theme.getId(), media.getId());
+						requestWrapper.getSqlConnector().addMediaToTheme(theme.getId(), media);
 						request.setAttribute("message", "media toegevoegd aan thema");
 					} catch (SQLException e) {
 						requestWrapper.getContent().add(HtmlPopup.CLASS, new HtmlPopup("error", "Er is iets misgegaan",
