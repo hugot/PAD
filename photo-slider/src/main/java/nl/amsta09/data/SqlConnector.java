@@ -346,10 +346,12 @@ public class SqlConnector {
         ArrayList<Audio> audioList = new ArrayList<>();
         ResultSet result = executeQuery("SELECT * FROM media INNER JOIN song ON media.id = song.id;");
         while (result.next()) {
-            audioList.add(new Audio(
+            Audio audio;
+            audioList.add(audio = new Audio(
             			result.getString("media.filePath"), 
             			result.getString("media.name"), 
             			result.getInt("media.id")));
+            System.out.println(audio.getId());
         }
         return audioList;
     }
