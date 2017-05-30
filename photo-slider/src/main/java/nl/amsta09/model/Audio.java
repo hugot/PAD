@@ -16,7 +16,6 @@ public class Audio extends Media {
 
     private AudioInputStream audioIn;
     private Clip clip;
-    private int id;
     
     public Audio(String relativePath, String name, int id, String theme){
         super(relativePath, name, id, theme);
@@ -43,13 +42,5 @@ public class Audio extends Media {
     
     public void stopSound(){
         clip.stop();
-    }
-    
-    public void setId(int id){
-        id = this.id;
-    }
-    
-    public int getId(){
-        return id;
     }
 }

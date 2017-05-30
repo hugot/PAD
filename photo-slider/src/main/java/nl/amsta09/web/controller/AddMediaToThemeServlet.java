@@ -52,10 +52,6 @@ public class AddMediaToThemeServlet extends HttpServlet {
 						"Fout bij verwerken van request", 
 						"Het is niet gelukt om de door u geselecteerde bestand te vinden, probeer het " + 
 						"alstublieft opnieuw"));
-                        
-                        System.out.println(selectedMediaId);
-                        System.out.println(selectedMediaId);
-                        System.out.println(selectedMediaId);
 			requestWrapper.respondUsing(RequestWrapper.THEME_MANAGEMENT_JSP, response);
 			e.printStackTrace();
 			return;
