@@ -47,6 +47,10 @@ Via deze view kunnen de thema's beheerd worden
 				</header>
 				<ul>
 					<li>
+						<form class="small-button-form" style="float: center;" action="/deleteTheme" method="get">
+							<button class="small-button">Verwijder het thema.</button>
+						</form></li>
+					<li>
 						<form class="small-button-form" style="float: center;" action="/setThemeOnOff" method="get">
 							<button class="small-button">Zet het thema aan/uit.</button>
 						</form></li>

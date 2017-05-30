@@ -50,6 +50,15 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 		<servlet-name>ThemeManagementServlet</servlet-name>
 		<url-pattern>/thememanagement</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>ThemeManagementServlet</servlet-name>
+		<servlet-class>nl.amsta09.web.controller.ThemeManagementServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ThemeManagementServlet</servlet-name>
+		<url-pattern>/deleteTheme</url-pattern>
+	</servlet-mapping>
 
 	<servlet>
 		<servlet-name>PhotoSelectionServlet</servlet-name>

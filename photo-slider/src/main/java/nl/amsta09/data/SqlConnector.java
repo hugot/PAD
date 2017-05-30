@@ -351,7 +351,6 @@ public class SqlConnector {
             			result.getString("media.filePath"), 
             			result.getString("media.name"), 
             			result.getInt("media.id")));
-            System.out.println(audio.getId());
         }
         return audioList;
     }

@@ -99,10 +99,9 @@ public class SlideShowController {
 	 */
 	public void setNextTheme(){
 		try {
+                    System.out.println("setting next theme");
 			setTheme(conn.getRandomThemeThatIsNot(theme));
-                        if (theme.getMusic() != null){
-                                theme.getMusic().playSound();
-                        }
+                        theme.getMusic().playSound();
 			showNextImage();
 		} catch (SQLException e) {
 			//TODO: doe iets nuttigs.
