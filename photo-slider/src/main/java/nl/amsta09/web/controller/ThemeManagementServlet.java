@@ -21,6 +21,7 @@ import nl.amsta09.web.util.RequestWrapper;
  * @author: Hugo Thunnissen
  */
 public class ThemeManagementServlet extends HttpServlet {
+	private static final String MAPPING = "/thememanagement";
 	private static final int STARTING_THEME = 0;
 	private RequestWrapper requestWrapper;
 	private ArrayList<Theme> themes;
@@ -36,7 +37,6 @@ public class ThemeManagementServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException{
-		System.out.println("-----GET-----");
 		requestWrapper = new RequestWrapper(request);
 		this.response = response;
 		// Zorg dat de sessie een mediasessie is.
@@ -44,11 +44,8 @@ public class ThemeManagementServlet extends HttpServlet {
 
 		// Laad lijst met thema's
 		if(!refreshThemeList()) return;
-		themes.listIterator().forEachRemaining((Theme theme) -> {
-			System.out.println("theme gevonden");
-		});
 
-		requestWrapper.getContent().addThemeList(themes, request.getServletPath());
+		requestWrapper.getContent().addThemeList(themes, MAPPING);
 
 		// Geselecteerde thema
 		if(requestWrapper.getSession().hasManagedTheme())
@@ -72,7 +69,6 @@ public class ThemeManagementServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException{
-		System.out.println("-----POST-----");
 		RequestWrapper requestWrapper = new RequestWrapper(request);
 		this.response = response;
 
@@ -101,6 +97,7 @@ public class ThemeManagementServlet extends HttpServlet {
 		// Laad lijst met foto's in het geselecteerde thema.
 		if(!refreshPhotoList()) return;
 
+		requestWrapper.getContent().addThemeList(themes, MAPPING);
 		requestWrapper.getContent().addPhotoList(photos);
 		requestWrapper.getSession().setManagedTheme(selectedTheme);
 		requestWrapper.respondUsing(RequestWrapper.THEME_MANAGEMENT_JSP, response);
@@ -112,7 +109,6 @@ public class ThemeManagementServlet extends HttpServlet {
 	 */
 	private boolean refreshThemeList()
 			throws ServletException, IOException{
-		System.out.println("refreshing themelist");
 		try {
 			themes = requestWrapper.getSqlConnector().getAllThemes();
 			return true;

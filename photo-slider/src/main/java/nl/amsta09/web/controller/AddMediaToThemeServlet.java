@@ -8,8 +8,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import nl.amsta09.data.SqlConnector;
-import nl.amsta09.model.Photo;
 import nl.amsta09.model.Theme;
 import nl.amsta09.web.util.RequestWrapper;
 import nl.amsta09.web.html.HtmlPopup;

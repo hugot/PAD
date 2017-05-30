@@ -77,7 +77,7 @@ public class Content {
 		HtmlList themeList = new HtmlList();
 		themes.listIterator().forEachRemaining((Theme theme)-> {
 			themeList.addItem(new HtmlForm("" + theme.getId(), "theme", "post", formAction)
-					.addInput("hidden", "themeName", "dikzak")
+					.addInput("hidden", "themeName", theme.getName())
 					.addInput("hidden", "selectedThemeId", "" + theme.getId())
 					.addElement(new HtmlButton("select-theme-button", "submit", theme.getName()))
 					);
