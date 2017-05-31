@@ -380,6 +380,7 @@ public class SqlConnector {
      * @param media
      */
     public void insertMedia(Media media) throws SQLException {
+        System.out.println(media.getRelativePath());
         executeUpdate(String.format("INSERT INTO media (name, filePath) VALUES ('%s','%s')", media.getName(), media.getRelativePath()));
         insertIntoMediaType(media);
     }
