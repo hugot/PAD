@@ -84,6 +84,7 @@ public class SlideShowController {
 	 * @param photo
 	 */
 	public void setImage(Photo photo){
+                
 		view.setImage(photo);
 	}
 
