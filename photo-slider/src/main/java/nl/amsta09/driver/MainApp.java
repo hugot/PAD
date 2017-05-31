@@ -22,6 +22,7 @@ public class MainApp extends Application{
 	public static int SESSIONEXPIRATIONTIME = 1800;
 	private static SlideShowController slideShowController;
 	private static MediaSessionManager mediaSessionManager;
+	private static JettyServer server;
 
 	/**
 	 * Start zowel de javafx applicatie als de webserver.
@@ -34,10 +35,10 @@ public class MainApp extends Application{
 		slideShowController.initialize();
 		
         // Maak server aan en start de server (default port 4848)
-        JettyServer jettyServer = new JettyServer();
-        jettyServer.setHandler();
+        server = new JettyServer();
+        server.setHandler();
         try {
-			jettyServer.start();
+			server.start();
         }
         catch (Exception e){
         	die("Opstarten webserver mislukt", "Het opstarten van de ingebouwde webserver is mislukt." +
@@ -70,6 +71,14 @@ public class MainApp extends Application{
 	 */
 	public static MediaSessionManager getSessionManager(){
 		return mediaSessionManager;
+	}
+
+	/**
+	 * Toegang tot de webserer vanuit de rest van de applicatie.
+	 * @return server
+	 */
+	public static JettyServer getServer(){
+		return server;
 	}
 
 	/**

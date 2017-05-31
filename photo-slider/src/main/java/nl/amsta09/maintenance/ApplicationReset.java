@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -21,10 +20,12 @@ public class ApplicationReset {
 	public static final String DEFAULT_PHOTO_DIRECTORY = "Resources/default/Foto/";
 	public static final String DEFAULT_AUDIO_DIRECTORY = "Resources/default/Audio/";
 
-	IOException ioException;
-	SqlConnector conn;
-	String[] mediaDirectoryPaths = {Photo.DIRECTORY, Audio.DIRECTORY};
-	String[] defaultMediaDirectoryPaths = {DEFAULT_PHOTO_DIRECTORY, DEFAULT_AUDIO_DIRECTORY};
+	private IOException ioException;
+	private SqlConnector conn;
+	private String[] mediaDirectoryPaths = {Photo.DIRECTORY, Audio.DIRECTORY};
+	private String[] defaultMediaDirectoryPaths = {DEFAULT_PHOTO_DIRECTORY, DEFAULT_AUDIO_DIRECTORY};
+	private String errorMessage;
+	private boolean failed;
 
 	public ApplicationReset(){
 		conn = new SqlConnector();
@@ -32,22 +33,32 @@ public class ApplicationReset {
 
 	/**
 	 * Reset de applicatie.
-	 *
-	 * @throws SQLException
-	 * @throws IOException
-	 * @throws ThemeNotFoundException
-	 * @throws ClassNotFoundException
+	 * @throws Exception
 	 */
-	public void execute() throws SQLException, IOException, ThemeNotFoundException, ClassNotFoundException{
+	public void execute() {
 		System.out.println("-------------Starting reset--------------");
+		try {
+			stopServices();
+			emptyMediaFolders();
+			emptyDatabase();
+			createDatabaseTables();
+			copyDefaultMedia();
+			createDefaultTheme();
+			insertDefaultMedia();
+			startServices();
+			failed = false;
+		} catch (Exception e) {
+			failed = true;
+			errorMessage = e.getMessage() + "\n" + e.getStackTrace();
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Stop de nodige processen van de applicatie.
+	 */
+	private void stopServices() {
 		MainApp.getSlideShowController().pause();
-		emptyMediaFolders();
-		emptyDatabase();
-		createDatabaseTables();
-		copyDefaultMedia();
-		createDefaultTheme();
-		insertDefaultMedia();
-		MainApp.getSlideShowController().start();
 	}
 
 	/**
@@ -84,22 +95,11 @@ public class ApplicationReset {
 		System.out.println("-------------Creating new database tables--------------");
 		File sqlScript = new File("WEB-INF/SQL/tablecreation.sql");
 		String sql = "";
-		ArrayList<String> statements = new ArrayList<String>(){
-			@Override
-			public boolean add(String s){
-				try {
-					conn.executeUpdate(s);
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-				return super.add(s);
-			}
-		};
 		Scanner lines = new Scanner(sqlScript);
 		while(lines.hasNext()){
 			String line = lines.nextLine();
 			if(line.matches("^-- *")){
-				if(!sql.isEmpty()) statements.add(sql);
+				if(!sql.isEmpty()) conn.executeUpdate(sql);
 				sql = "";
 			}
 			else {
@@ -169,5 +169,29 @@ public class ApplicationReset {
 			}
 		}
 	}
+
+	/**
+	 * Start de processen weer opnieuw op.
+	 * @throws Exception
+	 */
+	private void startServices() throws Exception{
+		MainApp.getSessionManager().reset();
+		MainApp.getSlideShowController().start();
+	}
 	
+	/**
+	 * Het foutbericht als er een exceptie optreed.
+	 * @return errorMessage
+	 */
+	public String getErrorMessage(){
+		return errorMessage;
+	}
+
+	/**
+	 * Geeft aan of de uitvoering van execute() geslaagd is of niet.
+	 * @return failed
+	 */
+	public boolean hasFailed(){
+		return failed;
+	}
 }

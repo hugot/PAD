@@ -54,7 +54,13 @@ public class MediaSessionManager {
 	 * @throws MediaSessionNotFoundException
 	 */
 	public MediaSession getSessionById(int sessionId) throws MediaSessionNotFoundException{
-		MediaSession session = sessions.get(sessionId);
+		MediaSession session;
+		try {
+			session = sessions.get(sessionId);
+		}
+		catch(ArrayIndexOutOfBoundsException e) {
+			throw new MediaSessionNotFoundException();
+		}
 		if(session == null){
 			throw new MediaSessionNotFoundException();
 		}
@@ -84,6 +90,13 @@ public class MediaSessionManager {
 			}
 		}
 		return sessions.size();
+	}
+
+	/**
+	 * reset de lijst met sessies.
+	 */
+	public void reset(){
+		sessions = new ArrayList<MediaSession>();
 	}
 	
 	/**

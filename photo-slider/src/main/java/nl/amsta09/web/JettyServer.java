@@ -18,7 +18,7 @@ import org.eclipse.jetty.webapp.WebXmlConfiguration;
  * Class voor het aanmaken van een simpele webserver
  */
 
-public class JettyServer {
+public class JettyServer{
 
 	private Server server;
 
@@ -60,6 +60,21 @@ public class JettyServer {
 	 */
 	public void start() throws Exception{
 		server.start();
+	}
+
+	/**
+	 * Stop de server.
+	 * @throws Exception
+	 */
+	public void stop() throws Exception{
+		server.stop();
+	}
+
+	/**
+	 * Voeg het proces van de server samen met het huidige proces.
+	 */
+	public void join() throws InterruptedException{
+		server.join();
 	}
 	
 	/**
