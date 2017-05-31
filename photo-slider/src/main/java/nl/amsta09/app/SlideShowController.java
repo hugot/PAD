@@ -10,6 +10,7 @@ import nl.amsta09.data.SqlConnector;
 import nl.amsta09.driver.MainApp; 
 import nl.amsta09.model.Photo; 
 import nl.amsta09.model.Theme; 
+import nl.amsta09.app.Settings;
 
 public class SlideShowController {
 	private Theme theme;
@@ -18,6 +19,7 @@ public class SlideShowController {
 	private Stage stage;
 	private SqlConnector conn;
 	private Timer timer;
+        private Settings settings;
 
 	/**
 	 * Instantieer de slideshow en zorg dat er een willekeurig thema of willekeurige foto te zien is.
@@ -29,6 +31,7 @@ public class SlideShowController {
 		view = new SlideShowView(stackPane, this);
 		this.stage = stage;
 		timer = new Timer(this);
+                settings = new Settings();
 	}
 
 	/**
@@ -72,12 +75,16 @@ public class SlideShowController {
         public Theme getTheme(){
             return theme;
         }
-
+        
+        public Settings getSettings(){
+            return settings;
+        }
 	/**
 	 * Verander welke foto er weergegeven wordt.
 	 * @param photo
 	 */
 	public void setImage(Photo photo){
+                
 		view.setImage(photo);
 		timer.reset();
 	}
@@ -99,10 +106,10 @@ public class SlideShowController {
 	 */
 	public void setNextTheme(){
 		try {
+                    System.out.println("setting next theme");
 			setTheme(conn.getRandomThemeThatIsNot(theme));
-                        if (theme.getMusic() != null){
-                                theme.getMusic().playSound();
-                        }
+                        if(theme.getMusic() != null && settings.getSound())
+                        theme.getMusic().playSound();
 			showNextImage();
 		} catch (SQLException e) {
 			//TODO: doe iets nuttigs.

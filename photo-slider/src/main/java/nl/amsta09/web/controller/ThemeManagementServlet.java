@@ -80,6 +80,12 @@ public class ThemeManagementServlet extends HttpServlet {
 		RequestWrapper requestWrapper = new RequestWrapper(request);
 		this.response = response;
 
+		//Redirect naar GET methode als er nog geen mediaSessie actief is.
+		if(!requestWrapper.getSession().hasMediaSession()){
+			doGet(request, response);
+			return;
+		} 
+		
 		// Achterhaal welk thema is aangeklikt en haal het op uit de database
 		int themeId;
 		try {

@@ -47,6 +47,10 @@ Via deze view kunnen de thema's beheerd worden
 				</header>
 				<ul>
 					<li>
+						<form class="small-button-form" style="float: center;" action="/deleteTheme" method="post">
+							<button class="small-button">Verwijder het thema.</button>
+						</form></li>
+					<li>
 						<form class="small-button-form" style="float: center;" action="/setThemeOnOff" method="get">
 							<button class="small-button">Zet het thema aan/uit.</button>
 						</form></li>
@@ -58,6 +62,11 @@ Via deze view kunnen de thema's beheerd worden
 					<li>
 						<form class="small-button-form" style="float: center;" action="/setMusicOnOff" method="get">
 							<button class="small-button">Zet de muziek aan/uit.</button>
+						</form> 
+					</li>
+					<li>
+						<form class="small-button-form" style="float: center;" action="/turnAudioOnOff" method="post">
+							<button class="small-button">Zet het geluid aan/uit.</button>
 						</form> 
 					</li>
 					<li>
