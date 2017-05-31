@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import nl.amsta09.data.SqlConnector.ThemeNotFoundException;
 import nl.amsta09.model.Photo;
 import nl.amsta09.model.Theme;
+import nl.amsta09.app.Settings;
 import nl.amsta09.web.html.HtmlPopup;
 import nl.amsta09.web.util.RequestWrapper;
 
@@ -28,6 +29,7 @@ public class ThemeManagementServlet extends HttpServlet {
 	private HttpServletResponse response;
 	private ArrayList<Photo> photos;
 	private Theme selectedTheme;
+        private Settings settings;
 
 	/**
 	 * Deze methode rendert de theme management pagina met een lijst van thema's en een lijst
@@ -71,7 +73,8 @@ public class ThemeManagementServlet extends HttpServlet {
 			throws ServletException, IOException{
 		RequestWrapper requestWrapper = new RequestWrapper(request);
 		this.response = response;
-
+                
+                
 		//Redirect naar GET methode als er nog geen mediaSessie actief is.
 		if(!requestWrapper.getSession().hasMediaSession()){
 			doGet(request, response);

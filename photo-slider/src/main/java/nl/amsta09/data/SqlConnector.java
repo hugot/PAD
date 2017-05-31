@@ -49,13 +49,13 @@ public class SqlConnector {
     /*
      * Verwijdert het gekozen Thema uit de database
      */
-    public void deleteTheme(int idTheme) throws SQLException, ClassNotFoundException {
+    public void deleteTheme(Theme theme) throws SQLException, ClassNotFoundException {
         Statement deleteThemeStatement = connection.createStatement();
         //Verwijdert de thema uit de tabel Thema
-        String sql = ("DELETE FROM Thema"
-                + "WHERE id = " + idTheme);
-
+        String sql = ("DELETE FROM theme_has_media WHERE theme_id = " + theme.getId());
         deleteThemeStatement.execute(sql);
+        String sql2 = ("DELETE FROM theme WHERE id = " + theme.getId());
+        deleteThemeStatement.execute(sql2);
     }
 
     /*
