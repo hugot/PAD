@@ -59,13 +59,13 @@ public class ApplicationReset {
 	}
 
 	private void copyDefaultMedia(){
-		for(String path : directoryPaths){
-			File dir = new File(path){
-				for(File file : dir.listFiles()){
-					file.gt
-				}
-			}
-		}
+//		for(String path : directoryPaths){
+//			File dir = new File(path){
+//				for(File file : dir.listFiles()){
+//					file.gt
+//				}
+//			}
+//		}
 	}
 
 	private void insertDefaultMedia(){
