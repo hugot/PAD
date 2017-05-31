@@ -1,12 +1,16 @@
 package nl.amsta09.web.controller;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import nl.amsta09.data.SqlConnector.ThemeNotFoundException;
 import nl.amsta09.driver.MainApp;
+import nl.amsta09.maintenance.ApplicationReset;
 import nl.amsta09.web.html.HtmlPopup;
 import nl.amsta09.web.util.RequestWrapper;
 
@@ -33,5 +37,21 @@ public class SettingManagementServlet extends HttpServlet {
                     requestWrapper.getContent().add(HtmlPopup.CLASS, popup);
                     new ThemeManagementServlet().doGet(requestWrapper, response);
                 }
+				
+				System.out.println("bezig");
+		if (requestWrapper.getParameter("reset") != null || requestWrapper.getAttribute("reset") != null){
+			HtmlPopup popup;
+			try {
+				new ApplicationReset().execute();
+				popup = new HtmlPopup("Succes", "Reset geslaagd",
+						"De applicatie is gereset.");
+			} catch (ClassNotFoundException | SQLException | ThemeNotFoundException e) {
+				popup = new HtmlPopup("error", "Reset mislukt",
+						"Het is niet gelukt om de applicatie te resetten.");
+				e.printStackTrace();
+			}
+			requestWrapper.getContent().add(HtmlPopup.CLASS, popup);
+			doGet(requestWrapper, response);
+		}
 	}
 }
