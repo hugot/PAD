@@ -5,6 +5,16 @@ xmlns:web="http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
 xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
 http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 
+
+	<servlet>
+		<servlet-name>SettingManagementServlet</servlet-name>
+		<servlet-class>nl.amsta09.web.controller.SettingManagementServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SettingManagementServlet</servlet-name>
+		<url-pattern>/settingmanagement</url-pattern>
+	</servlet-mapping>
+
 	<servlet>
 		<servlet-name>FileUploadServlet</servlet-name>
 		<servlet-class>nl.amsta09.web.controller.FileUploadServlet</servlet-class>

@@ -5,4 +5,5 @@
 		<%-- POPUP --%>
 		   ${popup}
 	<script type="text/javascript" src="${context}/webroot/make-popup.js"></script>
+	<script type="text/javascript" src="${context}/webroot/sound-interaction.js"></script>
 </html>
