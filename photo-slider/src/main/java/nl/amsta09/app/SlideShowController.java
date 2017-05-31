@@ -41,6 +41,7 @@ public class SlideShowController {
 		setRandomTheme();
 		view.setKeyListener();
 		timer.start();
+                stage.setFullScreen(true);
 		stage.setScene(view);
 		stage.show();
 		showNextImage();
