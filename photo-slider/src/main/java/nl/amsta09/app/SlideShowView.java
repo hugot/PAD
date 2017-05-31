@@ -33,6 +33,9 @@ public class SlideShowView extends Scene {
                 this.photo = photo;
 		this.image = new Image(photo.getURL().toString());
 		imageView.setImage(image);
+                imageView.setFitWidth(photo.getPhotoWidth());
+                imageView.setPreserveRatio(true);
+                imageView.setSmooth(true);
 	}
         
         public Photo getPhoto(){

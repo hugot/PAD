@@ -62,19 +62,21 @@ public class Photo extends Media {
         return playedSoundEffect;
     }
     
+    public int getPhotoWidth(){
+        return width;
+    }
+    
     public void correctPhotoResolution(){
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int screenWidth = (int)screenSize.getWidth();
         int screenHeight = (int)screenSize.getHeight();
         float imageResolutionRatio = width / height;
         float screenResolutionRatio = screenWidth / screenHeight;
-        
         if(imageResolutionRatio > screenResolutionRatio){
             width = screenWidth;
-            height = (int)(width / imageResolutionRatio);
         }else{
             height = screenHeight;
-            width = (int)(height * imageResolutionRatio);
+            width = (int)(imageResolutionRatio * height);
         }
     }
 }
