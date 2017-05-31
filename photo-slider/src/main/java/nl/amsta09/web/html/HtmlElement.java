@@ -128,6 +128,13 @@ public abstract class HtmlElement <Element extends HtmlElement<Element>> impleme
 	}
 
 	/**
+	 * Vraag een attribuut op aan de hand van de naam.
+	 */
+	public String getAttribute(String attributeName){
+		return attributes.get(attributeName);
+	}
+
+	/**
 	 * Genereer de onderkant van het element.
 	 * @return bottom
 	 */

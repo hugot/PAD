@@ -8,8 +8,6 @@ import java.sql.Statement;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 import nl.amsta09.model.Media;
 import nl.amsta09.model.Photo;
@@ -169,8 +167,10 @@ public class SqlConnector {
     }
 
 
-    /*
-     * Zet een media file in de correcte type tabel (photo, sound, soundeffect)
+    /**
+     * Voeg een media bestand toe aan de juiste tabel in de database aan de hand van
+     * het soort media.
+     * @param media 
      */
     public void insertIntoMediaType(Media media) throws SQLException {
         if (media instanceof Photo) {
@@ -201,6 +201,10 @@ public class SqlConnector {
         }
     }
 
+	/**
+	 * Haal de id op van een media bestand aan de hand van de naam.
+	 * @return mediaId
+	 */
 	public int getMediaIdFrom(Media media) throws SQLException{
 	   	ResultSet set = executeQuery(String.format("SELECT id FROM media WHERE name = '%s';", media.getName()));
 	   	set.next();
@@ -282,7 +286,7 @@ public class SqlConnector {
     }
 
 	/**
-	 * Haal alle foto;s van een bepaald theme op
+	 * Haal alle foto's van een bepaald thema op.
 	 * @param theme
 	 * @return photos
 	 */
@@ -294,6 +298,21 @@ public class SqlConnector {
 			photos.add(new Photo(set.getString("media.filePath"), set.getString("media.name"), set.getInt("media.id"), theme.getName()));
 		}
 		return photos;
+    }
+
+	/**
+	 * Haal alle muziek van een bepaald thema op.
+	 * @param theme
+	 * @return audio
+	 */
+    public ArrayList<Audio> getAllMusicFromTheme(Theme theme) throws SQLException {
+    	ArrayList<Audio> audio = new ArrayList<>();
+		ResultSet set = executeQuery(String.format("SELECT * FROM song INNER JOIN media ON song.id = media.id WHERE media.id IN (SELECT media_id FROM " +
+					"theme_has_media WHERE theme_id = %s);", theme.getId()));
+		while(set.next()){
+			audio.add(new Audio(set.getString("media.filePath"), set.getString("media.name"), set.getInt("media.id"), theme.getName()));
+		}
+		return audio;
     }
 
 	/**
@@ -371,7 +390,7 @@ public class SqlConnector {
      *
      * @param update
      */
-    public static void executeUpdate(String update) throws SQLException {
+    public void executeUpdate(String update) throws SQLException {
         Statement statement = connection.createStatement();
         statement.execute(update);
 
@@ -383,7 +402,7 @@ public class SqlConnector {
      * @param query
      * @return set
      */
-    public static ResultSet executeQuery(String query) throws SQLException {
+    public ResultSet executeQuery(String query) throws SQLException {
         Statement statement = connection.createStatement();
         ResultSet set = statement.executeQuery(query);
         return set;

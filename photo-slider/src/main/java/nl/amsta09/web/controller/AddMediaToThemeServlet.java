@@ -50,7 +50,7 @@ public class AddMediaToThemeServlet extends HttpServlet {
 						"Fout bij verwerken van request", 
 						"Het is niet gelukt om de door u geselecteerde bestand te vinden, probeer het " + 
 						"alstublieft opnieuw"));
-			requestWrapper.respondUsing(RequestWrapper.THEME_MANAGEMENT_JSP, response);
+			new ThemeManagementServlet().doGet(requestWrapper.getHttpServletRequest(), response);
 			e.printStackTrace();
 			return;
 		}
@@ -62,7 +62,7 @@ public class AddMediaToThemeServlet extends HttpServlet {
 						"Fout bij verbinding met de database", 
 						"Het is niet gelukt om verbinding te maken met de database, probeer het " +
 						"alstublieft opnieuw"));
-			requestWrapper.respondUsing(RequestWrapper.THEME_MANAGEMENT_JSP, response);
+			new ThemeManagementServlet().doGet(requestWrapper.getHttpServletRequest(), response);
 			e.printStackTrace();
 			return;
 		}

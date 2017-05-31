@@ -79,6 +79,7 @@ public class SlideShowController {
 	 */
 	public void setImage(Photo photo){
 		view.setImage(photo);
+		timer.reset();
 	}
 
 	/**

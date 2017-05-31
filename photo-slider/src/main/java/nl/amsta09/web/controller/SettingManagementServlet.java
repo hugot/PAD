@@ -7,17 +7,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import nl.amsta09.web.util.RequestWrapper;
+
 public class SettingManagementServlet extends HttpServlet {
 
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response){
-		System.out.println("wuut");
-		try {
-			request.getRequestDispatcher("/WEB-INF/index.jsp").forward(request, response);
-		} catch (ServletException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException{
+		RequestWrapper requestWrapper = new RequestWrapper(request);
+		requestWrapper.respondUsing("/WEB-INF/settings.jsp", response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response){

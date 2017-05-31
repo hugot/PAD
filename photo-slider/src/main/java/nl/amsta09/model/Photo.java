@@ -6,7 +6,7 @@ import java.io.File;
  * Model voor een foto
  */
 public class Photo extends Media {
-	public static final String DIRECTORY = "Resources" + File.separator + "Foto" +  File.separator;
+	public static final String DIRECTORY = "Resources" + "/" + "Foto" +  "/";
         
     private Audio soundeffect;
     private boolean playedSoundEffect;

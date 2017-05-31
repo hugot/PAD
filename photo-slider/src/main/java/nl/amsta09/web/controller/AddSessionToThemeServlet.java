@@ -78,7 +78,7 @@ public class AddSessionToThemeServlet extends HttpServlet {
 		} catch (SQLException | NullPointerException | NumberFormatException | ThemeNotFoundException e) {
 			requestWrapper.getContent().add(HtmlPopup.CLASS, new HtmlPopup("error", "Er is iets misgegaan", 
 					"Probeer de pagina opnieuw te laden."));
-			requestWrapper.respondUsing(RequestWrapper.THEME_SELECTION_JSP, response);
+			doGet(requestWrapper.getHttpServletRequest(), response);
 			e.printStackTrace();
 			return;
 		}
@@ -89,11 +89,11 @@ public class AddSessionToThemeServlet extends HttpServlet {
 				if(media instanceof Photo){
 					try {
 						requestWrapper.getSqlConnector().addMediaToTheme(theme.getId(), media);
-						request.setAttribute("message", "media toegevoegd aan thema");
 					} catch (SQLException e) {
-						requestWrapper.getContent().add(HtmlPopup.CLASS, new HtmlPopup("error", "Er is iets misgegaan",
+						requestWrapper.getContent().add(HtmlPopup.CLASS, 
+								new HtmlPopup("error", "Er is iets misgegaan",
 								"Het is niet gelukt om verbinding te maken met de database."));
-						requestWrapper.respondUsing(RequestWrapper.THEME_SELECTION_JSP, response);
+						doGet(requestWrapper.getHttpServletRequest(), response);
 						e.printStackTrace();
 						return;
 					}
@@ -103,6 +103,6 @@ public class AddSessionToThemeServlet extends HttpServlet {
 		
 		requestWrapper.getContent().add(HtmlPopup.CLASS, new HtmlPopup("confirmation", "Media toegevoegd", 
 				"De media is toegevoegd aan het thema."));
-		requestWrapper.respondUsing(RequestWrapper.THEME_SELECTION_JSP, response);
+		doGet(requestWrapper.getHttpServletRequest(), response);
 	}
 }

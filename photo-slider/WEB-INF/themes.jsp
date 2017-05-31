@@ -74,6 +74,8 @@ Via deze view kunnen de thema's beheerd worden
 					</li> 
 					<li>Slideshow timer <input type="text" id="timer"> </li>
 				</ul>
+				<%-- -------- MUZIEK ------- --%>
+							${music}
 			</section>
 		<form id="theme-creation-popup" class="hidden-popup" method="POST" action="/addtheme">
 			<header>

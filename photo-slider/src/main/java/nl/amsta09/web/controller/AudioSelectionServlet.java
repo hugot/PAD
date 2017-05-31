@@ -38,7 +38,7 @@ public class AudioSelectionServlet extends HttpServlet {
 					"Database fout", "het is niet gelukt om de foto's op" +
 					"te halen uit de database. Probeer de pagina opnieuw te laden");
 			requestWrapper.getContent().add("popup", popup);
-			requestWrapper.respondUsing(AUDIO_SELECTION_JSP, response);
+			new ThemeManagementServlet().doGet(requestWrapper.getHttpServletRequest(), response);
 			e.printStackTrace();
 			return;
 		}
