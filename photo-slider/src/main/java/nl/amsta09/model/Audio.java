@@ -12,7 +12,7 @@ import javax.sound.sampled.*;
  * @author Space
  */
 public class Audio extends Media {
-	public static final String DIRECTORY = "Resources" + File.separator + "Audio" +  File.separator;
+	public static final String DIRECTORY = "Resources" + "/"+ "Audio" + "/";
 
     private AudioInputStream audioIn;
     private Clip clip;

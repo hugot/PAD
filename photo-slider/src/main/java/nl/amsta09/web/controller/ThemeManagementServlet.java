@@ -12,7 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import nl.amsta09.data.SqlConnector.ThemeNotFoundException;
 import nl.amsta09.model.Photo;
 import nl.amsta09.model.Theme;
-import nl.amsta09.app.Settings;
+import nl.amsta09.model.Audio;
+import nl.amsta09.web.html.HtmlAudio;
+import nl.amsta09.web.html.HtmlList;
 import nl.amsta09.web.html.HtmlPopup;
 import nl.amsta09.web.util.RequestWrapper;
 
@@ -29,7 +31,6 @@ public class ThemeManagementServlet extends HttpServlet {
 	private HttpServletResponse response;
 	private ArrayList<Photo> photos;
 	private Theme selectedTheme;
-        private Settings settings;
 
 	/**
 	 * Deze methode rendert de theme management pagina met een lijst van thema's en een lijst
@@ -46,20 +47,31 @@ public class ThemeManagementServlet extends HttpServlet {
 
 		// Laad lijst met thema's
 		if(!refreshThemeList()) return;
-
 		requestWrapper.getContent().addThemeList(themes, MAPPING);
 
 		// Geselecteerde thema
-		if(requestWrapper.getSession().hasManagedTheme())
-			selectedTheme = requestWrapper.getSession().getMediaSession().getManagedTheme();
-		else 
-			selectedTheme = themes.get(STARTING_THEME); // Default thema
+		if(requestWrapper.getSession().hasManagedTheme()){
+			selectedTheme = requestWrapper.getSession().getMediaSession()
+				.getManagedTheme();
+		}
+		else {
+			try{
+				selectedTheme = themes.get(STARTING_THEME); // Default thema
+				requestWrapper.getSession().setManagedTheme(selectedTheme);
+			}
+			catch (IndexOutOfBoundsException e){
+				requestWrapper.respondUsing(RequestWrapper.THEME_MANAGEMENT_JSP, response);
+				return;
+			}
+		}
 
 		//Maak een lijst met alle foto's van de theme
 		if(!refreshPhotoList()) return;
-
 		requestWrapper.getContent().addPhotoList(photos);
-		requestWrapper.getSession().setManagedTheme(selectedTheme);
+
+		//Laad lijst met muziek die bij thema hoort.
+		if(!refreshMusicList()) return;
+
 		requestWrapper.respondUsing(RequestWrapper.THEME_MANAGEMENT_JSP, response);
 	}
 
@@ -73,8 +85,7 @@ public class ThemeManagementServlet extends HttpServlet {
 			throws ServletException, IOException{
 		RequestWrapper requestWrapper = new RequestWrapper(request);
 		this.response = response;
-                
-                
+
 		//Redirect naar GET methode als er nog geen mediaSessie actief is.
 		if(!requestWrapper.getSession().hasMediaSession()){
 			doGet(request, response);
@@ -84,26 +95,19 @@ public class ThemeManagementServlet extends HttpServlet {
 		// Achterhaal welk thema is aangeklikt en haal het op uit de database
 		int themeId;
 		try {
-			themeId = Integer.parseInt(requestWrapper.getParameter(RequestWrapper.SELECTED_THEME_ID).toString());
+			themeId = Integer.parseInt(
+					requestWrapper.getParameter(
+						RequestWrapper.SELECTED_THEME_ID).toString());
 			selectedTheme = requestWrapper.getSqlConnector().getThemeById(themeId);
-		} catch (NullPointerException | NumberFormatException | SQLException | ThemeNotFoundException e) {
+			requestWrapper.getSession().setManagedTheme(selectedTheme);
+		} catch (NullPointerException | NumberFormatException | SQLException | 
+				ThemeNotFoundException e) {
 			HtmlPopup popup = new HtmlPopup("error", "Thema niet gevonden", 
-					"Het thema bestaat niet of er is iets misgegaan, probeer het in dat geval opnieuw.");
+					"Het thema bestaat niet of er is iets misgegaan, " +
+					"probeer het in dat geval opnieuw.");
 			requestWrapper.getContent().add(HtmlPopup.CLASS, popup);
-			requestWrapper.respondUsing(RequestWrapper.THEME_MANAGEMENT_JSP, response);
-			return;
 		}
-
-		// Laad themalijst opnieuw.
-		if(!refreshThemeList()) return;
-
-		// Laad lijst met foto's in het geselecteerde thema.
-		if(!refreshPhotoList()) return;
-
-		requestWrapper.getContent().addThemeList(themes, MAPPING);
-		requestWrapper.getContent().addPhotoList(photos);
-		requestWrapper.getSession().setManagedTheme(selectedTheme);
-		requestWrapper.respondUsing(RequestWrapper.THEME_MANAGEMENT_JSP, response);
+		doGet(requestWrapper, response);
 	}
 
 	/**
@@ -120,7 +124,8 @@ public class ThemeManagementServlet extends HttpServlet {
 						"Fout bij ophalen Thema's", 
 						"Er is iets fout gegaan bij het ophalen van de thema's, " + 
 						"probeer het alstublieft opnieuw"));
-			requestWrapper.respondUsing(RequestWrapper.THEME_MANAGEMENT_JSP, response);
+			requestWrapper.respondUsing(
+					RequestWrapper.THEME_MANAGEMENT_JSP, response);
 			return false;
 		}
 	}
@@ -131,10 +136,38 @@ public class ThemeManagementServlet extends HttpServlet {
 	 */
 	private boolean refreshPhotoList() throws ServletException, IOException{
 		try {
-			photos = requestWrapper.getSqlConnector().getAllPhotosFromTheme(selectedTheme);
+			photos = requestWrapper.getSqlConnector()
+				.getAllPhotosFromTheme(selectedTheme);
 		} catch (SQLException e) {
 			HtmlPopup popup = new HtmlPopup("error", "Fout bij ophalen foto's", 
-					"Er is iets fout gegaan bij het ophalen van de foto's, probeer het alstublieft opnieuw");
+					"Er is iets fout gegaan bij het ophalen van de foto's, " + 
+					"probeer het alstublieft opnieuw");
+			requestWrapper.getContent().add("popup", popup);
+			requestWrapper.respondUsing(RequestWrapper.THEME_MANAGEMENT_JSP, response);
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * (Her)laadt de muziek die in het thema hoort.
+	 * @return refreshed geeft aan of de actie geslaagd is of niet.
+	 */
+	private boolean refreshMusicList() throws ServletException, IOException{
+		try {
+			ArrayList<Audio> music = requestWrapper.getSqlConnector()
+				.getAllMusicFromTheme(selectedTheme);
+			HtmlList musicList = new HtmlList("music-list", "music-list");
+			music.listIterator().forEachRemaining((Audio audio) -> {
+				musicList.addItem(
+						new HtmlAudio(
+							"" + audio.getId(), audio.getRelativePath()));
+			});
+			requestWrapper.getContent().add("music", musicList);
+		} catch (SQLException e) {
+			HtmlPopup popup = new HtmlPopup("error", "Fout bij ophalen foto's", 
+					"Er is iets fout gegaan bij het ophalen van de foto's, " +
+					"probeer het alstublieft opnieuw");
 			requestWrapper.getContent().add("popup", popup);
 			requestWrapper.respondUsing(RequestWrapper.THEME_MANAGEMENT_JSP, response);
 			return false;

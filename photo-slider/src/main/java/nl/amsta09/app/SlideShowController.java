@@ -1,6 +1,8 @@
 package nl.amsta09.app;
 
+import java.io.File;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.ListIterator;
 
 import javafx.scene.layout.StackPane;
@@ -41,10 +43,19 @@ public class SlideShowController {
 		setRandomTheme();
 		view.setKeyListener();
 		timer.start();
+                stage.setFullScreen(true);
 		stage.setScene(view);
 		stage.show();
                 stage.setFullScreen(true);
 		showNextImage();
+	}
+
+	public void pause(){
+		timer.stop();
+	}
+
+	public void start(){
+		timer.start();
 	}
 
 
@@ -54,12 +65,16 @@ public class SlideShowController {
 	public void setRandomTheme(){
 
 		try {
-			//TODO: zorg dat dit random wordt (kan niet aan de hand van id,
-			//die telt nmlk ook door voor inactieve themes
 			setTheme(conn.getRandomTheme());
 		} catch (SQLException e) {
-			// TODO Doe hier iets nuttigs
-			e.printStackTrace();
+			theme = new Theme("emergency", 1);
+			File dir = new File("Resources/default/Foto/");
+			ArrayList<Photo> photos = new ArrayList<>();
+			for(File file : dir.listFiles()){
+				photos.add(new Photo(file.getPath(), file.getName(), 1));
+			}
+			theme.setPhotoList(photos);
+			setTheme(theme);
 		}
 	}
 
@@ -87,6 +102,7 @@ public class SlideShowController {
 	public void setImage(Photo photo){
                 
 		view.setImage(photo);
+		timer.reset();
 	}
 
 	/**
@@ -106,14 +122,13 @@ public class SlideShowController {
 	 */
 	public void setNextTheme(){
 		try {
-                    System.out.println("setting next theme");
+			System.out.println("setting next theme");
 			setTheme(conn.getRandomThemeThatIsNot(theme));
                         if(theme.getMusic() != null && settings.getSound())
                         theme.getMusic().playSound();
 			showNextImage();
 		} catch (SQLException e) {
-			//TODO: doe iets nuttigs.
-			e.printStackTrace();
+			setRandomTheme();
 		}
 	}
 

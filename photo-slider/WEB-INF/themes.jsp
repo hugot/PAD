@@ -47,6 +47,10 @@ Via deze view kunnen de thema's beheerd worden
 				</header>
 				<ul>
 					<li>
+						<form class="small-button-form" style="float: center;" action="/showSelectedTheme" method="post">
+							<button class="small-button">Toon dit thema nu in de Slideshow.</button>
+						</form></li>
+					<li>
 						<form class="small-button-form" style="float: center;" action="/deleteTheme" method="post">
 							<button class="small-button">Verwijder het thema.</button>
 						</form></li>
@@ -83,6 +87,8 @@ Via deze view kunnen de thema's beheerd worden
 					</li> 
 					<li>Slideshow timer <input type="text" id="timer"> </li>
 				</ul>
+				<%-- -------- MUZIEK ------- --%>
+							${music}
 			</section>
 		<form id="theme-creation-popup" class="hidden-popup" method="POST" action="/addtheme">
 			<header>
