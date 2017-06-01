@@ -105,6 +105,15 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 		<servlet-name>AddMediaToThemeServlet</servlet-name>
 		<url-pattern>/addmediatotheme</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>DeletePhotoSelection</servlet-name>
+		<servlet-class>nl.amsta09.web.controller.DeletePhotoSelection</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DeletePhotoSelection</servlet-name>
+		<url-pattern>/DeleteFoto</url-pattern>
+	</servlet-mapping>
 
 	
 </web-app>

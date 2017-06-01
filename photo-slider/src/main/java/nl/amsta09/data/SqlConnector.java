@@ -53,7 +53,7 @@ public class SqlConnector {
         String sql = ("DELETE FROM theme_has_media WHERE theme_id = " + theme.getId());
         deleteThemeStatement.execute(sql);
         String sql2 = ("DELETE FROM theme WHERE id = " + theme.getId());
-        deleteThemeStatement.execute(sql2);
+        deleteThemeStatement.execute(sql2); 
     }
 
     /*
@@ -76,12 +76,12 @@ public class SqlConnector {
     /*
     Verwijdert de gekozen Media uit de database
      */
-    public void deleteMedia(URL MediafilePath) throws SQLException, ClassNotFoundException {
+    public void deleteMedia( int id ) throws SQLException, ClassNotFoundException {
 
         Statement deleteMediaStatement = connection.createStatement();
 
         String sql = ("DELETE FROM Media"
-                + "WHERE filePath = " + "'" + MediafilePath + "'");
+                + "WHERE id = " + id);
 
         deleteMediaStatement.execute(sql);
     }
