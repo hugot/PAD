@@ -22,6 +22,7 @@ Dit is een template voor het maken van nieuwe views
 
 				<header><h2> De instellingen van de slideshow</h2></header>
 				<form id="settings" action="settingmanagement" method="post">
+					<input type="hidden" value="reset" id="reset" name="reset">
 					Het is mogelijk om het apparaat te resetten naar de nieuwstaat.<br>
 					Druk hiervoor op de onderstaande knop:<br><br>
 					<button type="button" onclick="showPopup('reset-confirmation');">reset</button>
@@ -31,7 +32,7 @@ Dit is een template voor het maken van nieuwe views
 					<header><h3>Weet u het zeker?</h3></header>
 					<p> Als u op doorgaan klikt, wordt alle media van het apparaat verwijderd
 						en wordt het apparaat teruggebracht naar de nieuwstaat. </p>
-					<button type="button" onclick="document.getElementById('settings').send();hidePopup('reset-confirmation');">Doorgaan</button>
+					<button type="button" onclick="document.getElementById('settings').submit();hidePopup('reset-confirmation');">Doorgaan</button>
 					<button type="button" onclick="hidePopup('reset-confirmation');">annuleer</button>
 				</form>
 			</section>

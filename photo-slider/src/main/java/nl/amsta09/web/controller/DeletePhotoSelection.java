@@ -15,7 +15,7 @@ import nl.amsta09.web.util.RequestWrapper;
 import nl.amsta09.web.html.HtmlDiv;
 import nl.amsta09.web.html.HtmlForm;
 import nl.amsta09.web.html.HtmlImage;
-
+import nl.amsta09.data.SqlConnector;
 public class DeletePhotoSelection extends HttpServlet {
 	private RequestWrapper requestWrapper;
 
@@ -23,7 +23,7 @@ public class DeletePhotoSelection extends HttpServlet {
 			throws ServletException, IOException{
 		requestWrapper = new RequestWrapper(request);
 		
-		//check of er een media sessie actief is voor de gebruiker.
+		
 		if(!requestWrapper.getSession().hasMediaSession()){
 			requestWrapper.respondUsing(RequestWrapper.INDEX_JSP, response);
 			return;
@@ -39,13 +39,14 @@ public class DeletePhotoSelection extends HttpServlet {
 			new ThemeManagementServlet().doGet(requestWrapper.getHttpServletRequest(), response); 
 			e.printStackTrace();
 			return;
+                        
 		}
 
 
 		// Maak de html elementen aan voor alle foto's
 		HtmlSection photoSection = new HtmlSection("main-section", "main-section");
 		photoList.listIterator().forEachRemaining((Photo photo) -> {
-			photoSection.addElement(new HtmlForm("" + photo.getId(), "floating-image", "post", "/addmediatotheme")
+			photoSection.addElement(new HtmlForm("" + photo.getId(), "floating-image", "post", "/DeleteMediaServlet")
 					.addElement(new HtmlDiv()
 						.setClass("photo-container")
 						.addElement(new HtmlImage("" + photo.getId(), "photo", photo.getRelativePath())
@@ -56,6 +57,7 @@ public class DeletePhotoSelection extends HttpServlet {
 					);
 		});
 		requestWrapper.getContent().add(RequestWrapper.PHOTO_LIST, photoSection);
-		requestWrapper.respondUsing(RequestWrapper.PHOTO_SELECTION_JSP, response);
+		requestWrapper.respondUsing(RequestWrapper.PHOTO_SELECTION_JSP, response); 
+                
 	}
 }

@@ -79,9 +79,8 @@ public class SqlConnector {
     public void deleteMedia( int id ) throws SQLException, ClassNotFoundException {
 
         Statement deleteMediaStatement = connection.createStatement();
-
-        String sql = ("DELETE FROM Media"
-                + "WHERE id = " + id);
+        String sql = ("DELETE FROM media"
+                + " WHERE id='" + id + "'");
 
         deleteMediaStatement.execute(sql);
     }
@@ -380,6 +379,7 @@ public class SqlConnector {
      * @param media
      */
     public void insertMedia(Media media) throws SQLException {
+        System.out.println(media.getRelativePath());
         executeUpdate(String.format("INSERT INTO media (name, filePath) VALUES ('%s','%s')", media.getName(), media.getRelativePath()));
         insertIntoMediaType(media);
     }
@@ -405,6 +405,10 @@ public class SqlConnector {
         Statement statement = connection.createStatement();
         ResultSet set = statement.executeQuery(query);
         return set;
+    }
+
+    public void deleteTheme(Media media) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public class ThemeNotFoundException extends Exception {

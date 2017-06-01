@@ -157,7 +157,6 @@ public class ThemeManagementServlet extends HttpServlet {
 						new HtmlAudio(
 							"" + audio.getId(), audio.getRelativePath()));
 			});
-			System.out.println(musicList);
 			requestWrapper.getContent().add("music", musicList);
 		} catch (SQLException e) {
 			HtmlPopup popup = new HtmlPopup("error", "Fout bij ophalen foto's", 
