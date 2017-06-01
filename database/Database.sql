@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS `photoslider`.`theme` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   `on` TINYINT(1) NOT NULL,
+  `showFirst` boolean NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
