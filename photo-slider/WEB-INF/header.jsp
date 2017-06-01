@@ -9,6 +9,11 @@
 		<li><a href="${context}/thememanagement">Beheer foto's en thema's</a></li>
 		<li><a href="${context}/uploadphoto">Voeg een foto toe</a></li>
         <li><a href="${context}/uploadaudio">Voeg Audio toe</a></li>
+		<li><a href="${context}/DeleteFoto">Delete Foto</a></li>
+<<<<<<< HEAD
+		
+=======
         <li><a href="${context}/settingmanagement">Instellingen</a></li>
+>>>>>>> 7bb9b9b3c99e05db3af56d566176449432ca8f53
 	</ul>
 </html>
