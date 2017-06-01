@@ -6,22 +6,28 @@ import java.util.ArrayList;
 import java.util.ListIterator;
 
 import javafx.scene.layout.StackPane;
+import javafx.scene.media.AudioClip;
 import javafx.stage.Stage;
 
 import nl.amsta09.data.SqlConnector; 
 import nl.amsta09.driver.MainApp; 
-import nl.amsta09.model.Photo; 
+import nl.amsta09.model.Photo;
+import nl.amsta09.model.Audio;
 import nl.amsta09.model.Theme; 
 import nl.amsta09.app.Settings;
 
 public class SlideShowController {
 	private Theme theme;
 	private ListIterator<Photo> photos;
+        private ListIterator<Audio> musics;
 	private SlideShowView view;
 	private Stage stage;
 	private SqlConnector conn;
 	private Timer timer;
         private Settings settings;
+        private AudioClip musicClip;
+        private AudioClip currentMusic;
+        private Thread musicThread;
 
 	/**
 	 * Instantieer de slideshow en zorg dat er een willekeurig thema of willekeurige foto te zien is.
@@ -46,8 +52,9 @@ public class SlideShowController {
                 stage.setFullScreen(true);
 		stage.setScene(view);
 		stage.show();
-                stage.setFullScreen(true);
-		showNextImage();
+                showNextImage();
+                playNextMusic();
+                runNextMusic();
 	}
 
 	public void pause(){
@@ -86,6 +93,7 @@ public class SlideShowController {
 	public void setTheme(Theme theme){
 		this.theme = theme;
 		this.photos = theme.getPhotoList().listIterator();
+                this.musics = theme.getMusicList().listIterator();
 	}
         
         public Theme getTheme(){
@@ -113,9 +121,32 @@ public class SlideShowController {
 			setImage(photos.next());
 		}
 		else {
-			setNextTheme();
+                        setNextTheme();
 		}
 	}
+        
+        /**
+         * Bepaalt de muziek die gespeeld moet worden
+         */
+        public void playNextMusic(){
+            if(musicClip != null){
+                    musicClip.stop();
+                }
+            
+            if(musics.hasNext()){
+                System.out.println("Dit is de Song die je nu afspeelt: " + musics.next().getName());
+                playMusic(musics.next());
+            }
+        }
+        
+        /**
+         * Speelt de muziek af
+         * @param music 
+         */
+        public void playMusic(Audio music){
+            musicClip = new AudioClip(music.getURL().toString());
+            musicClip.play();
+        }
 
 	/**
 	 * Verander het thema naar een nieuw thema.
@@ -123,14 +154,39 @@ public class SlideShowController {
 	public void setNextTheme(){
 		try {
 			System.out.println("setting next theme");
-			setTheme(conn.getRandomThemeThatIsNot(theme));
-                        if(theme.getMusic() != null && settings.getSound())
-                        theme.getMusic().playSound();
+			setTheme(conn.getRandomThemeThatIsNot(theme));;
 			showNextImage();
+                        playNextMusic();
+                        runNextMusic();
 		} catch (SQLException e) {
 			setRandomTheme();
 		}
 	}
+        
+        /**
+         * Checkt of er een muziek wordt afgespeeld
+         * Speelt een nieuwe muziek af wanneer dat niet zo is
+         * en een muziek in de musics(ListIterator) staat
+         */
+        public void runNextMusic(){
+                Runnable runMusic = new Runnable(){
+                        public void run(){
+                                if(musicClip != null){
+                                        while(musicClip.isPlaying()){
+                                            try{
+                                                Thread.sleep(1000);
+                                            } catch(InterruptedException e){
+                                                break;
+                                            }
+                                        }      
+                                playNextMusic();
+                                
+                                }
+                        }
+                };
+        musicThread = new Thread(runMusic);
+        musicThread.start();
+        }
 
 	/**
 	 * Deze class dient voor het timen van de de duratie dat een foto getoond wordt.
@@ -173,7 +229,7 @@ public class SlideShowController {
 			};
 			isRunning = true;
 			timerThread = new Thread(runnable);
-			timerThread.start();
+			timerThread.start(); 
 		}
 
 		/**

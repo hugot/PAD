@@ -236,6 +236,7 @@ public class SqlConnector {
 			throw new ThemeNotFoundException("Thema niet gevonden");
 		}
 		theme.setPhotoList(getAllPhotosFromTheme(theme));
+                theme.setMusicList(getAllMusicsFromTheme(theme));
 		return theme;
     }
 
@@ -248,6 +249,7 @@ public class SqlConnector {
 		themeSet.next();
 		Theme theme = new Theme(themeSet.getString("theme.name"), themeSet.getInt("theme.id"));
 		theme.setPhotoList(getAllPhotosFromTheme(theme));
+                theme.setMusicList(getAllMusicsFromTheme(theme));
 		return theme;
     }
 
@@ -264,6 +266,7 @@ public class SqlConnector {
 		themeSet.next();
 		otherTheme = new Theme(themeSet.getString("theme.name"), themeSet.getInt("theme.id"));
 		otherTheme.setPhotoList(getAllPhotosFromTheme(otherTheme));
+                otherTheme.setMusicList(getAllMusicsFromTheme(theme));
 		return otherTheme;
     }
 
@@ -282,6 +285,7 @@ public class SqlConnector {
 			throw new ThemeNotFoundException("Thema niet gevonden");
 		}
 		theme.setPhotoList(getAllPhotosFromTheme(theme));
+                theme.setMusicList(getAllMusicsFromTheme(theme));
 		return theme;
     }
 
@@ -305,7 +309,7 @@ public class SqlConnector {
 	 * @param theme
 	 * @return audio
 	 */
-    public ArrayList<Audio> getAllMusicFromTheme(Theme theme) throws SQLException {
+    public ArrayList<Audio> getAllMusicsFromTheme(Theme theme) throws SQLException {
     	ArrayList<Audio> audio = new ArrayList<>();
 		ResultSet set = executeQuery(String.format("SELECT * FROM song INNER JOIN media ON song.id = media.id WHERE media.id IN (SELECT media_id FROM " +
 					"theme_has_media WHERE theme_id = %s);", theme.getId()));
