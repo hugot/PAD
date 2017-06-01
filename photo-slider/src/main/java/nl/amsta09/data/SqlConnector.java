@@ -37,11 +37,28 @@ public class SqlConnector {
 
         Statement addThemeStatement = connection.createStatement();
         //Insert de gegevens in de database met een unieke ID
-        String on = "1";
-        String sql =  String.format("INSERT INTO theme (name, `on`) VALUES ('%s', %s)", themeName, on);
+        String on = "0";
+        String sql =  String.format("INSERT INTO theme (name, `on`) VALUES ('%s', '%s')", themeName, on);
 
         addThemeStatement.execute(sql);
 
+    }
+    
+    public void setThemeFirst(Theme theme) throws SQLException, ClassNotFoundException {
+        Statement addThemeStatement = connection.createStatement();
+        //Insert de gegevens in de database met een unieke ID
+        String on = "showFirst";
+        String sql1 = String.format("DELETE FROM settings WHERE settingName = 'showFirst'");
+        addThemeStatement.execute(sql1);
+        String sql2 = String.format("INSERT INTO settings (settingName, itemId) VALUES ('%s', '%s')", on, theme.getId());
+        addThemeStatement.execute(sql2);
+    }
+    
+    public Theme getFirstTheme() throws SQLException{
+        String on = "0";
+        ResultSet set = executeQuery(String.format("SELECT * FROM theme INNER JOIN settings ON theme.id = settings.itemId;"));
+	   	set.next();
+                return new Theme(set.getString("theme.name"), set.getInt("settings.itemId"));
     }
 
     /*

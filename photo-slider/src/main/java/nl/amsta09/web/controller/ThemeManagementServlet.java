@@ -55,8 +55,14 @@ public class ThemeManagementServlet extends HttpServlet {
 				.getManagedTheme();
 		}
 		else {
-			selectedTheme = themes.get(STARTING_THEME); // Default thema
-			requestWrapper.getSession().setManagedTheme(selectedTheme);
+			try{
+				selectedTheme = themes.get(STARTING_THEME); // Default thema
+				requestWrapper.getSession().setManagedTheme(selectedTheme);
+			}
+			catch (IndexOutOfBoundsException e){
+				requestWrapper.respondUsing(RequestWrapper.THEME_MANAGEMENT_JSP, response);
+				return;
+			}
 		}
 
 		//Maak een lijst met alle foto's van de theme

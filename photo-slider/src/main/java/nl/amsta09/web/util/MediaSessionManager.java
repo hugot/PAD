@@ -58,7 +58,7 @@ public class MediaSessionManager {
 		try {
 			session = sessions.get(sessionId);
 		}
-		catch(ArrayIndexOutOfBoundsException e) {
+		catch(IndexOutOfBoundsException e) {
 			throw new MediaSessionNotFoundException();
 		}
 		if(session == null){
