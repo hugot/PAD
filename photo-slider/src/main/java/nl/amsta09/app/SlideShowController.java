@@ -42,7 +42,7 @@ public class SlideShowController {
 	/**
 	 * Initialiseer de media die getoond wordt en zorg ervoor dat het scherm verschijnt.
 	 */
-	public void initialize() throws SqlConnector.ThemeNotFoundException {
+	public void initialize(){
 		setFirstTheme();
 		view.setKeyListener();
 		timer.start();
@@ -50,7 +50,9 @@ public class SlideShowController {
 		stage.setScene(view);
                 view.setFill(Color.BLACK);
 		stage.show();
+                System.out.println(theme.getId());
 		showNextImage();
+                System.out.println(theme.getId());
 	}
 
 	public void pause(){
@@ -62,23 +64,29 @@ public class SlideShowController {
 	}
 
 
-	/**
-	 * Haal een random thema op om foto's van weer te geven.
-	 */
-	public void setFirstTheme() throws SqlConnector.ThemeNotFoundException{
-		try {
-                        setTheme(conn.getFirstTheme());
-		} catch (SQLException e) {
-			theme = new Theme("emergency", 1);
-			File dir = new File("Resources/default/Foto/");
-			ArrayList<Photo> photos = new ArrayList<>();
-			for(File file : dir.listFiles()){
-				photos.add(new Photo(file.getPath(), file.getName(), 1));
-			}
-			theme.setPhotoList(photos);
-			setTheme(theme);
-		}
-	}
+	   /**
+     * Haal een random thema op om foto's van weer te geven.
+     */
+    public void setFirstTheme() {
+        try {
+            setTheme(conn.getFirstTheme());
+        } catch (SQLException e) {
+            try {
+                e.printStackTrace();
+                setTheme(conn.getRandomTheme());
+                System.out.println("how bout dis");
+            } catch (SQLException ex) {
+                theme = new Theme("emergency", 1);
+                File dir = new File("Resources/default/Foto/");
+                ArrayList<Photo> photos = new ArrayList<>();
+                for (File file : dir.listFiles()) {
+                    photos.add(new Photo(file.getPath(), file.getName(), 1));
+                }
+                theme.setPhotoList(photos);
+                setTheme(theme);
+            }
+        }
+    }
 
 
 	/**
@@ -102,7 +110,6 @@ public class SlideShowController {
 	 * @param photo
 	 */
 	public void setImage(Photo photo){
-                
 		view.setImage(photo);
 		timer.reset();
 	}
@@ -110,7 +117,7 @@ public class SlideShowController {
 	/**
 	 * Laat de volgende foto van het thema zien.
 	 */
-	public void showNextImage() throws SqlConnector.ThemeNotFoundException{
+	public void showNextImage(){
 		if(photos.hasNext()){
 			setImage(photos.next());
 		}
@@ -122,7 +129,7 @@ public class SlideShowController {
 	/**
 	 * Verander het thema naar een nieuw thema.
 	 */
-	public void setNextTheme() throws SqlConnector.ThemeNotFoundException{
+	public void setNextTheme(){
 		try {
 			System.out.println("setting next theme");
 			setTheme(conn.getRandomThemeThatIsNot(theme));
@@ -168,11 +175,8 @@ public class SlideShowController {
 							}
 							secondsToGo--;
 						}
-                                            try {
                                                 slideShowController.showNextImage();
-                                            } catch (SqlConnector.ThemeNotFoundException ex) {
-                                                Logger.getLogger(SlideShowController.class.getName()).log(Level.SEVERE, null, ex);
-                                            }
+                                            
 						reset();
 					}
 				}

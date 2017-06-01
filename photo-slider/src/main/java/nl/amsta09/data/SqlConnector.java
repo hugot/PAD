@@ -55,10 +55,11 @@ public class SqlConnector {
     }
     
     public Theme getFirstTheme() throws SQLException{
-        String on = "0";
         ResultSet set = executeQuery(String.format("SELECT * FROM theme INNER JOIN settings ON theme.id = settings.itemId;"));
-	   	set.next();
-                return new Theme(set.getString("theme.name"), set.getInt("settings.itemId"));
+        set.next();
+        Theme theme = new Theme(set.getString("theme.name"), set.getInt("theme.id"));
+        theme.setPhotoList(getAllPhotosFromTheme(theme));
+        return theme;
     }
 
     /*

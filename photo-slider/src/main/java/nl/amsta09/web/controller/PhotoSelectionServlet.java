@@ -52,7 +52,7 @@ public class PhotoSelectionServlet extends HttpServlet {
 						.setHeight(150)))
 					.addContent("<p>" + photo.getName() + "</p>")
 					.addHiddenValue(RequestWrapper.SELECTED_PHOTO_ID, "" + photo.getId())
-					.addInput("submit", "kies" ,"kies")
+					.addInput("checkbox", "kies" ,"kies")
 					);
 		});
 		requestWrapper.getContent().add(RequestWrapper.PHOTO_LIST, photoSection);
