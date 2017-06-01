@@ -4,9 +4,15 @@ import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ListIterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javafx.scene.layout.StackPane;
+<<<<<<< HEAD
 import javafx.scene.media.AudioClip;
+=======
+import javafx.scene.paint.Color;
+>>>>>>> d58f0538ca93acd12f61f1ea42b889910d961e53
 import javafx.stage.Stage;
 
 import nl.amsta09.data.SqlConnector; 
@@ -45,16 +51,23 @@ public class SlideShowController {
 	/**
 	 * Initialiseer de media die getoond wordt en zorg ervoor dat het scherm verschijnt.
 	 */
-	public void initialize() {
-		setRandomTheme();
+	public void initialize(){
+		setFirstTheme();
 		view.setKeyListener();
 		timer.start();
                 stage.setFullScreen(true);
 		stage.setScene(view);
+                view.setFill(Color.BLACK);
 		stage.show();
+<<<<<<< HEAD
                 showNextImage();
                 playNextMusic();
                 runNextMusic();
+=======
+                System.out.println(theme.getId());
+		showNextImage();
+                System.out.println(theme.getId());
+>>>>>>> d58f0538ca93acd12f61f1ea42b889910d961e53
 	}
 
 	public void pause(){
@@ -66,24 +79,29 @@ public class SlideShowController {
 	}
 
 
-	/**
-	 * Haal een random thema op om foto's van weer te geven.
-	 */
-	public void setRandomTheme(){
-
-		try {
-			setTheme(conn.getRandomTheme());
-		} catch (SQLException e) {
-			theme = new Theme("emergency", 1);
-			File dir = new File("Resources/default/Foto/");
-			ArrayList<Photo> photos = new ArrayList<>();
-			for(File file : dir.listFiles()){
-				photos.add(new Photo(file.getPath(), file.getName(), 1));
-			}
-			theme.setPhotoList(photos);
-			setTheme(theme);
-		}
-	}
+	   /**
+     * Haal een random thema op om foto's van weer te geven.
+     */
+    public void setFirstTheme() {
+        try {
+            setTheme(conn.getFirstTheme());
+        } catch (SQLException e) {
+            try {
+                e.printStackTrace();
+                setTheme(conn.getRandomTheme());
+                System.out.println("how bout dis");
+            } catch (SQLException ex) {
+                theme = new Theme("emergency", 1);
+                File dir = new File("Resources/default/Foto/");
+                ArrayList<Photo> photos = new ArrayList<>();
+                for (File file : dir.listFiles()) {
+                    photos.add(new Photo(file.getPath(), file.getName(), 1));
+                }
+                theme.setPhotoList(photos);
+                setTheme(theme);
+            }
+        }
+    }
 
 
 	/**
@@ -108,7 +126,6 @@ public class SlideShowController {
 	 * @param photo
 	 */
 	public void setImage(Photo photo){
-                
 		view.setImage(photo);
 		timer.reset();
 	}
@@ -159,7 +176,7 @@ public class SlideShowController {
                         playNextMusic();
                         runNextMusic();
 		} catch (SQLException e) {
-			setRandomTheme();
+			setFirstTheme();
 		}
 	}
         
@@ -222,7 +239,8 @@ public class SlideShowController {
 							}
 							secondsToGo--;
 						}
-						slideShowController.showNextImage();
+                                                slideShowController.showNextImage();
+                                            
 						reset();
 					}
 				}

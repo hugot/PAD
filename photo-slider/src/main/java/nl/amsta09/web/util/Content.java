@@ -103,6 +103,8 @@ public class Content {
 					.addElement(new HtmlButton("photo-setting-button", "submit", "voeg geluid toe")
 						.setId("addsound")
 						.addAttribute("value", "addsound"))
+                                                .addElement(new HtmlButton("deletephoto", "submit", "delete") )
+                                                .addAttribute("value", "deletephoto")
 					);
 		});
 		add(RequestWrapper.PHOTO_LIST, photoList);

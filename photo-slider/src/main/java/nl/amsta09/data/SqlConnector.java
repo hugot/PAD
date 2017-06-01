@@ -37,11 +37,29 @@ public class SqlConnector {
 
         Statement addThemeStatement = connection.createStatement();
         //Insert de gegevens in de database met een unieke ID
-        String on = "1";
-        String sql =  String.format("INSERT INTO theme (name, `on`) VALUES ('%s', %s)", themeName, on);
+        String on = "0";
+        String sql =  String.format("INSERT INTO theme (name, `on`) VALUES ('%s', '%s')", themeName, on);
 
         addThemeStatement.execute(sql);
 
+    }
+    
+    public void setThemeFirst(Theme theme) throws SQLException, ClassNotFoundException {
+        Statement addThemeStatement = connection.createStatement();
+        //Insert de gegevens in de database met een unieke ID
+        String on = "showFirst";
+        String sql1 = String.format("DELETE FROM settings WHERE settingName = 'showFirst'");
+        addThemeStatement.execute(sql1);
+        String sql2 = String.format("INSERT INTO settings (settingName, itemId) VALUES ('%s', '%s')", on, theme.getId());
+        addThemeStatement.execute(sql2);
+    }
+    
+    public Theme getFirstTheme() throws SQLException{
+        ResultSet set = executeQuery(String.format("SELECT * FROM theme INNER JOIN settings ON theme.id = settings.itemId;"));
+        set.next();
+        Theme theme = new Theme(set.getString("theme.name"), set.getInt("theme.id"));
+        theme.setPhotoList(getAllPhotosFromTheme(theme));
+        return theme;
     }
 
     /*
@@ -53,7 +71,7 @@ public class SqlConnector {
         String sql = ("DELETE FROM theme_has_media WHERE theme_id = " + theme.getId());
         deleteThemeStatement.execute(sql);
         String sql2 = ("DELETE FROM theme WHERE id = " + theme.getId());
-        deleteThemeStatement.execute(sql2);
+        deleteThemeStatement.execute(sql2); 
     }
 
     /*
@@ -76,12 +94,11 @@ public class SqlConnector {
     /*
     Verwijdert de gekozen Media uit de database
      */
-    public void deleteMedia(URL MediafilePath) throws SQLException, ClassNotFoundException {
+    public void deleteMedia( int id ) throws SQLException, ClassNotFoundException {
 
         Statement deleteMediaStatement = connection.createStatement();
-
-        String sql = ("DELETE FROM Media"
-                + "WHERE filePath = " + "'" + MediafilePath + "'");
+        String sql = ("DELETE FROM media"
+                + " WHERE id='" + id + "'");
 
         deleteMediaStatement.execute(sql);
     }
@@ -410,6 +427,10 @@ public class SqlConnector {
         Statement statement = connection.createStatement();
         ResultSet set = statement.executeQuery(query);
         return set;
+    }
+
+    public void deleteTheme(Media media) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public class ThemeNotFoundException extends Exception {

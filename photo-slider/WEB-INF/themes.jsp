@@ -47,6 +47,10 @@ Via deze view kunnen de thema's beheerd worden
 				</header>
 				<ul>
 					<li>
+						<form class="small-button-form" style="float: center;" action="/startSlideshowAtSetTheme" method="post">
+							<button class="small-button">Laat dit thema als eerst zien.</button>
+						</form></li>
+					<li>
 						<form class="small-button-form" style="float: center;" action="/showSelectedTheme" method="post">
 							<button class="small-button">Toon dit thema nu in de Slideshow.</button>
 						</form></li>
