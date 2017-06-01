@@ -37,7 +37,7 @@ public class DeleteMediaServlet extends HttpServlet {
 						"Fout bij verwerken van request", 
 						"Het is niet gelukt om de door u geselecteerde bestand te vinden, probeer het " + 
 						"alstublieft opnieuw"));
-			new ThemeManagementServlet().doGet(requestWrapper.getHttpServletRequest(), response);
+			new DeleteMediaServlet().doGet(requestWrapper.getHttpServletRequest(), response);
 			e.printStackTrace();
 			return;
 		} catch (ClassNotFoundException e) {
@@ -45,11 +45,13 @@ public class DeleteMediaServlet extends HttpServlet {
 						"Fout bij verwerken van request", 
 						"Het is niet gelukt om de door u geselecteerde bestand te vinden, probeer het " + 
 						"alstublieft opnieuw"));
-			new ThemeManagementServlet().doGet(requestWrapper.getHttpServletRequest(), response);
+			new DeleteMediaServlet().doGet(requestWrapper.getHttpServletRequest(), response);
 			e.printStackTrace();
 			return;
            
         }
-                new DeleteMediaServlet().doGet(requestWrapper.getHttpServletRequest(), response);
-    
-}}
+               
+     new DeletePhotoSelection().doGet(requestWrapper.getHttpServletRequest(), response);
+}
+
+}
