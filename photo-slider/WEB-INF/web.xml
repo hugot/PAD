@@ -69,6 +69,15 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 		<servlet-name>DeleteThemeServlet</servlet-name>
 		<url-pattern>/deleteTheme</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>ShowSelectedThemeServlet</servlet-name>
+		<servlet-class>nl.amsta09.web.controller.ShowSelectedThemeServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ShowSelectedThemeServlet</servlet-name>
+		<url-pattern>/showSelectedTheme</url-pattern>
+	</servlet-mapping>
 
 	<servlet>
 		<servlet-name>SettingManagementServlet</servlet-name>
