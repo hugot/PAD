@@ -8,7 +8,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javafx.scene.layout.StackPane;
-import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -28,7 +29,7 @@ public class SlideShowController {
 	private SqlConnector conn;
 	private Timer timer;
         private Settings settings;
-        private AudioClip musicClip;
+        private MediaPlayer mediaplayer;
         private Thread musicThread;
 
 	/**
@@ -57,7 +58,7 @@ public class SlideShowController {
 		stage.show();
                 showNextImage();
                 playNextMusic();
-                System.out.println("DIT IS THEME: " + theme.getId());
+                System.out.println("Dit is de Theme_id: " + theme.getId());
 	}
 
 	public void pause(){
@@ -135,8 +136,8 @@ public class SlideShowController {
          * Bepaalt de muziek die gespeeld moet worden
          */
         public void playNextMusic(){
-            if(musicClip != null){
-                musicClip.stop();
+            if(mediaplayer != null){
+                mediaplayer.stop();
             }
             if(musics.hasNext()){
                 playMusic(musics.next());
@@ -148,9 +149,9 @@ public class SlideShowController {
          * @param music 
          */
         public void playMusic(Audio music){
-            //musicClip = new AudioClip(music.getName());
-            //musicClip.play();
-            System.out.println("Ha Ha Ha " + music.getName());
+            Media media = new Media(music.getURL().toString());
+            mediaplayer = new MediaPlayer(media);
+            mediaplayer.play();
             
         }
 
@@ -179,14 +180,14 @@ public class SlideShowController {
         public void runNextMusic(){
                 Runnable runMusic = new Runnable(){
                         public void run(){
-                                if(musicClip != null){
-                                        while(musicClip.isPlaying()){
+                                if(mediaplayer != null){
+                                        while(mediaplayer.getStartTime() != mediaplayer.getStopTime()){
                                             try{
                                                 Thread.sleep(1000);
                                             } catch(InterruptedException e){
                                                 break;
                                             }
-                                        }      
+                                        }
                                 playNextMusic();
                                 
                                 }

@@ -284,7 +284,7 @@ public class SqlConnector {
 		themeSet.next();
 		otherTheme = new Theme(themeSet.getString("theme.name"), themeSet.getInt("theme.id"));
 		otherTheme.setPhotoList(getAllPhotosFromTheme(otherTheme));
-                //otherTheme.setMusicList(getAllMusicsFromTheme(otherTheme));
+                otherTheme.setMusicList(getAllMusicsFromTheme(otherTheme));
 		return otherTheme;
     }
 
