@@ -22,6 +22,7 @@ public class Theme {
     
     public Theme(String name, int id){
         photos = new ArrayList<Photo>();
+        musics = new ArrayList<Audio>();
         this.name = name;
         this.id = id;
     }

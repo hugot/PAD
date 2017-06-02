@@ -59,6 +59,7 @@ public class SqlConnector {
         set.next();
         Theme theme = new Theme(set.getString("theme.name"), set.getInt("theme.id"));
         theme.setPhotoList(getAllPhotosFromTheme(theme));
+        theme.setMusicList(getAllMusicsFromTheme(theme));
         return theme;
     }
 
@@ -253,7 +254,7 @@ public class SqlConnector {
 			throw new ThemeNotFoundException("Thema niet gevonden");
 		}
 		theme.setPhotoList(getAllPhotosFromTheme(theme));
-                theme.setMusicList(getAllMusicsFromTheme(theme));
+                //theme.setMusicList(getAllMusicsFromTheme(theme));
 		return theme;
     }
 
@@ -283,7 +284,7 @@ public class SqlConnector {
 		themeSet.next();
 		otherTheme = new Theme(themeSet.getString("theme.name"), themeSet.getInt("theme.id"));
 		otherTheme.setPhotoList(getAllPhotosFromTheme(otherTheme));
-                otherTheme.setMusicList(getAllMusicsFromTheme(theme));
+                //otherTheme.setMusicList(getAllMusicsFromTheme(otherTheme));
 		return otherTheme;
     }
 
@@ -302,7 +303,7 @@ public class SqlConnector {
 			throw new ThemeNotFoundException("Thema niet gevonden");
 		}
 		theme.setPhotoList(getAllPhotosFromTheme(theme));
-                theme.setMusicList(getAllMusicsFromTheme(theme));
+                //theme.setMusicList(getAllMusicsFromTheme(theme));
 		return theme;
     }
 
@@ -327,13 +328,13 @@ public class SqlConnector {
 	 * @return audio
 	 */
     public ArrayList<Audio> getAllMusicsFromTheme(Theme theme) throws SQLException {
-    	ArrayList<Audio> audio = new ArrayList<>();
+        ArrayList<Audio> musics = new ArrayList<>();
 		ResultSet set = executeQuery(String.format("SELECT * FROM song INNER JOIN media ON song.id = media.id WHERE media.id IN (SELECT media_id FROM " +
 					"theme_has_media WHERE theme_id = %s);", theme.getId()));
 		while(set.next()){
-			audio.add(new Audio(set.getString("media.filePath"), set.getString("media.name"), set.getInt("media.id"), theme.getName()));
+			musics.add(new Audio(set.getString("media.filePath"), set.getString("media.name"), set.getInt("media.id"), theme.getName()));
 		}
-		return audio;
+		return musics;
     }
 
 	/**

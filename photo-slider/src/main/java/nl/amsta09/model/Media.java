@@ -94,7 +94,7 @@ public abstract class Media {
 
         result = ("URL: " + getURL()
                 + "\nName: " + getName()
-                + "]nTheme: " + getTheme());
+                + "\nTheme: " + getTheme());
         return result;
     }
     
