@@ -32,7 +32,6 @@ public abstract class Media {
         this.relativePath = relativePath;
         this.name = name;
         this.id = id;
-        System.out.println(relativePath);
     }
 
     public Media(String relativePath, String name,int id, String theme) {
