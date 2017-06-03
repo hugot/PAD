@@ -6,16 +6,12 @@
 package nl.amsta09.model;
 
 import  java.io.*;
-import javax.sound.sampled.*;
 /**
  *
  * @author Space
  */
 public class Audio extends Media {
 	public static final String DIRECTORY = "Resources" + "/"+ "Audio" + "/";
-
-    private AudioInputStream audioIn;
-    private Clip clip;
     
     public Audio(String relativePath, String name, int id, String theme){
         super(relativePath, name, id, theme);
@@ -23,24 +19,5 @@ public class Audio extends Media {
     
     public Audio(String relativePath, String name, int id) {
         super(relativePath, name, id);
-    }
-    
-    public void playSound(){
-        try{
-            audioIn = AudioSystem.getAudioInputStream(super.getURL());
-            clip = AudioSystem.getClip();
-            clip.open(audioIn);
-            clip.start();
-        }catch (UnsupportedAudioFileException e) {
-            e.printStackTrace();
-        }catch (IOException e) {
-            e.printStackTrace();
-        } catch (LineUnavailableException e) {
-            e.printStackTrace();
-        }
-    }
-    
-    public void stopSound(){
-        clip.stop();
     }
 }

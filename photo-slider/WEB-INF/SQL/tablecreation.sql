@@ -77,3 +77,12 @@ CREATE TABLE IF NOT EXISTS `photoslider`.`theme_has_media` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+--
+
+CREATE TABLE IF NOT EXISTS `photoslider`.`settings` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `settingName` VARCHAR(100),
+  `itemId` INT NULL,
+  `OnOff` TINYINT(1) NULL,
+   PRIMARY KEY (`id`))
+ENGINE = InnoDB;

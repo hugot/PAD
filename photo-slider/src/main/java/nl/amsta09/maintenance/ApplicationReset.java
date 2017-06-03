@@ -161,8 +161,8 @@ public class ApplicationReset {
 			File dir = new File(path);
 			for(File file : dir.listFiles()){
 				Media media;
-				if(photo) media = new Photo(file.getPath(), file.getName(), 1);
-				else media = new Audio(file.getPath(), file.getName(), 1);
+				if(photo) media = new Photo(file.getPath().replaceAll("\\\\", "/"), file.getName(), 1);
+				else media = new Audio(file.getPath().replaceAll("\\\\", "/"), file.getName(), 1);
 				conn.insertMedia(media);
 				media.setId(conn.getMediaIdFrom(media));
 				conn.addMediaToTheme(conn.getMaxThemeId(), media);

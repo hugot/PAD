@@ -17,10 +17,12 @@ public class Theme {
     private boolean active;
     private int id;
     private ArrayList<Photo> photos;
+    private ArrayList<Audio> musics;
     private Audio music;
     
     public Theme(String name, int id){
         photos = new ArrayList<Photo>();
+        musics = new ArrayList<Audio>();
         this.name = name;
         this.id = id;
     }
@@ -67,5 +69,13 @@ public class Theme {
     
     public void setMusic(Audio music){
         this.music = music;
+    }
+    
+    public ArrayList<Audio> getMusicList(){
+        return musics;
+    }
+    
+    public void setMusicList(ArrayList<Audio> list){
+        musics = list;
     }
 }

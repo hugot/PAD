@@ -51,12 +51,7 @@ public class SlideShowView extends Scene {
 			
 			@Override
 			public void handle(KeyEvent k){
-                                if(photo.getPlayedSoundEffect() == false && photo.getSoundEffect() != null){
-                                    photo.getSoundEffect().playSound();
-                                    photo.setPlayedSoundEffect(true);
-                                }else{
                                     controller.showNextImage();
-                                }
 			}
 		};
 		this.setOnKeyPressed(eventHandler);

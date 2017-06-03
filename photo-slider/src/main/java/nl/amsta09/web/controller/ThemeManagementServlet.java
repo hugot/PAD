@@ -183,7 +183,7 @@ public class ThemeManagementServlet extends HttpServlet {
 	private boolean refreshMusicList() throws ServletException, IOException{
 		try {
 			ArrayList<Audio> music = requestWrapper.getSqlConnector()
-				.getAllMusicFromTheme(selectedTheme);
+				.getAllMusicsFromTheme(selectedTheme);
 			HtmlList musicList = new HtmlList("music-list", "music-list");
 			music.listIterator().forEachRemaining((Audio audio) -> {
 				musicList.addItem(new HtmlForm()
