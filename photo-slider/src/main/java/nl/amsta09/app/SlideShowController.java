@@ -8,10 +8,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javafx.scene.layout.StackPane;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.scene.media.AudioClip;
 
 import nl.amsta09.data.SqlConnector; 
 import nl.amsta09.driver.MainApp; 
@@ -29,7 +28,7 @@ public class SlideShowController {
 	private SqlConnector conn;
 	private Timer timer;
         private Settings settings;
-        private MediaPlayer mediaplayer;
+        private AudioClip musicClip;
         private Thread musicThread;
 
 	/**
@@ -58,6 +57,7 @@ public class SlideShowController {
 		stage.show();
                 showNextImage();
                 playNextMusic();
+                runNextMusic();
                 System.out.println("Dit is de Theme_id: " + theme.getId());
 	}
 
@@ -102,6 +102,7 @@ public class SlideShowController {
 		this.theme = theme;
 		this.photos = theme.getPhotoList().listIterator();
                 this.musics = theme.getMusicList().listIterator();
+                System.out.println("Dit is de Size: " + theme.getMusicList().size());
 	}
         
         public Theme getTheme(){
@@ -136,9 +137,6 @@ public class SlideShowController {
          * Bepaalt de muziek die gespeeld moet worden
          */
         public void playNextMusic(){
-            if(mediaplayer != null){
-                mediaplayer.stop();
-            }
             if(musics.hasNext()){
                 playMusic(musics.next());
             }
@@ -149,10 +147,17 @@ public class SlideShowController {
          * @param music 
          */
         public void playMusic(Audio music){
-            Media media = new Media(music.getURL().toString());
-            mediaplayer = new MediaPlayer(media);
-            mediaplayer.play();
+            musicClip = new AudioClip(music.getURL().toString());
+            musicClip.play();
             
+        }
+        
+        public void stopMusic(){
+            if(musicClip != null){
+                System.out.println("-----------------------------");
+                musicClip.stop();
+                System.out.println("-----------------------------");
+            }
         }
 
 	/**
@@ -162,11 +167,10 @@ public class SlideShowController {
 		try {
 			System.out.println("setting next theme");
 			setTheme(conn.getRandomThemeThatIsNot(theme));;
-                        System.out.println("---JAWOHL");
 			showNextImage();
-                        System.out.println("---JAWOHL 02");
+                        stopMusic();
                         playNextMusic();
-                        System.out.println("---JAWOHL 03");
+                        runNextMusic();
 		} catch (SQLException e) {
 			setFirstTheme();
 		}
@@ -180,8 +184,8 @@ public class SlideShowController {
         public void runNextMusic(){
                 Runnable runMusic = new Runnable(){
                         public void run(){
-                                if(mediaplayer != null){
-                                        while(mediaplayer.getStartTime() != mediaplayer.getStopTime()){
+                                if(musicClip != null){
+                                        while(musicClip.isPlaying()){
                                             try{
                                                 Thread.sleep(1000);
                                             } catch(InterruptedException e){
