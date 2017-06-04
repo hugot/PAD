@@ -24,17 +24,18 @@ Via deze view kunnen foto's toegevoegd worden
 						<h1> Welkom </h1>
 						<p> Laten we meteen beginnen, wat wilt u doen?</p>
 					</span>
-					<button class="big-button" onclick="loadPage('/thememanagement');" ><h3>Beheer Thema's en foto's</h3></button>
-					<button class="big-button" onclick="loadPage('/uploadaudio'));"><h3>Upload Muziek</h3></button>
-					<button class="big-button" onclick="loadPage('/uploadphoto');"><h3>Upload foto's</h3></button>
-					<button class="big-button" onclick="loadPage('/settingmanagement');"><h3>Instellingen</h3></button>
-					<button class="big-button"><h3>Klik hier</h3></button>
-					<button class="big-button"><h3>Klik hier</h3></button>
+					<button class="big-button top-button" onclick="loadPage('/thememanagement');" ><h3>Beheer Thema's en foto's</h3></button>
+					<button class="big-button top-button" onclick="loadPage('/uploadaudio'));"><h3>Upload Muziek</h3></button>
+					<button class="big-button top-button" onclick="loadPage('/uploadphoto');"><h3>Upload foto's</h3></button>
+					<button class="big-button top-button" onclick="loadPage('/settingmanagement');"><h3>Instellingen</h3></button>
+					<button class="big-button top-button"><h3>Klik hier</h3></button>
+					<button class="big-button top-button"><h3>Klik hier</h3></button>
 				</section>
 			</div>
 			<div name="app-frame" id="hidden-app-frame"></div>
 		</body>
-		<script type="text/javascript" src="${context}/webroot/move-section.js"></script>
+		<script type="text/javascript" src="${context}/webroot/main-app.js"></script>
 		<script type="text/javascript" src="${context}/webroot/make-popup.js"></script>
 		<script type="text/javascript" src="${context}/webroot/sound-interaction.js"></script>
+		<%@include file="popups.jsp" %>
 	</html>

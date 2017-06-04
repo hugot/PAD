@@ -103,24 +103,47 @@ button:hover, #selected-theme {
 	left:0;
 }
 
+.closing-button{
+	background-color: transparent; 
+	outline: 2px solid #4286f4;
+	color: blue;
+	border: none;
+	float: right;
+	width: 30px;
+	height: 100%;
+	line-height: normal;
+}
+
 /* ---------------------------- SECTIONS -------------------- */
 
 /* ----- headers ------ */
 
-section header{
+header {
 	text-align: center;
 	background-color: white;
 	color: blue;
+}
+
+section header{
 	height: 60px;
 	line-height: 60px;
 	outline: 2px solid #4286f4;
 }
 
-section header h3 {
+header h3 {
 	width: 100%;
 	margin: 0;
 	padding: 0;
 }
+
+ .popup header {
+	min-height: 40px;
+	height: auto;
+	line-height: 40px;
+	height: 40px;
+	margin: 0;
+	outline: 2px solid #4286f4;
+ }
 
 /* ------ side bars ----- */
 
@@ -215,22 +238,61 @@ section header h3 {
 }
 
 .popup {
-	height: 200px;
-	width: 400px;
-	background-color: lightgrey;
 	position: absolute;
 	left: 50%;
 	top: 50%;
-	margin-top: -100px;
-	margin-left:-200px;
 	border: solid black 2px;
 	box-shadow: 2px 4px 4px 2px rgba(1,1,1,0.5);
 }
- .popup header {
-	background-color: rgba(1,1,1,0.8);
-	min-height: 40px;
-	height: auto;
-	line-height: 40px;
-	margin: 0;
+
+ .standard-popup {
+	height: 200px;
+	width: 400px;
+	background-color: lightgrey;
+	margin-top: -100px;
+	margin-left:-200px;
  }
 
+ #image-display {
+	display: inline-block;
+	margin-top: 5%;
+	width: 80%;
+	height: 60%;
+	max-height: 60%;
+	max-width: 80%;
+	text-align: center;
+	outline: 2px solid #4286f4;
+	overflow: hidden;
+ }
+
+ #image-display img {
+	height: 100%;
+	max-height: 100%;
+	display: inline-block;
+ }
+ 
+ #image-popup-wrapper {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	height: 80%;
+	width: 70%;
+ }
+
+#show-image-popup {
+	position: relative;
+	left: -50%;
+	top: -50%;
+	z-index: 10;
+	height: 100%;
+	max-height: 100%;
+	max-width: 100%;
+	background-color: white;
+	text-align: center;
+	outline: 2px solid #4286f4;
+	overflow: auto;
+}
+
+#show-image-popup button {
+	float:bottom;
+}

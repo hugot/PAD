@@ -15,7 +15,7 @@ import nl.amsta09.web.html.HtmlPopup;
 
 public class AddMediaToThemeServlet extends HttpServlet {
         
-        Media media;
+	Media media;
 	int selectedMediaId;
                 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)

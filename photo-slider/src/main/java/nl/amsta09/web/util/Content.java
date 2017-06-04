@@ -109,14 +109,16 @@ public class Content {
 	public void addPhotoList(ArrayList<Photo> photos){
 		StringBuilder sb = new StringBuilder();
 		photos.listIterator().forEachRemaining((Photo photo) -> {
-				sb.append(new HtmlForm("" + photo.getId(), "floating-image", "post", "/addmediatotheme")
+				sb.append(new HtmlDiv()
+					.setClass("floating-image")
 					.addElement(new HtmlDiv()
 						.setClass("photo-container")
-						.addElement(new HtmlImage("" + photo.getId(), "photo", photo.getRelativePath())
+						.addElement(new HtmlImage("image" + photo.getId(), "photo", photo.getRelativePath())
 						.setHeight(150)))
-					.addContent("<p>" + photo.getName() + "</p>")
-					.addHiddenValue(RequestWrapper.SELECTED_PHOTO_ID, "" + photo.getId())
-					.addInput("submit", "kies" ,"kies")
+					.addElement(new HtmlButton()
+						.setClass("big-button")
+						.setOnClick("showImage('" + photo.getId() + "');")
+						.setContent("Bekijk de foto"))
 					.generateHtml()
 					);
 		});

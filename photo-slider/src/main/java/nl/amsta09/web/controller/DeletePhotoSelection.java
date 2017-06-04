@@ -36,7 +36,7 @@ public class DeletePhotoSelection extends HttpServlet {
 			requestWrapper.getContent().add(HtmlPopup.CLASS, new HtmlPopup("error",
 					"Database fout", "het is niet gelukt om de foto's op" +
 					"te halen uit de database. Probeer de pagina opnieuw te laden"));
-			new ThemeManagementServlet().doGet(requestWrapper.getHttpServletRequest(), response); 
+			new ThemeManagementServlet().doGet(requestWrapper, response); 
 			e.printStackTrace();
 			return;
                         
