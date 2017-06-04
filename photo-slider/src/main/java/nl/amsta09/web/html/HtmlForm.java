@@ -1,7 +1,7 @@
 package nl.amsta09.web.html;
 
 	public class HtmlForm extends HtmlElement<HtmlForm> implements HtmlElementInterface {
-		private final String BOTTOM = "</form>\n";
+		private final String BOTTOM = "</form>";
 
 		/**
 		 * Maak een formulier aan zonder attributen.
@@ -109,7 +109,7 @@ package nl.amsta09.web.html;
 		 * {@InheritDoc}
 		 */
 		protected String generateBottom(){
-			return " ";
+			return "";
 		}
 
 	}

@@ -12,6 +12,7 @@ import nl.amsta09.model.Photo;
 import nl.amsta09.web.html.HtmlPopup;
 import nl.amsta09.web.html.HtmlSection;
 import nl.amsta09.web.util.RequestWrapper;
+import nl.amsta09.web.html.HtmlButton;
 import nl.amsta09.web.html.HtmlDiv;
 import nl.amsta09.web.html.HtmlForm;
 import nl.amsta09.web.html.HtmlImage;
@@ -43,19 +44,32 @@ public class PhotoSelectionServlet extends HttpServlet {
 
 
 		// Maak de html elementen aan voor alle foto's
-		HtmlSection photoSection = new HtmlSection("main-section", "main-section");
+		StringBuilder sb = new StringBuilder();
 		photoList.listIterator().forEachRemaining((Photo photo) -> {
-			photoSection.addElement(new HtmlForm("" + photo.getId(), "floating-image", "post", "/addmediatotheme")
+			sb.append(new HtmlDiv()
+					.setClass("floating-image")
 					.addElement(new HtmlDiv()
 						.setClass("photo-container")
 						.addElement(new HtmlImage("" + photo.getId(), "photo", photo.getRelativePath())
 						.setHeight(150)))
-					.addContent("<p>" + photo.getName() + "</p>")
-					.addHiddenValue(RequestWrapper.SELECTED_PHOTO_ID, "" + photo.getId())
-					.addInput("checkbox", "kies" ,"kies")
-					);
+					.addElement(new HtmlButton()
+						.setOnClick("selectPhoto('" + photo.getId() + "');")
+						.setClass("big-button")
+						.setContent("Kies foto"))
+					.generateHtml()
+			);
 		});
-		requestWrapper.getContent().add(RequestWrapper.PHOTO_LIST, photoSection);
-		requestWrapper.respondUsing(RequestWrapper.PHOTO_SELECTION_JSP, response);
+		requestWrapper.getContent().add("bottom-bar", new StringBuilder()
+			.append(new HtmlSection()
+				.setClass("bottom-bar")
+				.addElement(new HtmlButton()
+					.setClass("big-button")
+					.setOnClick("sendSelectedImages()")
+					.setContent("Voeg toe aan thema"))
+				.generateHtml())
+			.toString()
+		);
+		requestWrapper.getContent().add(RequestWrapper.PHOTO_LIST, sb.toString());
+		requestWrapper.sendContentByWriter(response);
 	}
 }

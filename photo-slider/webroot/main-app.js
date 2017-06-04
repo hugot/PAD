@@ -10,6 +10,7 @@
 
   var selectedThemeId;
   var shownImage;
+  var addPhotoDiv;
   // Deze functie maakt de applicatie klaar voor gebruik bij het klikken op een knop.
   function getReady(page){
 	  // Beweeg de welkomst sectie omhoog met deze functie.
@@ -88,23 +89,29 @@
   }
 
   // Laad de conten van een httpresponse in een div
-  function loadContentTo(contentUrl, method,  params, div){
+  function loadContentTo(contentUrl, method,  params, element, standardContent){
 	  console.log('loading content');
 	  var xhr= new XMLHttpRequest();
+	  element.innerHTML = null;
+	  if(standardContent != null){
+		  element.appendChild(standardContent);
+	  }
 	  xhr.open(method, contentUrl, true);
 	  xhr.onreadystatechange= function() {
 		  if (this.readyState!==4) return;
 		  if (this.status!==200) return; 
-		  var element = document.getElementById(div)
-		  element.innerHTML = null;
-		  element.innerHTML = this.responseText;
+		  element.innerHTML += this.responseText;
 	  }
 	  xhr.send(params);
   }
 
   // Laad de foto's voor een thema.
   function setActiveTheme(themeId){
-	  loadContentTo('/getphotos', 'POST', 'selectedThemeId='+themeId, 'photo-section');
+	  var element = document.getElementById('photo-section');
+	  if(addPhotoDiv == null){
+		  addPhotoDiv = element.firstChild;
+	  }
+	  loadContentTo('/getphotos', 'POST', 'selectedThemeId='+themeId, element, addPhotoDiv);
 	  if(selectedThemeId != null){
 		  document.getElementById('selected-theme').id = selectedThemeId;
 	  }
@@ -114,11 +121,18 @@
 	  selectedThemeId = themeId;
   }
 
+  function showPhotoSelection(){
+	  var photoSection = document.getElementById('photo-section');
+	  addPhotoDiv = photoSection.firstChild;
+	  loadContentTo('/photoselection', 'GET', '', photoSection, null);
+  }
+
 // Voeg een thema toe 
   function addTheme(){
 	  var themeName = document.getElementById('theme-name');
 	  console.log(themeName.value);
 	  loadContentTo('/addtheme', 'POST', 'theme=' + themeName.value, 'app-frame');
+	  document.getElementById('photo-section-header-text').innerText = 'kies foto\'s om toe te voegen aan thema';
   }
 
 //Toon een foto vergroot in een popup.

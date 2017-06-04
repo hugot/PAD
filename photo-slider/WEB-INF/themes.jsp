@@ -31,7 +31,7 @@ Via deze view kunnen de thema's beheerd worden
 					<div  class="photo-container">
 						<img class="photo" height="150" src="${context}/webroot/icons/plus.jpg">
 					</div>
-					<button class="big-button" type="button" onclick="showImage('example');">show photo</button>
+					<button class="big-button" type="button" onclick="showPhotoSelection();">Voeg foto's toe</button>
 				</form><%--
 				--%>${photos}
 		</section>
