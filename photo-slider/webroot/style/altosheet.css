@@ -64,6 +64,7 @@ body {
 }
 
 #app-frame {
+	text-align: center;
 	visibility: visible;
 	position: relative;
 	padding: 0;
@@ -243,6 +244,7 @@ header h3 {
 }
 
 .popup {
+	z-index: 10;
 	position: absolute;
 	left: 50%;
 	top: 50%;
@@ -277,6 +279,7 @@ header h3 {
  }
  
  #image-popup-wrapper {
+	 z-index: -2;
 	position: absolute;
 	left: 50%;
 	top: 50%;
