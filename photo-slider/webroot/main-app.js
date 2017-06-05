@@ -197,6 +197,7 @@
 //Toon een foto vergroot in een popup.
   function showImage(imageId){
 	  var image =  document.getElementById('image'+imageId);
+	  var imagePopupWrapper = document.getElementById('image-popup-wrapper');
 	  var imagePopup = document.getElementById('show-image-popup');
 	  var imageDisplay = document.getElementById('image-display');
 	  if (imageDisplay.firstChild != null) {
@@ -204,6 +205,7 @@
 	  }
 	  imageDisplay.appendChild(image.cloneNode());
 	  imagePopup.className = 'popup';
+	  imagePopupWrapper.style.visibility = 'visible';
 	  shownImage = imageId;
   }
 

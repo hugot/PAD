@@ -10,13 +10,13 @@
 	</form>
     <div id="image-popup-wrapper">
     	<div id="show-image-popup" class="hidden-popup">
-        <header> Foto beheer <button class="closing-button" onclick="hidePopup('show-image-popup');">X</button></header>
+        <header> Foto beheer <button class="closing-button" onclick="hidePopup('show-image-popup');document.getElementById('image-popup-wrapper').style.visibility = 'hidden';">X</button></header>
     		<div id="image-display">
     		</div>
     		<p id="photo-name">Dikkieee</p>
         	<button class="big-button" onclick=" " >Verwijder foto </button>
         	<button class="big-button" onclick=" " >Andere optie </button>
-        	<button class="big-button" onclick=" " >Andere optie </button>
+        	<button class="big-button" onclick=" " >Andere optie </but;ton>
         	<button class="big-button" onclick=" " >Andere optie </button>
         	<button class="big-button" onclick=" " >Andere optie </button>
     	</div>
