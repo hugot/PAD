@@ -141,7 +141,7 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>DeletePhotoSelection</servlet-name>
-		<url-pattern>/DeleteFoto</url-pattern>
+		<url-pattern>/deletephotos</url-pattern>
 	</servlet-mapping>
 
 

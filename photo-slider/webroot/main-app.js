@@ -8,11 +8,99 @@
  */
   'use strict';
 
+  // Het frame waarin de onderdelen van de applicatie geladen worden
+  var appFrame;
+  // De onderdelen van de applicatie.
+  var appParts = new Object();
+
+  var ready = false;
   var selectedThemeId;
   var shownImage;
   var addPhotoDiv;
-  // Deze functie maakt de applicatie klaar voor gebruik bij het klikken op een knop.
-  function getReady(page){
+  
+
+/**
+ * Stuur een httpRequest naar de server doe vervolgens iets met de
+ * response text.
+ * @param {*} address 
+ * @param {*} readyStateAction 
+ */
+  function ajaxCall(address, readyStateAction){
+	  var xhr = new XMLHttpRequest();
+	  xhr.open('GET', address, true);
+	  xhr.onreadystatechange = function () {
+		  if (this.readyState !== 4) return;
+		  if (this.status !== 200) return;
+		  readyStateAction(this.responseText);
+	  };
+	  xhr.send();
+  }
+
+/**
+ * Dit is een object voor het aanmaken en beheren van het 
+ * frame waarin de applicatie getoond wordt.
+ * @param {*} appFrameId 
+ */
+  function AppFrame(appFrameId){
+	  var me = this;
+	  this.frameElement = document.getElementById(appFrameId);
+
+	  /** 
+	   * Maak het frame zichtbaar.
+	   */
+	  this.setVisible = function(){
+		  this.frameElement.id = 'app-frame';
+	  }
+
+	  /**
+	   * Laad de inhoud van een httpResponse in het frame.
+	   */
+	  this.loadPage = function(page, callback){
+		  console.log('loading page');
+		  ajaxCall(page, function(responseText){
+			   me.frameElement.innerHTML = null;
+			   me.frameElement.innerHTML = responseText;
+			   if(typeof callback === 'function'){
+				   callback();
+			   }
+		  });
+	  };
+	  
+	  /**
+	   * Laad een appPart object in het frame.
+	   */
+	  this.loadObject = function(myObject){
+		  this.loadPage(myObject.url, myObject.onLoadCallback);
+	  };
+  }
+
+
+/**
+ * Gedeelte van de applicatie dat geladen kan worden.
+ * @param {*} url 
+ * @param {*} onLoadCallBack 
+ */
+  function AppPart(url, onLoadCallback){
+	  this.url = url;
+	  this.onLoadCallback = onLoadCallback;
+	  
+	  this.load = function(loadMe){
+		  loadMe(this);
+	  };
+  }
+
+
+/**
+ * Maak het appFrame klaar voor gebruik en schuif welkomstsectie omhoog.
+ * @param {*} appPart 
+ */
+  function getReady(appPart){
+	  // Als de welkomstsetie al omhoog bewogen is, dan wrdt gewoon de pagina geladen.
+	  if(ready == true ){
+		  console.log('wut');
+		  appFrame.loadObject(appPart);
+		  return;
+	  }
 	  // Beweeg de welkomst sectie omhoog met deze functie.
 	  function moveUp(callback, id, oldTop, newTop){
 		  var element = document.getElementById(id);
@@ -41,7 +129,7 @@
 		  var title = document.createElement('H1');
 		  var buttonCollection = document.getElementsByClassName('top-button');
 		  var buttons = Array.prototype.slice.call(buttonCollection);
-		  var appFrame = document.getElementById('hidden-app-frame');
+		  appFrame = document.getElementById('hidden-app-frame');
 		  wrapper.id = 'top-section';
 		  title.textContent = 'PhotoSlider';
 		  wrapper.appendChild(title);
@@ -52,40 +140,11 @@
 		  document.body.appendChild(wrapper);
 		  document.body.appendChild(appFrame);
 		  welcomeSection.remove();
-		  appFrame.id = 'app-frame';
-		  loadPage(page);
+		  appFrame = new AppFrame('hidden-app-frame');
+		  appFrame.setVisible();
+		  appFrame.loadObject(appPart);
+		  ready = true;
 	  }, 'welcome-section', 0, -90);
-  }
-
-
-  function getPage(){
-	  var form = document.createElement('FORM');
-	  document.body.appendChild(form);
-	  form.setAttribute('action', '/thememanagement');
-	  form.setAttribute('method', 'get');
-	  form.setAttribute('target', 'app-frame');
-	  form.submit();
-  }
-  
-  // Laad een nieuwe pagina in de appframe
-  function loadPage(page){
-	  if(document.getElementById('welcome-section') != null){
-		  getReady(page);
-		  console.log('getting ready');
-	  }
-	  else {
-		  console.log('loading page');
-		  var xhr= new XMLHttpRequest();
-		  xhr.open('GET', page, true);
-		  xhr.onreadystatechange= function() {
-			  if (this.readyState!==4) return;
-			  if (this.status!==200) return; 
-			  var frame = document.getElementById('app-frame');
-			  frame.innerHtml= null;
-			  frame.innerHTML= this.responseText;
-		  };
-		  xhr.send();
-	  }
   }
 
   // Laad de conten van een httpresponse in een div
@@ -140,13 +199,49 @@
 	  var image =  document.getElementById('image'+imageId);
 	  var imagePopup = document.getElementById('show-image-popup');
 	  var imageDisplay = document.getElementById('image-display');
-	  if(imageDisplay.firstChild != null){
+	  if (imageDisplay.firstChild != null) {
 		  imageDisplay.removeChild(imageDisplay.firstChild);
 	  }
 	  imageDisplay.appendChild(image.cloneNode());
 	  imagePopup.className = 'popup';
 	  shownImage = imageId;
   }
+
+  // Maakt een dropzone aan voor het uploaden van foto's
+  var photoDropzoneConfig = function () {
+		  console.log('ik doe iets');
+		  Dropzone.autoDiscover = false;
+		  var dropzoneOptions = {
+			  dictDefaultMessage: "Sleep foto's naar dit vlak om ze te uploaden",
+			  paramName: "photo",
+			  acceptedFiles: "image/*"
+		  };
+		  var myDropzone = new Dropzone("form#uploadForm", dropzoneOptions);
+		  myDropzone.on('sending', function (file, xhr, formData) {
+			  formData.append("sessionId", sessionId.toString());
+		  });
+  }
+
+  // Maakt een dropzone aan voor het uploaden van audio.
+  var audioDropzoneConfig = function(){
+		Dropzone.autoDiscover = false;
+		var dropzoneOptions = {
+				dictDefaultMessage: "Sleep audiobestanden naar dit vlak om ze te uploaden", 
+				paramName: "sound",
+				acceptedFiles: ".mp3",
+		}
+		var myDropzone = new Dropzone("form#uploadForm", dropzoneOptions);
+		myDropzone.on('sending', function(file, xhr, formData){
+						formData.append("sessionId", sessionId.toString());
+		});
+  }
+
+// De pagina's van de applicatie.
+  appParts['uploadPhoto'] 			= new AppPart('/uploadphoto', photoDropzoneConfig);
+  appParts['themeManagement'] 		= new AppPart('/thememanagement', null);
+  appParts['uploadAudio'] 			= new AppPart('/uploadaudio', audioDropzoneConfig);
+  appParts['settings'] 				= new AppPart('/settingmanagement', null);
+  appParts['photoDeletion'] 		= new AppPart('/deletephotos', null);
 
 //(function(){
 //	loadPage('/thememanagement');

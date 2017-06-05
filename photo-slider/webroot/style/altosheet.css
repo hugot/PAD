@@ -279,7 +279,7 @@ header h3 {
  }
  
  #image-popup-wrapper {
-	 visibility: invisible;
+ 	visibility: hidden;
 	position: absolute;
 	left: 50%;
 	top: 50%;

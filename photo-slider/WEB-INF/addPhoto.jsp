@@ -3,20 +3,15 @@
 
 <html lang="en">
 	<head>
-		<link href="${context}/webroot/style/mainstylesheet.css" rel="stylesheet" type="text/css" media="screen" />
-		<link href="${context}/webroot/style/dropzone.css" rel="stylesheet" type="text/css" media="screen" />
-		<link href="${context}/webroot/style/ThemeSettings.css" rel="stylesheet" type="text/css" media="screen" />
 		<meta charset="UTF-8">
 			<title></title>
 		</head>
 
 
 		<body>
-			<%@include file="header.jsp"%>
 
 			<section id="main-section">
 				<h1>Voeg een foto toe via deze pagina</h1>	
-				<script type="text/javascript" src="${context}/webroot/dropzone.js"></script>
 
 				<form method="POST" action="${context}/uploadphoto" class="dropzone needsclick dz-clickable" id="uploadForm">
 				</form>
@@ -26,10 +21,7 @@
 					<input type="submit" value="Voeg toe aan thema" name="Voeg toe aan thema" id="big-button" />
 				</form>
 
-			<script type="text/javascript">var sessionId = ${mediaSessionId}</script>
 			<script type="text/javascript" src="${context}/webroot/dropzoneconfig.js"></script>
-
-			<%@include file="footer.jsp"%>
 		</body>
 
 	</html>
