@@ -16,7 +16,7 @@
     		<p id="photo-name">Dikkieee</p>
         	<button class="big-button" onclick=" " >Verwijder foto </button>
         	<button class="big-button" onclick=" " >Andere optie </button>
-        	<button class="big-button" onclick=" " >Andere optie </but;ton>
+        	<button class="big-button" onclick=" " >Andere optie </button>
         	<button class="big-button" onclick=" " >Andere optie </button>
         	<button class="big-button" onclick=" " >Andere optie </button>
     	</div>

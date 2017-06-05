@@ -25,12 +25,18 @@
  * @param {*} address 
  * @param {*} readyStateAction 
  */
-  function ajaxCall(address, readyStateAction){
+  function ajaxCall(method, address, readyStateAction){
 	  var xhr = new XMLHttpRequest();
-	  xhr.open('GET', address, true);
+	  if(method == null){
+		method = 'GET';
+	  }
+	  xhr.open(method, address, true);
 	  xhr.onreadystatechange = function () {
-		  if (this.readyState !== 4) return;
-		  if (this.status !== 200) return;
+		  if (this.readyState !== 4) return; 
+		  if (this.status !== 200){
+			  console.log('response geeft errorcode' + this.status);
+			  return;
+		  } 
 		  readyStateAction(this.responseText);
 	  };
 	  xhr.send();
@@ -56,8 +62,7 @@
 	   * Laad de inhoud van een httpResponse in het frame.
 	   */
 	  this.loadPage = function(page, callback){
-		  console.log('loading page');
-		  ajaxCall(page, function(responseText){
+		  ajaxCall(null, page, function(responseText){
 			   me.frameElement.innerHTML = null;
 			   me.frameElement.innerHTML = responseText;
 			   if(typeof callback === 'function'){
@@ -97,7 +102,6 @@
   function getReady(appPart){
 	  // Als de welkomstsetie al omhoog bewogen is, dan wrdt gewoon de pagina geladen.
 	  if(ready == true ){
-		  console.log('wut');
 		  appFrame.loadObject(appPart);
 		  return;
 	  }
@@ -148,20 +152,16 @@
   }
 
   // Laad de conten van een httpresponse in een div
-  function loadContentTo(contentUrl, method,  params, element, standardContent){
+  function loadContentTo(contentUrl, method, params, element, standardContent) {
 	  console.log('loading content');
-	  var xhr= new XMLHttpRequest();
+	  var xhr = new XMLHttpRequest();
 	  element.innerHTML = null;
-	  if(standardContent != null){
+	  if (standardContent != null) {
 		  element.appendChild(standardContent);
 	  }
-	  xhr.open(method, contentUrl, true);
-	  xhr.onreadystatechange= function() {
-		  if (this.readyState!==4) return;
-		  if (this.status!==200) return; 
-		  element.innerHTML += this.responseText;
-	  }
-	  xhr.send(params);
+	  ajaxCall(method, contentUrl, function(responseText) {
+		  element.innerHTML += responseText;
+	  });
   }
 
   // Laad de foto's voor een thema.
@@ -195,9 +195,9 @@
   }
 
 //Toon een foto vergroot in een popup.
-  function showImage(imageId){
+function showImage(imageId){
 	  var image =  document.getElementById('image'+imageId);
-	  var imagePopupWrapper = document.getElementById('image-popup-wrapper');
+	  var imagePopupWrapper = document.getElementById('popup-wrapper');
 	  var imagePopup = document.getElementById('show-image-popup');
 	  var imageDisplay = document.getElementById('image-display');
 	  if (imageDisplay.firstChild != null) {
@@ -207,11 +207,10 @@
 	  imagePopup.className = 'popup';
 	  imagePopupWrapper.style.visibility = 'visible';
 	  shownImage = imageId;
-  }
+}
 
   // Maakt een dropzone aan voor het uploaden van foto's
   var photoDropzoneConfig = function () {
-		  console.log('ik doe iets');
 		  Dropzone.autoDiscover = false;
 		  var dropzoneOptions = {
 			  dictDefaultMessage: "Sleep foto's naar dit vlak om ze te uploaden",

@@ -278,7 +278,7 @@ header h3 {
 	display: inline-block;
  }
  
- #image-popup-wrapper {
+ #popup-wrapper {
  	visibility: hidden;
 	position: absolute;
 	left: 50%;
@@ -312,10 +312,11 @@ header h3 {
 
 #uploadForm {
 	display: block;
-	width: 700px;
-	min-height: 200px;
+	width: 70%;
+	min-height: 50%;
 	background-color: lightblue;
 	border: dashed 2px black;
+	margin: 50px;
 	margin-left: auto;
 	margin-right: auto;
 	box-shadow: 2px 4px 4px 2px rgba(1,1,1,0.5);

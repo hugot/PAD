@@ -27,7 +27,7 @@ Via deze view kunnen de thema's beheerd worden
 		<header>
 			<h3 id="photo-section-header-text" > Foto's in ${theme}</h3>
 		</header><%--
-		--%><section id="photo-section"><form class="floating-image" id="example" action="/photoselection" method="get">
+		--%><section id="photo-section"><form class="floating-image" id="example">
 					<div  class="photo-container">
 						<img class="photo" height="150" src="${context}/webroot/icons/plus.jpg">
 					</div>
