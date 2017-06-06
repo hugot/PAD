@@ -10,7 +10,7 @@
 		<button name="annuleer" type="button" id="annuleer" onclick="hidePopup('theme-creation-popup');">Annuleer</button>
 	</div>
     	<div id="image-popup" class="hidden-popup">
-        <header> Foto beheer <button class="closing-button" onclick="hidePopup('show-image-popup');document.getElementById('image-popup-wrapper').style.visibility = 'hidden';">X</button></header>
+        <header> Foto beheer <button class="closing-button" onclick="hidePopup('image-popup');document.getElementById('popup-wrapper').style.visibility = 'hidden';">X</button></header>
     		<div id="image-display">
     		</div>
     		<p id="photo-name">Dikkieee</p>

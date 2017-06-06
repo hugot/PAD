@@ -115,7 +115,7 @@ button:hover, #selected-theme {
 	line-height: normal;
 }
 
-#show-image-popup button {
+#image-popup button {
 	float:bottom;
 }
 
@@ -287,7 +287,7 @@ header h3 {
 	width: 70%;
  }
 
-#show-image-popup {
+#image-popup {
 	position: relative;
 	left: -50%;
 	top: -50%;

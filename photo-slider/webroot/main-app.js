@@ -198,7 +198,7 @@
 function showImage(imageId){
 	  var image =  document.getElementById('image'+imageId);
 	  var imagePopupWrapper = document.getElementById('popup-wrapper');
-	  var imagePopup = document.getElementById('show-image-popup');
+	  var imagePopup = document.getElementById('image-popup');
 	  var imageDisplay = document.getElementById('image-display');
 	  if (imageDisplay.firstChild != null) {
 		  imageDisplay.removeChild(imageDisplay.firstChild);
