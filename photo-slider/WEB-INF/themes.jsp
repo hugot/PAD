@@ -35,9 +35,17 @@ Via deze view kunnen de thema's beheerd worden
 				</form><%--
 				--%>${photos}
 		</section>
-		<%-- ---------------------- LIJST MET FOTO'S --------------------- --%>
 	</section>
-
+		<section id="hideable-right-sidebar" class="hidden-right-sidebar">
+		<button class="show-section-button" onclick="moveAudioSection();"><h3>< <br>a<br>u<br>d<br>i<br>o</h3> </button>
+		<header><p>Muziek in dit thema</p></header>
+			<div class="scrollable" id="audio-scrollable">
+			</div>
+			<div id="audio">
+			<audio controls>
+			</div>
+			</audio>
+		</section>
 	<%--<section id="right-section">
 		<%-- -------- MUZIEK -------
 		${music}

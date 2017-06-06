@@ -133,6 +133,7 @@ section header{
 	height: 60px;
 	line-height: 60px;
 	outline: 2px solid #4286f4;
+	margin-top: 0;
 }
 
 header h3 {
@@ -149,6 +150,34 @@ header h3 {
 	margin: 0;
 	outline: 2px solid #4286f4;
  }
+header p {
+	margin:0;
+	padding: 0;
+}
+
+ /* ------ sections ------ */
+
+section {
+	outline: 2px solid #4286f4;
+}
+
+.scrollable {
+	overflow: scroll;
+	height: 340px;
+	max-width: 100%;
+	background-color: white;
+}
+
+.scrollable *{
+	outline: 2px solid #4286f4;
+	width: 100%;
+	max-height: 35px;
+	line-height: 35px;
+}
+
+.scrollable ul {
+	list-style-type: none;
+}
 
 /* ------ side bars ----- */
 
@@ -187,6 +216,26 @@ header h3 {
 #left-selection-bar *{
 	width: 100%;
 	margin: 0;
+}
+
+#hideable-right-sidebar {
+	z-index: 1;
+	right:-20%;
+	top: 30px;
+	position: absolute;
+	height: 450px;
+	width: 20%;
+	background-color:white;
+}
+
+#hideable-right-sidebar .show-section-button {
+	float: left;
+	width: 20px;
+	height: 100%;
+	position: absolute;
+	left: -20px;
+	max-height:100%;
+	line-height: 20px;
 }
 
 /* ----- middle section */

@@ -5,7 +5,7 @@ public class HtmlAudio extends HtmlElement<HtmlAudio> implements HtmlElementInte
 	private GenericHtmlElement sourceElement;
 
 	public HtmlAudio(String elementId, String source) {
-		super(elementId, "audio-player", "audio controls");
+		super(elementId, "audio-player", "audio controls autoplay");
 		sourceElement = new GenericHtmlElement("source") {
 
 			@Override

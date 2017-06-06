@@ -25,7 +25,7 @@
  * @param {*} address 
  * @param {*} readyStateAction 
  */
-  function ajaxCall(method, address, readyStateAction){
+  function ajaxCall(method, address, readyStateAction, params){
 	  var xhr = new XMLHttpRequest();
 	  if(method == null){
 		method = 'GET';
@@ -39,7 +39,7 @@
 		  } 
 		  readyStateAction(this.responseText);
 	  };
-	  xhr.send();
+	  xhr.send(params);
   }
 
 /**
@@ -68,7 +68,7 @@
 			   if(typeof callback === 'function'){
 				   callback();
 			   }
-		  });
+		  }, null);
 	  };
 	  
 	  /**
@@ -161,11 +161,12 @@
 	  }
 	  ajaxCall(method, contentUrl, function(responseText) {
 		  element.innerHTML += responseText;
-	  });
+	  }, params);
   }
 
   // Laad de foto's voor een thema.
   function setActiveTheme(themeId){
+	  hideAudioSection();
 	  var element = document.getElementById('photo-section');
 	  if(addPhotoDiv == null){
 		  addPhotoDiv = element.firstChild;
@@ -209,6 +210,44 @@ function showImage(imageId){
 	  shownImage = imageId;
 }
 
+var oldPosition;
+function moveAudioSection() {
+	var element = document.getElementById('hideable-right-sidebar');
+	if (oldPosition == null) {
+		oldPosition = '0px';
+	}
+	var newPosition = oldPosition;
+	oldPosition = element.style.right;
+	element.style.right = newPosition;
+	if (newPosition == '0px') {
+		loadContentTo('/audiosample', null, null,
+			document.getElementById('audio-scrollable'),
+			null);
+		console.log('hiero');
+	}
+	else {
+		stopMusic();
+	}
+}
+
+function hideAudioSection(){
+	stopMusic();
+	oldPosition = '0px';
+	document.getElementById('hideable-right-sidebar').style.right = '-20%';
+}
+
+function playMusic(musicId){
+	var element = document.getElementById('audio');
+	loadContentTo('/audiosample', 'POST', 'selectedAudioId='+musicId, element);
+}
+
+function stopMusic(){
+	try {
+		document.getElementById('audio').firstChild.pause();
+	} catch (error){
+		console.log('nothing to see here');
+	}
+}
   // Maakt een dropzone aan voor het uploaden van foto's
   var photoDropzoneConfig = function () {
 		  Dropzone.autoDiscover = false;
@@ -244,6 +283,6 @@ function showImage(imageId){
   appParts['settings'] 				= new AppPart('/settingmanagement', null);
   appParts['photoDeletion'] 		= new AppPart('/deletephotos', null);
 
-//(function(){
-//	loadPage('/thememanagement');
-//}())
+(function(){
+	getReady(appParts['themeManagement']);
+}())
