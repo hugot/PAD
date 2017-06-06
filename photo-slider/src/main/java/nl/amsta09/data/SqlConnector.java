@@ -13,6 +13,7 @@ import nl.amsta09.model.Media;
 import nl.amsta09.model.Photo;
 import nl.amsta09.model.Theme;
 import nl.amsta09.model.Audio;
+import nl.amsta09.app.Settings;
 
 public class SqlConnector {
 
@@ -170,7 +171,35 @@ public class SqlConnector {
 
         disableThemaStatement.execute(sql);
     }
-
+    /*
+    Voegt de nieuwe instellingen toe
+    */
+    public void insertSettings(Theme theme, Settings setting) throws SQLException{
+        Statement settings = connection.createStatement();
+        int on;
+        if(setting.getSound()){
+            on = 1;
+        } else {
+            on = 0;
+        }
+        String sql1 = ("DELETE FROM settings WHERE itemId = " + theme.getId());
+        settings.execute(sql1);
+        String sql2 = ("INSERT INTO settings (id, settingName, itemId, OnOff) VALUES ('" + theme.getId() + "','" + theme.getName() + "','" + theme.getId() + "','" + on + "')");
+        settings.execute(sql2);
+        System.out.println("Setting has been saved to the Database");
+    }
+    /*
+    Haalt de instelligen op vanuit de Database
+    */
+    public int getSettingFromDatabase(Theme theme) throws SQLException{
+        int onOff;
+        ResultSet getSettings = executeQuery("SELECT * FROM settings INNER JOIN theme ON settings.itemId = " + theme.getId());
+        getSettings.next();
+        onOff = getSettings.getInt("OnOff");
+        System.out.println("SYAR");
+        return onOff;
+    }
+    
     /*
      * Voegt het gekozen media file toe aan een gekozen thema
      */
