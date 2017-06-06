@@ -106,7 +106,6 @@ public class SlideShowController {
 		this.theme = theme;
 		this.photos = theme.getPhotoList().listIterator();
                 this.musics = theme.getMusicList().listIterator();
-                System.out.println("Dit is de Size: " + theme.getMusicList().size());
 	}
         
         public Theme getTheme(){
@@ -166,7 +165,7 @@ public class SlideShowController {
          * Bepaalt de muziek die gespeeld moet worden
          */
         public void playNextMusic(){
-            if(musics.hasNext()){
+            if(settings.getSound() && musics.hasNext()){
                 playMusic(musics.next());
             }
         }

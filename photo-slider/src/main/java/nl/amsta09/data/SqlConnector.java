@@ -196,7 +196,6 @@ public class SqlConnector {
         ResultSet getSettings = executeQuery("SELECT * FROM settings INNER JOIN theme ON settings.itemId = " + theme.getId());
         getSettings.next();
         onOff = getSettings.getInt("OnOff");
-        System.out.println("SYAR");
         return onOff;
     }
     
@@ -282,7 +281,7 @@ public class SqlConnector {
 			throw new ThemeNotFoundException("Thema niet gevonden");
 		}
 		theme.setPhotoList(getAllPhotosFromTheme(theme));
-                //theme.setMusicList(getAllMusicsFromTheme(theme));
+                theme.setMusicList(getAllMusicsFromTheme(theme));
 		return theme;
     }
 
