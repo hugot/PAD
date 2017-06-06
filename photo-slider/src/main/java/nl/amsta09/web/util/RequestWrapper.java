@@ -1,6 +1,10 @@
 package nl.amsta09.web.util;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -48,7 +52,13 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 	 * @param jsp
 	 */
 	public void respondUsing(String jsp, HttpServletResponse response) throws ServletException, IOException{
+		content.appendAttributes();
 		getRequestDispatcher(jsp).forward(getRequest(), response);
+	}
+
+	public void sendContentByWriter(HttpServletResponse response) throws IOException{
+		response.getWriter().write(content.getAll());
+		response.getWriter().flush();
 	}
 
 	/**
@@ -73,7 +83,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 	}
 
 	public boolean redirectToIndexIf(boolean condition, HttpServletResponse response)
-			throws ServletException, IOException{
+		throws ServletException, IOException{
 		if(condition) {
 			respondUsing(INDEX_JSP, response);
 			return true;
@@ -81,7 +91,29 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 		return false;
 	}
 
-	public HttpServletRequest getHttpServletRequest(){
-		return httpServletRequest;
+	/**
+	 * Haal een parameter op uit een AJAX request.
+	 * @param name
+	 * @return parameter
+	 */
+	public String parseParameter(String name) throws IOException{
+		String parameter;
+		StringBuilder requestBody = new StringBuilder();
+		InputStream requestInputStream = getInputStream();
+		Scanner requestScanner= new Scanner(requestInputStream, "UTF-8");
+		while(requestScanner.hasNext()){
+			requestBody.append(requestScanner.nextLine());
+		}
+		requestScanner.close();
+		requestInputStream.close();
+		Pattern filenamePattern = Pattern.compile(name+"=(.*)");
+		Matcher matcher = filenamePattern.matcher(requestBody.toString());
+		if(matcher.find()){
+			parameter = matcher.group(1);
+		}
+		else {
+			parameter = null;
+		}
+		return parameter;
 	}
 }

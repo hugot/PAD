@@ -16,6 +16,15 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 	</servlet-mapping>
 
 	<servlet>
+		<servlet-name>AudioSampleServlet</servlet-name>
+		<servlet-class>nl.amsta09.web.controller.AudioSampleServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>AudioSampleServlet</servlet-name>
+		<url-pattern>/audiosample</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
 		<servlet-name>FileUploadServlet</servlet-name>
 		<servlet-class>nl.amsta09.web.controller.FileUploadServlet</servlet-class>
 	</servlet>
@@ -59,6 +68,8 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 	<servlet-mapping>
 		<servlet-name>ThemeManagementServlet</servlet-name>
 		<url-pattern>/thememanagement</url-pattern>
+		<url-pattern>/getthemes</url-pattern>
+		<url-pattern>/getphotos</url-pattern>
 	</servlet-mapping>
 	
 	<servlet>
@@ -130,7 +141,7 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>DeletePhotoSelection</servlet-name>
-		<url-pattern>/DeleteFoto</url-pattern>
+		<url-pattern>/deletephotos</url-pattern>
 	</servlet-mapping>
 
 

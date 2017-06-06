@@ -208,7 +208,6 @@ public class SqlConnector {
         Statement addMediaToThemeStatement = connection.createStatement();
         //Voegt gekozen media toe aan gekozen thema
         String sql = ("INSERT INTO theme_has_media VALUES ('" + Theme_Id + "','" + media.getId() + "')");
-        System.out.println(sql);
 
         addMediaToThemeStatement.execute(sql);
     }
@@ -431,7 +430,6 @@ public class SqlConnector {
      * @param media
      */
     public void insertMedia(Media media) throws SQLException {
-        System.out.println(media.getRelativePath());
         executeUpdate(String.format("INSERT INTO media (name, filePath) VALUES ('%s','%s')", media.getName(), media.getRelativePath()));
         insertIntoMediaType(media);
     }
