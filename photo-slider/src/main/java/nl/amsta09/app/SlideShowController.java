@@ -106,7 +106,6 @@ public class SlideShowController {
 		this.theme = theme;
 		this.photos = theme.getPhotoList().listIterator();
                 this.musics = theme.getMusicList().listIterator();
-                System.out.println("Dit is de Size: " + theme.getMusicList().size());
 	}
         
         public Theme getTheme(){
