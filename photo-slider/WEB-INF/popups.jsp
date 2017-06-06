@@ -1,4 +1,5 @@
-	<form id="theme-creation-popup" class="hidden-popup" method="POST" action="/addtheme">
+    <div id="popup-wrapper">
+	<div id="theme-creation-popup" class="hidden-popup" method="POST" action="/addtheme">
 		<header>
 			<h3>Maak een thema aan</h3>
 		</header>
@@ -7,9 +8,8 @@
 		<br><br>
 		<button type="button" value="Maak thema" name="maak-thema" id="maak-thema" onclick="addTheme();" >Maak thema</button>
 		<button name="annuleer" type="button" id="annuleer" onclick="hidePopup('theme-creation-popup');">Annuleer</button>
-	</form>
-    <div id="image-popup-wrapper">
-    	<div id="show-image-popup" class="hidden-popup">
+	</div>
+    	<div id="image-popup" class="hidden-popup">
         <header> Foto beheer <button class="closing-button" onclick="hidePopup('show-image-popup');document.getElementById('image-popup-wrapper').style.visibility = 'hidden';">X</button></header>
     		<div id="image-display">
     		</div>
