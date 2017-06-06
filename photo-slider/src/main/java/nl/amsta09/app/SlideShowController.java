@@ -17,7 +17,6 @@ import nl.amsta09.driver.MainApp;
 import nl.amsta09.model.Photo;
 import nl.amsta09.model.Audio;
 import nl.amsta09.model.Theme; 
-import nl.amsta09.app.Settings;
 
 public class SlideShowController {
 	private Theme theme;
@@ -49,6 +48,13 @@ public class SlideShowController {
 	 */
 	public void initialize(){
 		setFirstTheme();
+                /*try {
+            conn.addSetting();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }*/
+                System.out.println("Dit is de Theme_id: " + theme.getId());
+                setSettings();
 		view.setKeyListener();
 		timer.start();
                 stage.setFullScreen(true);
@@ -58,7 +64,6 @@ public class SlideShowController {
                 showNextImage();
                 playNextMusic();
                 runNextMusic();
-                System.out.println("Dit is de Theme_id: " + theme.getId());
 	}
 
 	public void pause(){
@@ -68,8 +73,7 @@ public class SlideShowController {
 	public void start(){
 		timer.start();
 	}
-
-
+        
 	   /**
      * Haal een random thema op om foto's van weer te geven.
      */
@@ -102,7 +106,6 @@ public class SlideShowController {
 		this.theme = theme;
 		this.photos = theme.getPhotoList().listIterator();
                 this.musics = theme.getMusicList().listIterator();
-                System.out.println("Dit is de Size: " + theme.getMusicList().size());
 	}
         
         public Theme getTheme(){
@@ -112,6 +115,31 @@ public class SlideShowController {
         public Settings getSettings(){
             return settings;
         }
+        /**
+         * Bepaalt of het geluid aan of uit moet zijn
+         */
+        public void setSettings(){
+            int on;
+            try {
+                on = conn.getSettingFromDatabase(theme);
+                if(on == 1){
+                    settings.setSound(true);
+                } else {
+                    settings.setSound(false);
+                }                
+            } catch (SQLException ex){
+                ex.printStackTrace();
+            }
+        }
+        
+        public void insertSetting(){
+            try {
+                conn.insertSettings(theme, getSettings());
+            } catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+
 	/**
 	 * Verander welke foto er weergegeven wordt.
 	 * @param photo
@@ -137,7 +165,7 @@ public class SlideShowController {
          * Bepaalt de muziek die gespeeld moet worden
          */
         public void playNextMusic(){
-            if(musics.hasNext()){
+            if(settings.getSound() && musics.hasNext()){
                 playMusic(musics.next());
             }
         }
@@ -154,9 +182,7 @@ public class SlideShowController {
         
         public void stopMusic(){
             if(musicClip != null){
-                System.out.println("-----------------------------");
                 musicClip.stop();
-                System.out.println("-----------------------------");
             }
         }
 
@@ -165,8 +191,9 @@ public class SlideShowController {
 	 */
 	public void setNextTheme(){
 		try {
-			System.out.println("setting next theme");
+                        System.out.println("setting next theme");
 			setTheme(conn.getRandomThemeThatIsNot(theme));;
+                        setSettings();
 			showNextImage();
                         stopMusic();
                         playNextMusic();
