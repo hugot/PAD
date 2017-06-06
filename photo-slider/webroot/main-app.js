@@ -236,12 +236,14 @@ function moveAudioSection() {
 	oldPosition = element.style.right;
 	element.style.right = newPosition;
 	if (newPosition == '0px') {
-		loadContentTo('/audiosample', null, null,
+		loadContentTo('/audiosample', 'GET', null,
 			document.getElementById('audio-scrollable'),
 			null);
+		document.getElementById('button-arrow').innerText = '>';
 		console.log('hiero');
 	}
 	else {
+		document.getElementById('button-arrow').innerText = '<';
 		stopMusic();
 	}
 }
@@ -250,6 +252,7 @@ function hideAudioSection() {
 	stopMusic();
 	oldPosition = '0px';
 	document.getElementById('hideable-right-sidebar').style.right = '-20%';
+	document.getElementById('button-arrow').innerText = '<';
 }
 
 function playMusic(musicId) {

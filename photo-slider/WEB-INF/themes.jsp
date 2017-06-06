@@ -41,7 +41,7 @@ Via deze view kunnen de thema's beheerd worden
 		</section>
 	</section>
 		<section id="hideable-right-sidebar" class="hidden-right-sidebar">
-		<button class="show-section-button" onclick="moveAudioSection();"><h3>< <br>a<br>u<br>d<br>i<br>o</h3> </button>
+		<button class="show-section-button" onclick="moveAudioSection();"><h3><h3 id="button-arrow"><</h3> <br>a<br>u<br>d<br>i<br>o</h3> </button>
 		<header><p>Muziek in dit thema</p></header>
 			<div class="scrollable" id="audio-scrollable">
 			</div>
