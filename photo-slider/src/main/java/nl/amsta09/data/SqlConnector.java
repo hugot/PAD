@@ -196,6 +196,7 @@ public class SqlConnector {
         ResultSet getSettings = executeQuery("SELECT * FROM settings INNER JOIN theme ON settings.itemId = " + theme.getId());
         getSettings.next();
         onOff = getSettings.getInt("OnOff");
+        System.out.println("SYAR");
         return onOff;
     }
     
