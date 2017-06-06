@@ -1,6 +1,7 @@
 package nl.amsta09.web.util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Hashtable;
 
 import javax.servlet.http.HttpServletRequest;
@@ -8,10 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import nl.amsta09.model.Photo;
 import nl.amsta09.model.Theme;
 import nl.amsta09.web.html.HtmlButton;
+import nl.amsta09.web.html.HtmlDiv;
 import nl.amsta09.web.html.HtmlElementInterface;
 import nl.amsta09.web.html.HtmlForm;
 import nl.amsta09.web.html.HtmlImage;
-import nl.amsta09.web.html.HtmlList;
 	
 /**
  * Deze class dient voor het beheren van de content die als gevolg van een httpreqeust
@@ -21,6 +22,7 @@ import nl.amsta09.web.html.HtmlList;
  */
 public class Content {
 	private HttpServletRequest request;
+	private HashMap<String,String> content;
 
 	/**
 	 * Instantieer de content.
@@ -29,6 +31,7 @@ public class Content {
 	 */
 	public Content(RequestWrapper request){
 		this.request = request;
+		this.content = new HashMap<String,String>();
 	}
 
 	/**
@@ -37,7 +40,7 @@ public class Content {
 	 * @param value
 	 */
 	public void add(String attribute, String value){
-		request.setAttribute(attribute, value);
+		content.put(attribute, value);
 	}
 
 	/**
@@ -46,7 +49,7 @@ public class Content {
 	 * @param element
 	 */
 	public void add(String attribute, HtmlElementInterface element){
-		request.setAttribute(attribute, element.generateHtml());
+		content.put(attribute, element.generateHtml());
 	}
 
 	/**
@@ -69,20 +72,34 @@ public class Content {
 		});
 	}
 
+	protected String getAll(){
+		StringBuilder sb = new StringBuilder();
+		content.forEach((String name, String value) -> {
+			sb.append(value);
+		});
+		return sb.toString();
+	}
+
+	protected void appendAttributes(){
+		content.forEach((String name, String value) -> {
+			request.setAttribute(name, value);
+		});
+	}
+
 	/**
-	 * Genereer een html lijst van themes en voeg deze aan de content toe.
+	 * Genereer html elementen met thema's en voeg deze aan de content toe.
 	 * @param themes
 	 */
 	public void addThemeList(ArrayList<Theme> themes, String formAction){
-		HtmlList themeList = new HtmlList();
+		StringBuilder sb = new StringBuilder();
 		themes.listIterator().forEachRemaining((Theme theme)-> {
-			themeList.addItem(new HtmlForm("" + theme.getId(), "theme", "post", formAction)
-					.addInput("hidden", "themeName", theme.getName())
-					.addInput("hidden", "selectedThemeId", "" + theme.getId())
-					.addElement(new HtmlButton("select-theme-button", "submit", theme.getName()))
-					);
+			sb.append(new HtmlButton()
+					.addContent(theme.getName())
+					.setOnClick("setActiveTheme('" + theme.getId() + "')")
+					.setId("" + theme.getId())
+					.generateHtml());
 		});
-		add(RequestWrapper.THEME_LIST, themeList.generateHtml());
+		add(RequestWrapper.THEME_LIST, sb.toString());
 	}
 
 	/**
@@ -90,24 +107,22 @@ public class Content {
 	 * @param photos.
 	 */
 	public void addPhotoList(ArrayList<Photo> photos){
-		HtmlList photoList = new HtmlList("photo-list", "photo-list");
+		StringBuilder sb = new StringBuilder();
 		photos.listIterator().forEachRemaining((Photo photo) -> {
-			photoList.addItem(new HtmlForm("post", "/managephoto")
-					.setClass("photo")
-					.addInput("hidden", "photoId", "" + photo.getId())
-					.addElement(new HtmlImage(photo.getRelativePath())
-						.setHeight(150))
-					.addElement(new HtmlButton("photo-setting-button", "submit", "aan/uit")
-						.setId("soundswitch")
-						.addAttribute("value", "soundswitch"))
-					.addElement(new HtmlButton("photo-setting-button", "submit", "voeg geluid toe")
-						.setId("addsound")
-						.addAttribute("value", "addsound"))
-                                                .addElement(new HtmlButton("deletephoto", "submit", "delete") )
-                                                .addAttribute("value", "deletephoto")
+				sb.append(new HtmlDiv()
+					.setClass("floating-image")
+					.addElement(new HtmlDiv()
+						.setClass("photo-container")
+						.addElement(new HtmlImage("image" + photo.getId(), "photo", photo.getRelativePath())
+						.setHeight(150)))
+					.addElement(new HtmlButton()
+						.setClass("big-button")
+						.setOnClick("showImage('" + photo.getId() + "');")
+						.setContent("Bekijk de foto"))
+					.generateHtml()
 					);
 		});
-		add(RequestWrapper.PHOTO_LIST, photoList);
+		add(RequestWrapper.PHOTO_LIST, sb.toString());
 	}
 
 }

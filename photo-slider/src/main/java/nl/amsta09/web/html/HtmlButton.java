@@ -17,6 +17,32 @@ public class HtmlButton extends HtmlElement<HtmlButton> implements HtmlElementIn
 	}
 
 	/**
+	 * Maak button aan zonder attributen.
+	 */
+	public HtmlButton(){
+		super("button");
+	}
+
+	/**
+	 * stel onclick attribuut in.
+	 * @return button
+	 */
+	public HtmlButton setOnClick(String action){
+		addAttribute("onclick", action);
+		return this;
+	}
+
+	/** 
+	 * Voeg tekst toe aan de button.
+	 * @param text
+	 * @return button
+	 */
+	public HtmlButton addText(String text){
+		addContent(text);
+		return this;
+	}
+
+	/**
 	 * Stel het button type in.
 	 * @param type
 	 */

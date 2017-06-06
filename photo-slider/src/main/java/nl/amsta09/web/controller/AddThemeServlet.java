@@ -40,11 +40,10 @@ public class AddThemeServlet extends HttpServlet {
         RequestWrapper requestWrapper = new RequestWrapper(request);
 
         //Haalt de naam op		
-        final String ThemeName = request.getParameter("name");
-
-
+		String themeName;
         try {
-            requestWrapper.getSqlConnector().insertTheme(ThemeName);
+			themeName = requestWrapper.parseParameter("theme");
+            requestWrapper.getSqlConnector().insertTheme(themeName);
 		} catch (NullPointerException | SQLException | ClassNotFoundException e) {
 			requestWrapper.getContent().add(HtmlPopup.CLASS, new HtmlPopup("error", 
 						"Fout bij verbinding met de database", 
@@ -56,7 +55,7 @@ public class AddThemeServlet extends HttpServlet {
         }  
 
 		requestWrapper.getContent().add(HtmlPopup.CLASS, new HtmlPopup("succes", "Succes!", 
-				"Thema '" + ThemeName + "' is toegevoegd"));
+				"Thema '" + themeName + "' is toegevoegd"));
 
 		requestWrapper.getSession().setMediaSession();
 		try {
@@ -69,7 +68,7 @@ public class AddThemeServlet extends HttpServlet {
 		}
 
 		// Stuur de gebruiker door naar de theme management pagina
-		new ThemeManagementServlet().doGet(requestWrapper.getHttpServletRequest(), response);
+		new ThemeManagementServlet().doGet(requestWrapper, response);
     }
 
 }

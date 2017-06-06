@@ -6,6 +6,7 @@ package nl.amsta09.web.html;
  * @author Hugo Thunnissen
  */
 public class HtmlImage extends HtmlElement<HtmlImage> implements HtmlElementInterface {
+	private final String BOTTOM = "</img>";
 
 	/**
 	 * maak het img element aan met een hoogte en breedte.
@@ -64,6 +65,6 @@ public class HtmlImage extends HtmlElement<HtmlImage> implements HtmlElementInte
 
 	@Override
 	protected String generateBottom() {
-		return "";
+		return BOTTOM;
 	}
 }

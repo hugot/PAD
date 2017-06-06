@@ -5,27 +5,20 @@
 
 Author: Hugo Thunnissen
 
-Dit is een template voor het maken van nieuwe views
+Dit is de settings pagina.
 
 --%>
 
 <html lang="en">
-	<head>
-		<link href="${context}/webroot/style/mainstylesheet.css" rel="stylesheet" type="text/css" media="screen" />
-		<meta charset="UTF-8">
-			<title>TEMPLATE</title>
-		</head>
 		<body>
-			<%@include file="header.jsp"%>
-
-			<section id="main-section">
-
+		<section style="text-align: center;">
+			<section id="middle-section">
 				<header><h2> De instellingen van de slideshow</h2></header>
 				<form id="settings" action="settingmanagement" method="post">
 					<input type="hidden" value="reset" id="reset" name="reset">
 					Het is mogelijk om het apparaat te resetten naar de nieuwstaat.<br>
 					Druk hiervoor op de onderstaande knop:<br><br>
-					<button type="button" onclick="showPopup('reset-confirmation');">reset</button>
+					<button type="button" class="big-button" onclick="showPopup('reset-confirmation');">reset</button>
 				</form>
 
 				<form id="reset-confirmation" class="hidden-popup">
@@ -36,7 +29,7 @@ Dit is een template voor het maken van nieuwe views
 					<button type="button" onclick="hidePopup('reset-confirmation');">annuleer</button>
 				</form>
 			</section>
+			</section>
 
-			<%@include file="footer.jsp"%>
 		</body>
 	</html>

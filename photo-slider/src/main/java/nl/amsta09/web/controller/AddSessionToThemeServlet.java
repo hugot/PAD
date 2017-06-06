@@ -78,7 +78,7 @@ public class AddSessionToThemeServlet extends HttpServlet {
 		} catch (SQLException | NullPointerException | NumberFormatException | ThemeNotFoundException e) {
 			requestWrapper.getContent().add(HtmlPopup.CLASS, new HtmlPopup("error", "Er is iets misgegaan", 
 					"Probeer de pagina opnieuw te laden."));
-			doGet(requestWrapper.getHttpServletRequest(), response);
+			doGet(requestWrapper, response);
 			e.printStackTrace();
 			return;
 		}
@@ -93,7 +93,7 @@ public class AddSessionToThemeServlet extends HttpServlet {
 						requestWrapper.getContent().add(HtmlPopup.CLASS, 
 								new HtmlPopup("error", "Er is iets misgegaan",
 								"Het is niet gelukt om verbinding te maken met de database."));
-						doGet(requestWrapper.getHttpServletRequest(), response);
+						doGet(requestWrapper, response);
 						e.printStackTrace();
 						return;
 					}
@@ -103,6 +103,6 @@ public class AddSessionToThemeServlet extends HttpServlet {
 		
 		requestWrapper.getContent().add(HtmlPopup.CLASS, new HtmlPopup("confirmation", "Media toegevoegd", 
 				"De media is toegevoegd aan het thema."));
-		doGet(requestWrapper.getHttpServletRequest(), response);
+		doGet(requestWrapper, response);
 	}
 }
