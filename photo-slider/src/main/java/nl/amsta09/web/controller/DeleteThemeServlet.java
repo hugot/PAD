@@ -18,10 +18,6 @@ public class DeleteThemeServlet extends HttpServlet {
     private RequestWrapper requestWrapper;
     private Theme selectedTheme;
     private HttpServletResponse response;
-    
-	protected void doGet(HttpServletRequest request, HttpServletResponse response){
-		
-	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
                 requestWrapper = new RequestWrapper(request);
@@ -32,7 +28,7 @@ public class DeleteThemeServlet extends HttpServlet {
 		// Geselecteerde thema
 		if(requestWrapper.getSession().hasManagedTheme()){
 			selectedTheme = requestWrapper.getSession().getMediaSession().getManagedTheme();
-                }
+        }
 
             HtmlPopup popup;
             try {
@@ -47,7 +43,6 @@ public class DeleteThemeServlet extends HttpServlet {
 
             }
             requestWrapper.getContent().add(HtmlPopup.CLASS, popup);
-            new ThemeManagementServlet().doGet(requestWrapper, response);
-            
+            requestWrapper.sendContentByWriter(response);
 	}
 }

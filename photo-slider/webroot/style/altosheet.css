@@ -137,9 +137,15 @@ section header{
 }
 
 header h3 {
-	width: 100%;
+	display: inline;
 	margin: 0;
 	padding: 0;
+}
+
+header button {
+	float: right;
+	border: none;
+	height: 100%;
 }
 
  .popup header {
@@ -162,10 +168,8 @@ section {
 }
 
 .scrollable {
-	overflow: scroll;
-	height: 340px;
+	overflow: auto;
 	max-width: 100%;
-	background-color: white;
 }
 
 .scrollable *{
@@ -213,6 +217,10 @@ section {
 	text-align: center;
 }
 
+#left-selection-bar .scrollable{
+	height: 70%;
+}
+
 #left-selection-bar *{
 	width: 100%;
 	margin: 0;
@@ -238,9 +246,15 @@ section {
 	line-height: 20px;
 }
 
+#hideable-right-sidebar .scrollable {
+	height: 340px;
+	background-color: white;
+}
+
 /* ----- middle section */
 
 #middle-section {
+	position: relative;
 	margin: 5px;
 	width: 78%;
 	height: 100%;
@@ -293,11 +307,15 @@ section {
 }
 
 .popup {
+	text-align:center;
 	z-index: 10;
 	position: absolute;
-	left: 50%;
-	top: 50%;
-	border: solid black 2px;
+	left: -25%;
+	top: -25%;
+	width: 500px;
+	height: 200px;
+	background-color: white;
+	outline: 2px solid #4286f4;
 	box-shadow: 2px 4px 4px 2px rgba(1,1,1,0.5);
 }
 
@@ -336,7 +354,7 @@ section {
 	width: 70%;
  }
 
-#image-popup {
+.photo-popup {
 	position: relative;
 	left: -50%;
 	top: -50%;
