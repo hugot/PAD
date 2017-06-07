@@ -434,6 +434,25 @@ public class SqlConnector {
         return photoList;
     }
 
+	/**
+	 * Haal alle foto's op die niet bij het gegeven thema horen.
+	 * @param theme
+	 * @return photos
+	 */
+    public ArrayList<Photo> getAllPhotosNotInTheme(Theme theme)throws SQLException{
+        ArrayList<Photo> photoList = new ArrayList<>();
+        ResultSet result = executeQuery("SELECT * FROM media INNER JOIN photo ON media.id = photo.id "+
+                     "WHERE media.id NOT IN (SELECT media_id FROM theme_has_media WHERE theme_id = "+ 
+                     theme.getId() + ");");
+        while (result.next()) {
+            photoList.add(new Photo(
+            			result.getString("media.filePath"), 
+            			result.getString("media.name"), 
+            			result.getInt("media.id")));
+        }
+        return photoList;
+    }
+
     public ArrayList<Audio> getAllAudio() throws SQLException, ClassNotFoundException {
         ArrayList<Audio> audioList = new ArrayList<>();
         ResultSet result = executeQuery("SELECT * FROM media INNER JOIN song ON media.id = song.id;");

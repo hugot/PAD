@@ -38,6 +38,7 @@ Via deze view kunnen de thema's beheerd worden
 		</section>
 		<section class="bottom-bar">
 			<button class="big-button" onclick="deleteActiveTheme()">Verwijder thema</button>
+			<button class="big-button" onclick="showPhotoDeletion()">Verwijder foto's uit thema</button>
 		</section>
 	</section>
 		<section id="hideable-right-sidebar" class="hidden-right-sidebar">
