@@ -23,6 +23,7 @@ public abstract class Media {
     private int id;
     private boolean valueOnOff;
 
+    public Media(){};
     public Media(String relativePath, String name, int id) {
         try {
             this.url = new File(relativePath).toURI().toURL();

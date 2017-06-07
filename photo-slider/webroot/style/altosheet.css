@@ -87,6 +87,7 @@ button {
 }
 
 button:hover, #selected-theme {
+	color:white;
 	background-color: #A1C2F9; 
 }
 
@@ -143,7 +144,6 @@ header h3 {
 }
 
 header button {
-	float: right;
 	border: none;
 	height: 100%;
 }
@@ -284,18 +284,23 @@ section {
 	margin-right: 5px;
 	padding: 10px;
 	text-align: center;
+	background-color: white;
+	color: black;
 }
 
-.floating-image p {
-	height: 20px;
-	overflow: hidden;
+.floating-image h4 {
+	margin:0;
+	padding:0;
 }
 
 .photo-container {
+	background-color:white;
 	width: 80%;
 	overflow: hidden;
 	border: black solid 3px;
-	display: inline-block;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 /* ------  POPUP ------ */
@@ -355,11 +360,12 @@ section {
  }
 
 .photo-popup {
-	position: relative;
+	position: absolute;
 	left: -50%;
 	top: -50%;
 	z-index: 10;
 	height: 100%;
+	width: 100%;
 	max-height: 100%;
 	max-width: 100%;
 	background-color: white;

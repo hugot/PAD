@@ -37,6 +37,7 @@ public class ThemeManagementServlet extends HttpServlet {
 	private static final String MAPPING = "/thememanagement";
 	private static final String THEME_LIST_MAPPING = "/getthemes";
 	private static final String PHOTO_LIST_MAPPING = "/getphotos";
+	private static final String ADD_THEME_MAPPING = "/addtheme";
 	private static final int STARTING_THEME = 0;
 	private RequestWrapper requestWrapper;
 	private ArrayList<Theme> themes;
@@ -59,7 +60,8 @@ public class ThemeManagementServlet extends HttpServlet {
 		requestWrapper.getSession().setMediaSession();
 
 		// Antwoord met alleen de themalijst
-		if(requestWrapper.getServletPath().equals(THEME_LIST_MAPPING)){
+		if(requestWrapper.getServletPath().equals(THEME_LIST_MAPPING) || 
+			requestWrapper.getServletPath().equals(ADD_THEME_MAPPING)){
 			if(!refreshThemeList()) return;
 			respondWithThemeList();
 			return;

@@ -28,12 +28,12 @@ Via deze view kunnen de thema's beheerd worden
 	<section id="middle-section">
 		<header>
 			<h3 id="photo-section-header-text" > Foto's in ${theme}</h3></header><%--
-		--%><section id="photo-section"><form class="floating-image" id="example">
+		--%><section id="photo-section"><button class="floating-image" id="example" onclick="showPhotoSelection();">
 					<div  class="photo-container">
 						<img class="photo" height="150" src="${context}/webroot/icons/plus.jpg">
 					</div>
-					<button class="big-button" type="button" onclick="showPhotoSelection();">Voeg foto's toe</button>
-				</form><%--
+					<h4>Voeg foto's toe</h4>
+				</button><%--
 				--%>${photos}
 		</section>
 		<section class="bottom-bar">

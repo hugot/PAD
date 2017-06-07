@@ -1,9 +1,13 @@
 package nl.amsta09.web.util;
 
+import java.awt.SystemTray;
+import java.awt.print.Printable;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
 
+import javax.print.attribute.standard.PrinterLocation;
 import javax.servlet.http.HttpServletRequest;
 
 import nl.amsta09.model.Photo;
@@ -109,16 +113,14 @@ public class Content {
 	public void addPhotoList(ArrayList<Photo> photos){
 		StringBuilder sb = new StringBuilder();
 		photos.listIterator().forEachRemaining((Photo photo) -> {
-				sb.append(new HtmlDiv()
+				sb.append(new HtmlButton()
 					.setClass("floating-image")
 					.addElement(new HtmlDiv()
 						.setClass("photo-container")
 						.addElement(new HtmlImage("image" + photo.getId(), "photo", photo.getRelativePath())
 						.setHeight(150)))
-					.addElement(new HtmlButton()
-						.setClass("big-button")
-						.setOnClick("showImage('" + photo.getId() + "');")
-						.setContent("Bekijk de foto"))
+					.setOnClick("showImage('" + photo.getId() + "');")
+					.addContent("<h4>" + photo.getName() + "</h4>")
 					.generateHtml()
 					);
 		});

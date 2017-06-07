@@ -2,6 +2,7 @@ package nl.amsta09.web.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,6 +20,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 	public static final String SELECTED_THEME_ID = "selectedThemeId";
 	public static final String SELECTED_PHOTO_ID = "selectedPhotoId";
 	public static final String SELECTED_AUDIO_ID = "selectedAudioId";
+	public static final String SELECTED_MEDIA_ID = "selectedMediaId";
 
 	public static final String THEME_LIST = "themes";
 	public static final String PHOTO_LIST = "photos";
@@ -115,5 +117,23 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 			parameter = null;
 		}
 		return parameter;
+	}
+
+	public ArrayList<String> parseParametersByName(String name) throws IOException{
+		ArrayList<String> parameters = new ArrayList<>();
+		StringBuilder requestBody = new StringBuilder();
+		InputStream requestInputStream = getInputStream();
+		Scanner requestScanner= new Scanner(requestInputStream, "UTF-8");
+		while(requestScanner.hasNext()){
+			requestBody.append(requestScanner.nextLine());
+		}
+		requestScanner.close();
+		requestInputStream.close();
+		Pattern filenamePattern = Pattern.compile(name+"=(.+?)&");
+		Matcher matcher = filenamePattern.matcher(requestBody.toString());
+		while(matcher.find()){
+			parameters.add(matcher.group(1));
+		}
+		return parameters;
 	}
 }

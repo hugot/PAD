@@ -67,10 +67,7 @@ public class FileUploadServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException{
-		System.out.println("whaddup1");
-
 		RequestWrapper requestWrapper = new RequestWrapper(request);
-		System.out.println("whaddup");
 
 		// Verzeker dat de sessie een mediaSessie is.
 		requestWrapper.getSession().setMediaSession();
@@ -110,10 +107,14 @@ public class FileUploadServlet extends HttpServlet {
 			return;
 		}
 
+		//Haal spaties uit filepath
+		media.setRelativePath(media.getRelativePath().replaceAll("\\s", ""));
+
 		// Check of er niet al een bestand bestaat met dezelfde naam
+		int fileNumber = 0;
 		while (requestWrapper.getSqlConnector().mediaInDatabase(media)){
-			fileName = "x" + fileName;
-			media.setRelativePath(destinationDir + fileName);
+			String newFileName = fileNumber + fileName;
+			media.setRelativePath(destinationDir + newFileName);
 		}
 
 		// Schrijf het bestand naar de juiste map
@@ -140,14 +141,21 @@ public class FileUploadServlet extends HttpServlet {
 		// Check of opslaan bestand gelukt is en voeg het toe aan de database en sessie
 		if(savingFileSucceeded){
 			try{
-				requestWrapper.getSqlConnector().insertMedia(media);
+				try{
+					requestWrapper.getSqlConnector().insertMedia(media);
+				} catch(SQLException er){
+					Thread.sleep(2000);
+					requestWrapper.getSqlConnector().insertMedia(media);
+				}
 				media.setId(requestWrapper.getSqlConnector().getMediaIdFrom(media));
 				requestWrapper.getSession().getMediaSession().getAddedMedia().add(media);
 			}
-			catch(SQLException e){
+			catch(InterruptedException | SQLException e){
 				sendErrorMessage(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
 						"Het is niet gelukt om bestand " + media.getName() + " aan de database toe te voegen");
 				e.printStackTrace();
+			} finally {
+
 			}
 		}
 		else {

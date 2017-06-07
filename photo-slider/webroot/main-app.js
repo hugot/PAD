@@ -13,6 +13,9 @@ var appFrame;
 // De onderdelen van de applicatie.
 var appParts = new Object();
 
+//Media die geselecteerd wordt
+var selectedMedia = new Object();
+
 var ready = false;
 var selectedThemeId;
 var shownImage;
@@ -147,17 +150,29 @@ function getReady(appPart) {
 	}, 'welcome-section', 0, -90);
 }
 
-// Laad de conten van een httpresponse in een div
+/**
+ * Laad de inhoud van een httpresponse in een div.
+ * @param {*} contentUrl 
+ * @param {*} method 
+ * @param {*} params 
+ * @param {*} element 
+ * @param {*} standardContent 
+ */ 
 function loadContentTo(contentUrl, method, params, element, standardContent) {
 	console.log('loading content');
 	var xhr = new XMLHttpRequest();
-	element.innerHTML = null;
 	if (standardContent != null) {
+		element.innerHTML = null;
 		element.appendChild(standardContent);
+		ajaxCall(method, contentUrl, function (responseText) {
+			element.innerHTML += responseText;
+		}, params);
 	}
-	ajaxCall(method, contentUrl, function (responseText) {
-		element.innerHTML += responseText;
-	}, params);
+	else{
+		ajaxCall(method, contentUrl, function (responseText) {
+			element.innerHTML = responseText;
+		}, params);
+	}
 }
 
 // Laad de foto's voor een thema.
@@ -182,16 +197,21 @@ function setActiveTheme(themeId) {
 }
 
 function showPhotoSelection() {
-	var photoSection = document.getElementById('photo-section');
-	addPhotoDiv = photoSection.firstChild;
+	var popup = document.getElementById('photo-selection-popup');
+	var photoSection = document.getElementById('photo-selection-area');
+	function compStyle(element){ return window.getComputedStyle(element);}
+	photoSection.style.height = (parseFloat(compStyle(popup).height) - 40) + 'px';
+	console.log(parseFloat(compStyle(popup).height) - 40);
+	popup.style.overflow = 'unset';
+	photoSection.style.overflow = 'auto';
 	loadContentTo('/photoselection', 'GET', '', photoSection, null);
+	showPopup(popup.id);
 }
 
 // Voeg een thema toe 
 function addTheme() {
 	var themeName = document.getElementById('theme-name');
-	console.log(themeName.value);
-	loadContentTo('/addtheme', 'POST', 'theme=' + themeName.value, document.getElementById('app-frame'), null);
+	loadContentTo('/addtheme', 'POST', 'theme=' + themeName.value, document.getElementById('theme-list'), null);
 	hidePopup('theme-creation-popup');;
 }
 
@@ -221,8 +241,7 @@ function showImage(imageId) {
 		imageDisplay.removeChild(imageDisplay.firstChild);
 	}
 	imageDisplay.appendChild(image.cloneNode());
-	imagePopup.className = 'popup';
-	imagePopupWrapper.style.visibility = 'visible';
+	showPopup(imagePopup.id);
 	shownImage = imageId;
 }
 
@@ -268,18 +287,60 @@ function stopMusic() {
 	}
 }
 
+function selectMedia(divId, mediaId){
+	console.log(divId);
+	setSelected(document.getElementById(divId));
+	if(selectedMedia[mediaId] === undefined ){
+		console.log('adding');
+		selectedMedia[mediaId] = 1;
+	}
+	else{
+		console.log('removing');
+		delete selectedMedia[mediaId];
+	}
+}
+
+function setSelected(div){
+	function bgColor() {return div.style.backgroundColor;}
+	if(bgColor() == 'rgb(161, 194, 249)'){
+		div.style.backgroundColor = '';
+		console.log('blauw naar wit');
+	}
+	else{
+		div.style.backgroundColor = '#A1C2F9';
+		console.log('wit naar blauw');
+	}
+	console.log('niets matchte');
+	console.log(bgColor());
+	console.log(div.style.backgroundColor);
+}
+
+function addMediaToTheme(callback){
+	var params = '';
+	for(var i in selectedMedia){
+		params += 'selectedMediaId='+i+'&';
+	}
+	ajaxCall('POST', '/addmediatotheme', function(responseText){
+		setActiveTheme(selectedThemeId);
+	},params);
+	if(typeof callback === 'function'){
+		callback();
+	}
+}
+
 function showPopup(popupId) {
 	var popupWrapper = document.getElementById('popup-wrapper');
 	popupWrapper.style.visibility = 'visible';
 	var popup = document.getElementById(popupId);
-	popup.className = "popup";
+	popup.className = popup.className.replace('hidden-popup', 'popup');
 }
 
 function hidePopup(popupId) {
 	var popupWrapper = document.getElementById('popup-wrapper');
 	popupWrapper.style.visibility = 'hidden';
 	var popup = document.getElementById(popupId);
-	popup.className = "hidden-popup";
+	popup.className = popup.className.replace(' popup', ' hidden-popup');
+	console.log(popup.className);
 }
 
 // Maakt een dropzone aan voor het uploaden van foto's
@@ -291,9 +352,6 @@ var photoDropzoneConfig = function () {
 		acceptedFiles: "image/*"
 	};
 	var myDropzone = new Dropzone("form#uploadForm", dropzoneOptions);
-	myDropzone.on('sending', function (file, xhr, formData) {
-		formData.append("sessionId", sessionId.toString());
-	});
 }
 
 // Maakt een dropzone aan voor het uploaden van audio.
@@ -303,11 +361,8 @@ var audioDropzoneConfig = function () {
 		dictDefaultMessage: "Sleep audiobestanden naar dit vlak om ze te uploaden",
 		paramName: "sound",
 		acceptedFiles: ".mp3",
-	}
+	};
 	var myDropzone = new Dropzone("form#uploadForm", dropzoneOptions);
-	myDropzone.on('sending', function (file, xhr, formData) {
-		formData.append("sessionId", sessionId.toString());
-	});
 }
 
 // De pagina's van de applicatie.

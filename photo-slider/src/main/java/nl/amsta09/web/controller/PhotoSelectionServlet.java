@@ -32,8 +32,11 @@ public class PhotoSelectionServlet extends HttpServlet {
 
 		ArrayList<Photo>  photoList;
 		try {
-			photoList = requestWrapper.getSqlConnector().getAllPhoto();
-		} catch (ClassNotFoundException | SQLException e) {
+			photoList = requestWrapper.getSqlConnector().getAllPhotosNotInTheme(
+				requestWrapper.getSession().getMediaSession().getManagedTheme()
+			);
+		} catch (SQLException e) {
+			System.out.println("gefaald");
 			requestWrapper.getContent().add(HtmlPopup.CLASS, new HtmlPopup("error",
 					"Database fout", "het is niet gelukt om de foto's op" +
 					"te halen uit de database. Probeer de pagina opnieuw te laden"));
@@ -46,16 +49,15 @@ public class PhotoSelectionServlet extends HttpServlet {
 		// Maak de html elementen aan voor alle foto's
 		StringBuilder sb = new StringBuilder();
 		photoList.listIterator().forEachRemaining((Photo photo) -> {
-			sb.append(new HtmlDiv()
+			sb.append(new HtmlButton()
 					.setClass("floating-image")
+					.setId("image-div" + photo.getId())
 					.addElement(new HtmlDiv()
 						.setClass("photo-container")
-						.addElement(new HtmlImage("" + photo.getId(), "photo", photo.getRelativePath())
+						.addElement(new HtmlImage("image" + photo.getId(), "photo", photo.getRelativePath())
 						.setHeight(150)))
-					.addElement(new HtmlButton()
-						.setOnClick("selectPhoto('" + photo.getId() + "');")
-						.setClass("big-button")
-						.setContent("Kies foto"))
+					.setOnClick("selectMedia('image-div" + photo.getId() + "', '"+ photo.getId()+ "');")
+					.addContent("<h4>" + photo.getName() + "</h4>")
 					.generateHtml()
 			);
 		});
@@ -64,7 +66,9 @@ public class PhotoSelectionServlet extends HttpServlet {
 				.setClass("bottom-bar")
 				.addElement(new HtmlButton()
 					.setClass("big-button")
-					.setOnClick("sendSelectedImages()")
+					.setOnClick("addMediaToTheme(function(){" +
+						"hidePopup('photo-selection-popup');" + 
+					"})")
 					.setContent("Voeg toe aan thema"))
 				.generateHtml())
 			.toString()
