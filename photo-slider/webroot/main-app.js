@@ -337,6 +337,7 @@ function showPopup(popupId) {
 
 function hidePopup(popupId) {
 	var popupWrapper = document.getElementById('popup-wrapper');
+	if(popupId == 'photo-selection-popup') selectedMedia = new Object();
 	popupWrapper.style.visibility = 'hidden';
 	var popup = document.getElementById(popupId);
 	popup.className = popup.className.replace(' popup', ' hidden-popup');

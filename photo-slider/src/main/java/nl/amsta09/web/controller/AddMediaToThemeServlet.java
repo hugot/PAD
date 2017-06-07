@@ -15,8 +15,6 @@ import nl.amsta09.web.html.HtmlPopup;
 
 public class AddMediaToThemeServlet extends HttpServlet {
         
-	Media media;
-	int selectedMediaId;
                 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException{
@@ -32,14 +30,12 @@ public class AddMediaToThemeServlet extends HttpServlet {
                 
 
 		try {
-			
 			for(String mediaId : requestWrapper.parseParametersByName(
 				RequestWrapper.SELECTED_MEDIA_ID)){
 					int mediaIdInt = Integer.parseInt(mediaId);
 					requestWrapper.getSqlConnector().addMediaToTheme(
 						requestWrapper.getSession().getMediaSession().getManagedTheme().getId()
 						, new Media(){{this.setId(mediaIdInt);}});
-				System.out.println("adding media by id " + mediaIdInt);
 			}
 		} catch(SQLException | NullPointerException | NumberFormatException e){ 
 			requestWrapper.getContent().add(HtmlPopup.CLASS, new HtmlPopup("error", 
@@ -50,21 +46,6 @@ public class AddMediaToThemeServlet extends HttpServlet {
 			e.printStackTrace();
 			return;
 		}
-
-		try {
-			requestWrapper.getSqlConnector().addMediaToTheme(theme.getId(), media);
-		} catch (SQLException e){
-			requestWrapper.getContent().add(HtmlPopup.CLASS, new HtmlPopup("error", 
-						"Fout bij verbinding met de database", 
-						"Het is niet gelukt om verbinding te maken met de database, probeer het " +
-						"alstublieft opnieuw"));
-			new ThemeManagementServlet().doGet(requestWrapper, response);
-			e.printStackTrace();
-			return;
-		}
-		
-			requestWrapper.getContent().add(HtmlPopup.CLASS, new HtmlPopup("succes", "Succes!", 
-					 media.getName() + " is aan het thema " + theme.getName() + " toegevoegd"));
-			new ThemeManagementServlet().doGet(requestWrapper, response);
+		new ThemeManagementServlet().doGet(requestWrapper, response);
 	}
 }
