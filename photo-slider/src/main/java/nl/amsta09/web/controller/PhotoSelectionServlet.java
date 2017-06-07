@@ -14,9 +14,15 @@ import nl.amsta09.web.html.HtmlSection;
 import nl.amsta09.web.util.RequestWrapper;
 import nl.amsta09.web.html.HtmlButton;
 import nl.amsta09.web.html.HtmlDiv;
-import nl.amsta09.web.html.HtmlForm;
 import nl.amsta09.web.html.HtmlImage;
 
+/**
+ * Deze class genereert een lljst met alle foto's die niet in het gegeven thema
+ * staan en de HTML elementen waarmee deze geselecteerd kunnen worden door de
+ * gebruiker.
+ * 
+ * @author Hugo Thunnissen
+ */
 public class PhotoSelectionServlet extends HttpServlet {
 	private RequestWrapper requestWrapper;
 
@@ -66,9 +72,7 @@ public class PhotoSelectionServlet extends HttpServlet {
 				.setClass("bottom-bar")
 				.addElement(new HtmlButton()
 					.setClass("big-button")
-					.setOnClick("addMediaToTheme(function(){" +
-						"hidePopup('photo-selection-popup');" + 
-					"})")
+					.setOnClick("addMediaToTheme();")
 					.setContent("Voeg toe aan thema"))
 				.generateHtml())
 			.toString()

@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS `photoslider`.`theme_has_media` (
   CONSTRAINT `fk_Theme_has_Media_Media1`
     FOREIGN KEY (`media_id`)
     REFERENCES `photoslider`.`media` (`id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 

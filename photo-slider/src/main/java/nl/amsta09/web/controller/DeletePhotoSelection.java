@@ -12,10 +12,14 @@ import nl.amsta09.model.Photo;
 import nl.amsta09.web.html.HtmlPopup;
 import nl.amsta09.web.html.HtmlSection;
 import nl.amsta09.web.util.RequestWrapper;
-import nl.amsta09.web.html.HtmlDiv;
-import nl.amsta09.web.html.HtmlForm;
-import nl.amsta09.web.html.HtmlImage;
-import nl.amsta09.data.SqlConnector;
+import nl.amsta09.web.html.HtmlButton;
+
+/**
+ * Deze class stelt een lijst samen van de foto's in een thema en genereert hier
+ * HTML elementen voor.
+ * 
+ * @author Hugo Thunnissen
+ */
 public class DeletePhotoSelection extends HttpServlet {
 	private RequestWrapper requestWrapper;
 
@@ -31,33 +35,31 @@ public class DeletePhotoSelection extends HttpServlet {
 
 		ArrayList<Photo>  photoList;
 		try {
-			photoList = requestWrapper.getSqlConnector().getAllPhoto();
-		} catch (ClassNotFoundException | SQLException e) {
+			photoList = requestWrapper.getSqlConnector().getAllPhotosFromTheme(
+				requestWrapper.getSession().getMediaSession().getManagedTheme()
+			);
+		} catch (SQLException e) {
 			requestWrapper.getContent().add(HtmlPopup.CLASS, new HtmlPopup("error",
 					"Database fout", "het is niet gelukt om de foto's op" +
 					"te halen uit de database. Probeer de pagina opnieuw te laden"));
-			new ThemeManagementServlet().doGet(requestWrapper, response); 
+			requestWrapper.sendContentByWriter(response);
 			e.printStackTrace();
 			return;
                         
 		}
 
-
 		// Maak de html elementen aan voor alle foto's
-		HtmlSection photoSection = new HtmlSection("main-section", "main-section");
-		photoList.listIterator().forEachRemaining((Photo photo) -> {
-			photoSection.addElement(new HtmlForm("" + photo.getId(), "floating-image", "post", "/DeleteMediaServlet")
-					.addElement(new HtmlDiv()
-						.setClass("photo-container")
-						.addElement(new HtmlImage("" + photo.getId(), "photo", photo.getRelativePath())
-						.setHeight(150)))
-					.addContent("<p>" + photo.getName() + "</p>")
-					.addHiddenValue(RequestWrapper.SELECTED_PHOTO_ID, "" + photo.getId())
-					.addInput("submit", "delete" ,"delete")
-					);
-		});
-		requestWrapper.getContent().add(RequestWrapper.PHOTO_LIST, photoSection);
-		requestWrapper.respondUsing(RequestWrapper.PHOTO_SELECTION_JSP, response); 
-                
+		requestWrapper.getContent().addPhotoSelectionList(photoList);
+		requestWrapper.getContent().add("bottom-bar", new StringBuilder()
+			.append(new HtmlSection()
+				.setClass("bottom-bar")
+				.addElement(new HtmlButton()
+					.setClass("big-button")
+					.setOnClick("deleteMedia();")
+					.setContent("Verwijder foto's"))
+				.generateHtml())
+			.toString()
+		);
+		requestWrapper.sendContentByWriter(response);
 	}
 }

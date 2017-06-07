@@ -3,6 +3,8 @@
  * Copyright (C) 2017 hugo
  *
  * Distributed under terms of the MIT license.
+ *
+ * Dit bestand bevat de styling voor de hele web interaface.
  */
 
 body {
@@ -380,7 +382,13 @@ section {
 	right: 0;
 	background-color: white;
 	outline: 2px solid #4286f4;
-	width: 200px;
+	width: auto;
+	max-height: 60px;
+}
+
+.bottom-bar button {
+	float:right;
+	margin-right: 10px;
 }
 
 #uploadForm {

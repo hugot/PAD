@@ -151,7 +151,7 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
     </servlet>
     <servlet-mapping>
         <servlet-name>DeleteMediaServlet</servlet-name>
-        <url-pattern>/DeleteMediaServlet</url-pattern>
+        <url-pattern>/deletemedia</url-pattern>
     </servlet-mapping>
 	
         
@@ -161,7 +161,7 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
     </servlet>
     <servlet-mapping>
         <servlet-name>ManagePhotoServlet</servlet-name>
-        <url-pattern>/managephotoServlet</url-pattern>
+        <url-pattern>/managephoto</url-pattern>
     </servlet-mapping>
 	
 </web-app>

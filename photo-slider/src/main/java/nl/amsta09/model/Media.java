@@ -10,6 +10,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
+ * Dit is een construtor class voor media objecten.
  *
  * @author Hugo Thunnissen
  */

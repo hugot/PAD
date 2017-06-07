@@ -127,4 +127,21 @@ public class Content {
 		add(RequestWrapper.PHOTO_LIST, sb.toString());
 	}
 
+	public void addPhotoSelectionList(ArrayList<Photo> photos){
+		StringBuilder sb = new StringBuilder();
+		photos.listIterator().forEachRemaining((Photo photo) -> {
+			sb.append(new HtmlButton()
+					.setClass("floating-image")
+					.setId("image-div" + photo.getId())
+					.addElement(new HtmlDiv()
+						.setClass("photo-container")
+						.addElement(new HtmlImage("image" + photo.getId(), "photo", photo.getRelativePath())
+						.setHeight(150)))
+					.setOnClick("selectMedia('image-div" + photo.getId() + "', '"+ photo.getId()+ "');")
+					.addContent("<h4>" + photo.getName() + "</h4>")
+					.generateHtml()
+			);
+		});
+		add(RequestWrapper.PHOTO_LIST, sb.toString());
+	}
 }

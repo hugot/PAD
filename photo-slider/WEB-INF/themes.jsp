@@ -28,7 +28,7 @@ Via deze view kunnen de thema's beheerd worden
 	<section id="middle-section">
 		<header>
 			<h3 id="photo-section-header-text" > Foto's in ${theme}</h3></header><%--
-		--%><section id="photo-section"><button class="floating-image" id="example" onclick="showPhotoSelection();">
+		--%><section id="photo-section"><button class="floating-image" id="example" onclick="showPhotoSelection('/photoselection');">
 					<div  class="photo-container">
 						<img class="photo" height="150" src="${context}/webroot/icons/plus.jpg">
 					</div>
@@ -38,7 +38,7 @@ Via deze view kunnen de thema's beheerd worden
 		</section>
 		<section class="bottom-bar">
 			<button class="big-button" onclick="deleteActiveTheme()">Verwijder thema</button>
-			<button class="big-button" onclick="showPhotoDeletion()">Verwijder foto's uit thema</button>
+			<button class="big-button" onclick="showPhotoSelection('/deletephotos')">Verwijder foto's uit thema</button>
 		</section>
 	</section>
 		<section id="hideable-right-sidebar" class="hidden-right-sidebar">

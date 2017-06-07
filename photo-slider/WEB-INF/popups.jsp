@@ -14,6 +14,14 @@
 		<div id="photo-selection-area">
 		</div>
 	</div>
+	<div id="delete-confirmation" class=" hidden-popup">
+ 		<header> Permanent verwijderen?</header>
+		 <br>
+		Wilt u de foto\'s permanent verwijderen, of alleen uit dit thema?
+		<br><br>
+		<button class="big-button" onclick="deleteMediaFromTheme();">Alleen uit thema verwijderen</button>
+		<button class="big-button" onclick="deleteMediaPermanently();">Permanent verwijderen</button>
+	</div>
     	<div id="image-popup" class="photo-popup hidden-popup">
         <header> Foto beheer <button class="closing-button" onclick="hidePopup('image-popup');">X</button></header>
     		<div id="image-display">

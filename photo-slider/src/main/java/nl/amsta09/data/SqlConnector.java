@@ -96,7 +96,7 @@ public class SqlConnector {
     /*
     Verwijdert de gekozen Media uit de database
      */
-    public void deleteMedia(int id) throws SQLException, ClassNotFoundException {
+    public void deleteMedia(int id) throws SQLException{
 
         Statement deleteMediaStatement = connection.createStatement();
         String sql = ("DELETE FROM media"
@@ -221,7 +221,7 @@ public class SqlConnector {
         Statement deleteMediaFromThemeStatement = connection.createStatement();
         //Voegt gekozen media toe aan gekozen thema
         String sql = ("DELETE FROM theme_has_media WHERE theme_id = '" + Theme_Id + "'"
-                + "AND media_id = '" + Media_Id + "')");
+                + "AND media_id = '" + Media_Id + "'");
 
         deleteMediaFromThemeStatement.execute(sql);
     }

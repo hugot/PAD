@@ -196,17 +196,6 @@ function setActiveTheme(themeId) {
 	selectedThemeId = themeId;
 }
 
-function showPhotoSelection() {
-	var popup = document.getElementById('photo-selection-popup');
-	var photoSection = document.getElementById('photo-selection-area');
-	function compStyle(element){ return window.getComputedStyle(element);}
-	photoSection.style.height = (parseFloat(compStyle(popup).height) - 40) + 'px';
-	console.log(parseFloat(compStyle(popup).height) - 40);
-	popup.style.overflow = 'unset';
-	photoSection.style.overflow = 'auto';
-	loadContentTo('/photoselection', 'GET', '', photoSection, null);
-	showPopup(popup.id);
-}
 
 // Voeg een thema toe 
 function addTheme() {
@@ -287,6 +276,18 @@ function stopMusic() {
 	}
 }
 
+function showPhotoSelection(url) {
+	var popup = document.getElementById('photo-selection-popup');
+	var photoSection = document.getElementById('photo-selection-area');
+	function compStyle(element){ return window.getComputedStyle(element);}
+	photoSection.style.height = (parseFloat(compStyle(popup).height) - 40) + 'px';
+	console.log(parseFloat(compStyle(popup).height) - 40);
+	popup.style.overflow = 'unset';
+	photoSection.style.overflow = 'auto';
+	loadContentTo(url, 'GET', '', photoSection, null);
+	showPopup(popup.id);
+}
+
 function selectMedia(divId, mediaId){
 	console.log(divId);
 	setSelected(document.getElementById(divId));
@@ -315,17 +316,32 @@ function setSelected(div){
 	console.log(div.style.backgroundColor);
 }
 
-function addMediaToTheme(callback){
+function deleteMedia(){
+	showPopup('delete-confirmation');
+}
+
+function sendSelectedMediaTo(url){
 	var params = '';
 	for(var i in selectedMedia){
 		params += 'selectedMediaId='+i+'&';
 	}
-	ajaxCall('POST', '/addmediatotheme', function(responseText){
+	ajaxCall('POST', url, function(responseText){
 		setActiveTheme(selectedThemeId);
 	},params);
-	if(typeof callback === 'function'){
-		callback();
-	}
+	hidePopup('photo-selection-popup');
+	hidePopup('delete-confirmation');
+}
+
+function deleteMediaFromTheme(){
+	sendSelectedMediaTo('/managephoto');
+}
+
+function addMediaToTheme(callback){
+	sendSelectedMediaTo('/addmediatotheme');
+}
+
+function deleteMediaPermanently(){
+	sendSelectedMediaTo('/deletemedia');
 }
 
 function showPopup(popupId) {
