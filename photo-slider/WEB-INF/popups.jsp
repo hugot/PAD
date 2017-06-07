@@ -6,11 +6,16 @@
 		<p>Geef het thema een naam:</p>
 		<input name="theme-name" id="theme-name" placeholder="Thema-naam" type="text"/>
 		<br><br>
-		<button type="button" value="Maak thema" name="maak-thema" id="maak-thema" onclick="addTheme();" >Maak thema</button>
-		<button name="annuleer" type="button" id="annuleer" onclick="hidePopup('theme-creation-popup');">Annuleer</button>
+		<button type="button" class="big-button" value="Maak thema" name="maak-thema" id="maak-thema" onclick="addTheme();" >Maak thema</button>
+		<button name="annuleer" class="big-button" type="button" id="annuleer" onclick="hidePopup('theme-creation-popup');">Annuleer</button>
 	</div>
-    	<div id="image-popup" class="hidden-popup">
-        <header> Foto beheer <button class="closing-button" onclick="hidePopup('image-popup');document.getElementById('popup-wrapper').style.visibility = 'hidden';">X</button></header>
+	<div id="photo-selection-popup" class="photo-popup hidden-popup">
+		<header>Selecteer foto's om toe te voegen aan thema<button class="closing-button" onclick="hidePopup('photo-selection-popup')">X</button></header>
+		<div id="photo-selection-area">
+		</div>
+	</div>
+    	<div id="image-popup" class="photo-popup hidden-popup">
+        <header> Foto beheer <button class="closing-button" onclick="hidePopup('image-popup');">X</button></header>
     		<div id="image-display">
     		</div>
     		<p id="photo-name">Dikkieee</p>

@@ -21,7 +21,6 @@ Via deze view kunnen foto's toegevoegd worden
 		<body>
 		<script type="text/javascript" src="${context}/webroot/dropzone.js"></script>
 		<script type="text/javascript" src="${context}/webroot/main-app.js"></script>
-		<script type="text/javascript" src="${context}/webroot/make-popup.js"></script>
 			<div id="welcome-section">
 				<section>
 					<span>

@@ -32,18 +32,14 @@ public class AddMediaToThemeServlet extends HttpServlet {
                 
 
 		try {
-			if(requestWrapper.getParameter(RequestWrapper.SELECTED_PHOTO_ID) != null){
-				selectedMediaId = Integer.parseInt(requestWrapper.getParameter(
-							RequestWrapper.SELECTED_PHOTO_ID));
-				media = requestWrapper.getSqlConnector().getPhotoById(selectedMediaId);
-
-				requestWrapper.getSqlConnector().getPhotoById(selectedMediaId);
-			}
-			if(requestWrapper.getParameter(RequestWrapper.SELECTED_AUDIO_ID) != null){
-				selectedMediaId = Integer.parseInt(requestWrapper.getParameter(
-							RequestWrapper.SELECTED_AUDIO_ID));
-				media = requestWrapper.getSqlConnector().getMusicById(selectedMediaId);
-				requestWrapper.getSqlConnector().getMusicById(selectedMediaId);
+			
+			for(String mediaId : requestWrapper.parseParametersByName(
+				RequestWrapper.SELECTED_MEDIA_ID)){
+					int mediaIdInt = Integer.parseInt(mediaId);
+					requestWrapper.getSqlConnector().addMediaToTheme(
+						requestWrapper.getSession().getMediaSession().getManagedTheme().getId()
+						, new Media(){{this.setId(mediaIdInt);}});
+				System.out.println("adding media by id " + mediaIdInt);
 			}
 		} catch(SQLException | NullPointerException | NumberFormatException e){ 
 			requestWrapper.getContent().add(HtmlPopup.CLASS, new HtmlPopup("error", 

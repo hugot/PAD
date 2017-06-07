@@ -16,8 +16,10 @@ Via deze view kunnen de thema's beheerd worden
 			<header> 
 				<h3>Thema selectie</h3>
 			</header>
+			<div class="scrollable" id="theme-list">
 			<%-- --------------------------- LIJST MET THEMA'S -------------------------------- --%>
 			${themes}
+			</div>
 			<button class="bottom-button" type="button" onclick="showPopup('theme-creation-popup');">Nieuw thema</button>
 		</section>
 	</div>
@@ -25,19 +27,21 @@ Via deze view kunnen de thema's beheerd worden
 
 	<section id="middle-section">
 		<header>
-			<h3 id="photo-section-header-text" > Foto's in ${theme}</h3>
-		</header><%--
-		--%><section id="photo-section"><form class="floating-image" id="example">
+			<h3 id="photo-section-header-text" > Foto's in ${theme}</h3></header><%--
+		--%><section id="photo-section"><button class="floating-image" id="example" onclick="showPhotoSelection();">
 					<div  class="photo-container">
 						<img class="photo" height="150" src="${context}/webroot/icons/plus.jpg">
 					</div>
-					<button class="big-button" type="button" onclick="showPhotoSelection();">Voeg foto's toe</button>
-				</form><%--
+					<h4>Voeg foto's toe</h4>
+				</button><%--
 				--%>${photos}
+		</section>
+		<section class="bottom-bar">
+			<button class="big-button" onclick="deleteActiveTheme()">Verwijder thema</button>
 		</section>
 	</section>
 		<section id="hideable-right-sidebar" class="hidden-right-sidebar">
-		<button class="show-section-button" onclick="moveAudioSection();"><h3>< <br>a<br>u<br>d<br>i<br>o</h3> </button>
+		<button class="show-section-button" onclick="moveAudioSection();"><h3><h3 id="button-arrow"><</h3> <br>a<br>u<br>d<br>i<br>o</h3> </button>
 		<header><p>Muziek in dit thema</p></header>
 			<div class="scrollable" id="audio-scrollable">
 			</div>
@@ -46,10 +50,5 @@ Via deze view kunnen de thema's beheerd worden
 			</div>
 			</audio>
 		</section>
-	<%--<section id="right-section">
-		<%-- -------- MUZIEK -------
-		${music}
-	</section>--%>
-
 	<script> selectedThemeId = '${selectedThemeId}'; </script>
 </html>

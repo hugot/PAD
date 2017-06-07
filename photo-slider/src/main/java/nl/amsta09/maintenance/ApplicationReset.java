@@ -58,7 +58,11 @@ public class ApplicationReset {
 	 * Stop de nodige processen van de applicatie.
 	 */
 	private void stopServices() {
-		MainApp.getSlideShowController().pause();
+		try {
+			MainApp.getSlideShowController().pause();
+		} catch (NullPointerException e){
+			//doe niets, slideshow staat niet aan.
+		}
 	}
 
 	/**
@@ -176,7 +180,11 @@ public class ApplicationReset {
 	 */
 	private void startServices() throws Exception{
 		MainApp.getSessionManager().reset();
-		MainApp.getSlideShowController().start();
+		try {
+			MainApp.getSlideShowController().start();
+		} catch(NullPointerException e){
+			//Doe niets, slideshow staat niet aan.
+		}
 	}
 	
 	/**
