@@ -27,7 +27,7 @@ public class SettingManagementServlet extends HttpServlet {
 		String requestMapping = request.getServletPath();
 		if(requestMapping.equals("/turnAudioOnOff")){
 			MainApp.getSlideShowController().getSettings().setSound(!MainApp.getSlideShowController().getSettings().getSound());
-                        MainApp.getSlideShowController().insertSetting();
+                        MainApp.getSlideShowController().setMusicOnOff("turnAudioOnOff");
 			HtmlPopup popup;
 			if(MainApp.getSlideShowController().getSettings().getSound()){
 				popup = new HtmlPopup("succes", "geluid aan", "Het geluid voor de slideshow staat nu aan");

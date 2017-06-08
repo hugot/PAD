@@ -20,6 +20,9 @@ Dit is de settings pagina.
 					Druk hiervoor op de onderstaande knop:<br><br>
 					<button type="button" class="big-button" onclick="showPopup('reset-confirmation');">reset</button>
 				</form>
+				
+				<button type="button" class="big-button" onclick="turnMusicOnOff();">Zet het muziek aan/uit</button>
+				
 
 				<form id="reset-confirmation" class="hidden-popup">
 					<header><h3>Weet u het zeker?</h3></header>

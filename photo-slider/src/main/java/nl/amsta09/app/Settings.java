@@ -10,7 +10,7 @@ package nl.amsta09.app;
  * @author Space
  */
 public class Settings {
-    
+    private String settingSoundName = "turnAudioOnOff";
     private boolean soundOn;
     private boolean automaticSlider;
     private boolean buttonWorking;
@@ -18,6 +18,10 @@ public class Settings {
     
     public boolean getSound(){
         return soundOn;
+    }
+    
+    public String getSoundName(){
+        return settingSoundName;
     }
     
     public boolean getAutoSlider(){

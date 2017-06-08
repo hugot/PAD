@@ -344,6 +344,16 @@ function deleteMediaPermanently(){
 	sendSelectedMediaTo('/deletemedia');
 }
 
+
+function turnMusicOnOff(){
+	ajaxCall('POST', '/turnAudioOnOff', function(responseText){
+		var popupWrapper = document.getElementById('popup-wrapper');
+		popupWrapper.innerHTML += responseText;
+		popupWrapper.style.visibility = 'visible';
+	}, null);
+}
+	
+
 function showPopup(popupId) {
 	var popupWrapper = document.getElementById('popup-wrapper');
 	popupWrapper.style.visibility = 'visible';

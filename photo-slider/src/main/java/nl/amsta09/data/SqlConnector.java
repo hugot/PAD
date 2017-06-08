@@ -173,9 +173,9 @@ public class SqlConnector {
     }
 
     /*
-    Voegt de nieuwe instellingen toe
+    Voegt de nieuwe instellingen voor het geluid toe
      */
-    public void insertSettings(Theme theme, Settings setting) throws SQLException {
+    public void insertMusicSettings(Settings setting, String name) throws SQLException {
         Statement settings = connection.createStatement();
         int on;
         if (setting.getSound()) {
@@ -183,22 +183,21 @@ public class SqlConnector {
         } else {
             on = 0;
         }
-        String sql1 = ("DELETE FROM settings WHERE itemId = " + theme.getId());
+        String sql1 = ("DELETE FROM settings WHERE settingName = '" + name + "'");
         settings.execute(sql1);
-        String sql2 = ("INSERT INTO settings (id, settingName, itemId, OnOff) VALUES ('" + theme.getId() + "','" + theme.getName() + "','" + theme.getId() + "','" + on + "')");
+        String sql2 = ("INSERT INTO settings (settingName, OnOff) VALUES ('" + name + "','" + on + "')");
         settings.execute(sql2);
-        System.out.println("Setting has been saved to the Database");
     }
 
     /*
     Haalt de instelligen op vanuit de Database
      */
-    public int getSettingFromDatabase(Theme theme) throws SQLException {
-        int onOff;
-        ResultSet getSettings = executeQuery("SELECT * FROM settings INNER JOIN theme ON settings.itemId = " + theme.getId());
+    public int getSettingFromDatabase(String nameSetting) throws SQLException {
+        int turnOnOff;
+        ResultSet getSettings = executeQuery("SELECT * FROM settings INNER JOIN theme ON settings.settingName = '" + nameSetting + "'");
         getSettings.next();
-        onOff = getSettings.getInt("OnOff");
-        return onOff;
+        turnOnOff = getSettings.getInt("OnOff");
+        return turnOnOff;
     }
 
     /*

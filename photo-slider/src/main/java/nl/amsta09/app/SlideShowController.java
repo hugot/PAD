@@ -62,8 +62,8 @@ public class SlideShowController {
                 view.setFill(Color.BLACK);
 		stage.show();
                 showNextImage();
-                playNextMusic();
-                runNextMusic();
+                /*playNextMusic();
+                runNextMusic();*/
 	}
 
 	public void pause(){
@@ -121,7 +121,7 @@ public class SlideShowController {
         public void setSettings(){
             int on;
             try {
-                on = conn.getSettingFromDatabase(theme);
+                on = conn.getSettingFromDatabase(settings.getSoundName());
                 if(on == 1){
                     settings.setSound(true);
                 } else {
@@ -132,9 +132,9 @@ public class SlideShowController {
             }
         }
         
-        public void insertSetting(){
+        public void setMusicOnOff(String settingName){
             try {
-                conn.insertSettings(theme, getSettings());
+                conn.insertMusicSettings(getSettings(), settingName);
             } catch (SQLException e){
                 e.printStackTrace();
             }
@@ -193,11 +193,12 @@ public class SlideShowController {
 		try {
                         System.out.println("setting next theme");
 			setTheme(conn.getRandomThemeThatIsNot(theme));;
+                        System.out.println("Dit is de Theme_id: " + theme.getId());
                         setSettings();
 			showNextImage();
-                        stopMusic();
+                        /*stopMusic();
                         playNextMusic();
-                        runNextMusic();
+                        runNextMusic();*/
 		} catch (SQLException e) {
 			setFirstTheme();
 		}
