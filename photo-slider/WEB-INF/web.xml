@@ -87,7 +87,7 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
     </servlet>
     <servlet-mapping>
         <servlet-name>DeleteThemeServlet</servlet-name>
-        <url-pattern>/deleteTheme</url-pattern>
+        <url-pattern>/deletetheme</url-pattern>
     </servlet-mapping>
 	
     <servlet>
