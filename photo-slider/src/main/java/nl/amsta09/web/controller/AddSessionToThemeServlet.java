@@ -2,6 +2,7 @@ package nl.amsta09.web.controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -12,6 +13,8 @@ import nl.amsta09.data.SqlConnector.ThemeNotFoundException;
 import nl.amsta09.model.Media;
 import nl.amsta09.model.Photo;
 import nl.amsta09.model.Theme;
+import nl.amsta09.web.html.HtmlButton;
+import nl.amsta09.web.html.HtmlDiv;
 import nl.amsta09.web.html.HtmlPopup;
 import nl.amsta09.web.util.RequestWrapper;
 
@@ -35,17 +38,35 @@ public class AddSessionToThemeServlet extends HttpServlet {
 		// Check of er een geldige sessie is voor de gebruiker.
 		if(requestWrapper.getSession().hasMediaSession()){
 			try {
-				requestWrapper.getContent().addThemeList(
-						requestWrapper.getSqlConnector().getAllThemes(), request.getServletPath());
-				requestWrapper.respondUsing(RequestWrapper.THEME_SELECTION_JSP, response);
-				return;
+				StringBuilder sb = new StringBuilder();
+				requestWrapper.getSqlConnector().getAllThemes()
+					.listIterator().forEachRemaining((Theme theme) -> {
+						sb.append(new HtmlButton()
+							.setClass("big-button")
+							.setId(theme.getName() + theme.getId())
+								.setOnClick("selectTheme('" + theme.getName() + theme.getId() + 
+									"', '" + theme.getId() + "');")
+								.addContent(theme.getName())
+								.generateHtml()
+						);
+					});
+				sb.append(new HtmlDiv()
+					.setClass("bottom-bar")
+					.addElement(new HtmlButton()
+						.addText("Voeg toe aan thema('s)")
+						.setOnClick("sendSelectedThemesTo('/addsessiontotheme');")
+						.setClass("big-button"))
+					.generateHtml()
+				);
+				requestWrapper.getContent().add("themes", sb.toString());
+				requestWrapper.sendContentByWriter(response);
 			}
 			catch(SQLException e){
 				requestWrapper.getContent().add("popup", new HtmlPopup("error", "Database probleem",
 							"Er heeft zich een probleem voorgedaan waardoor de thema's" +
 							"niet uit de database opgehaald kunnen worden, herlaad de pagina " +
 							"om het opnieuw te proberen"));
-				requestWrapper.respondUsing(RequestWrapper.THEME_SELECTION_JSP, response);
+				requestWrapper.sendContentByWriter(response);
 				e.printStackTrace();
 				return;
 			}
@@ -71,38 +92,23 @@ public class AddSessionToThemeServlet extends HttpServlet {
 		}
 
 		// Achterhaal welk thema gekozen is
-		String themeId = requestWrapper.getParameter(RequestWrapper.SELECTED_THEME_ID);
-		Theme theme;
+		ArrayList<String> themeIds = requestWrapper.parseParametersByName(RequestWrapper.SELECTED_THEME_ID);
 		try {
-			theme = requestWrapper.getSqlConnector().getThemeById(Integer.parseInt(themeId));
+			for (String themeId : themeIds) {
+				Theme theme = requestWrapper.getSqlConnector().getThemeById(Integer.parseInt(themeId));
+				for (Media media : requestWrapper.getSession().getMediaSession().getAddedMedia()) {
+					requestWrapper.getSqlConnector().addMediaToTheme(theme.getId(), media);
+				}
+			}
 		} catch (SQLException | NullPointerException | NumberFormatException | ThemeNotFoundException e) {
 			requestWrapper.getContent().add(HtmlPopup.CLASS, new HtmlPopup("error", "Er is iets misgegaan", 
 					"Probeer de pagina opnieuw te laden."));
-			doGet(requestWrapper, response);
+			requestWrapper.sendContentByWriter(response);
 			e.printStackTrace();
 			return;
 		}
-
-		// Voeg de media toe aan het thema.
-		if(theme != null){
-			for(Media media : requestWrapper.getSession().getMediaSession().getAddedMedia()){
-				if(media instanceof Photo){
-					try {
-						requestWrapper.getSqlConnector().addMediaToTheme(theme.getId(), media);
-					} catch (SQLException e) {
-						requestWrapper.getContent().add(HtmlPopup.CLASS, 
-								new HtmlPopup("error", "Er is iets misgegaan",
-								"Het is niet gelukt om verbinding te maken met de database."));
-						doGet(requestWrapper, response);
-						e.printStackTrace();
-						return;
-					}
-				}
-			}
-		}
-		
 		requestWrapper.getContent().add(HtmlPopup.CLASS, new HtmlPopup("confirmation", "Media toegevoegd", 
 				"De media is toegevoegd aan het thema."));
-		doGet(requestWrapper, response);
+		requestWrapper.sendContentByWriter(response);
 	}
 }

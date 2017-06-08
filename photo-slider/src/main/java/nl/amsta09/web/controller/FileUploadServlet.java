@@ -91,6 +91,7 @@ public class FileUploadServlet extends HttpServlet {
 			 return;
 		}
 		else if(request.getPart("photo") != null){
+			System.out.println("foto");
 			filePart = request.getPart("photo");
 			destinationDir = Photo.DIRECTORY;
 			fileName = getFilenameFromFilePart(filePart);
@@ -109,13 +110,16 @@ public class FileUploadServlet extends HttpServlet {
 
 		//Haal spaties uit filepath
 		media.setRelativePath(media.getRelativePath().replaceAll("\\s", ""));
+		System.out.println("spaties uit" + media.getRelativePath());
 
 		// Check of er niet al een bestand bestaat met dezelfde naam
 		int fileNumber = 0;
 		while (requestWrapper.getSqlConnector().mediaInDatabase(media)){
+			fileNumber++;
 			String newFileName = fileNumber + fileName;
 			media.setRelativePath(destinationDir + newFileName);
 		}
+		System.out.println("uiteindelijke path: " + media.getRelativePath());
 
 		// Schrijf het bestand naar de juiste map
 		try {
@@ -140,27 +144,31 @@ public class FileUploadServlet extends HttpServlet {
 
 		// Check of opslaan bestand gelukt is en voeg het toe aan de database en sessie
 		if(savingFileSucceeded){
+			System.out.println("bestand is opgedlagen");
 			try{
 				try{
+					System.out.println("query 1");
 					requestWrapper.getSqlConnector().insertMedia(media);
 				} catch(SQLException er){
 					Thread.sleep(2000);
+					System.out.println("query 2");
 					requestWrapper.getSqlConnector().insertMedia(media);
 				}
 				media.setId(requestWrapper.getSqlConnector().getMediaIdFrom(media));
 				requestWrapper.getSession().getMediaSession().getAddedMedia().add(media);
+				System.out.println("bestand geupload");
+				requestWrapper.sendContentByWriter(response);
 			}
 			catch(InterruptedException | SQLException e){
 				sendErrorMessage(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
 						"Het is niet gelukt om bestand " + media.getName() + " aan de database toe te voegen");
 				e.printStackTrace();
-			} finally {
-
-			}
+			} 
 		}
 		else {
 			sendErrorMessage(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
 					"Het is niet gelukt om bestand " + media.getName() + " op te slaan, probeer het alstublieft opnieuw");
+			System.out.println("niet gelukt om bestand op te slaan");
 		}
 	}
 

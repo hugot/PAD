@@ -6,7 +6,7 @@ package nl.amsta09.web.html;
  * @author Hugo Thunnissen
  */
 public class HtmlPopup extends HtmlForm implements HtmlElementInterface {
-	public static final String CLASS = "popup";
+	public static final String CLASS = " popup";
 	private final String HEADER = "<header> <h3>%s</h3> </header>";
 
 	/**
@@ -36,7 +36,7 @@ public class HtmlPopup extends HtmlForm implements HtmlElementInterface {
 		setClass(CLASS);
 		addContent(String.format(HEADER, title));
 		addContent("<br>" + text + "<br>");
-		HtmlButton button = new HtmlButton("popup-confirmation", "hidePopup('" + id + "');", "OK");
+		HtmlButton button = new HtmlButton("big-button", "hidePopup('" + id + "');", "OK");
 		button.setType("button");
 		addElement(button);
 	}

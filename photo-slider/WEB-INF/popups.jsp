@@ -26,11 +26,17 @@
         <header> Foto beheer <button class="closing-button" onclick="hidePopup('image-popup');">X</button></header>
     		<div id="image-display">
     		</div>
-    		<p id="photo-name">Dikkieee</p>
-        	<button class="big-button" onclick=" " >Verwijder foto </button>
-        	<button class="big-button" onclick=" " >Andere optie </button>
-        	<button class="big-button" onclick=" " >Andere optie </button>
-        	<button class="big-button" onclick=" " >Andere optie </button>
-        	<button class="big-button" onclick=" " >Andere optie </button>
     	</div>
+		<form id="reset-confirmation" class=" hidden-popup">
+			<header><h3>Weet u het zeker?</h3></header>
+			<p> Als u op doorgaan klikt, wordt alle media van het apparaat verwijderd
+				en wordt het apparaat teruggebracht naar de nieuwstaat. </p>
+			<button type="button" onclick="resetApplication()">Doorgaan</button>
+			<button type="button" onclick="hidePopup('reset-confirmation');">annuleer</button>
+		</form>
+		<div id="theme-selection" class="theme-selection popup">
+			<header>Selecteer een thema</header>
+			<div id="theme-selection-area" class="scrollable">
+			</div>
+		</div>
     </div>

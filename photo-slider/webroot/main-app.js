@@ -15,6 +15,7 @@ var appParts = new Object();
 
 //Media die geselecteerd wordt
 var selectedMedia = new Object();
+var selectedThemes = new Object();
 
 var ready = false;
 var selectedThemeId;
@@ -281,7 +282,6 @@ function showPhotoSelection(url) {
 	var photoSection = document.getElementById('photo-selection-area');
 	function compStyle(element){ return window.getComputedStyle(element);}
 	photoSection.style.height = (parseFloat(compStyle(popup).height) - 40) + 'px';
-	console.log(parseFloat(compStyle(popup).height) - 40);
 	popup.style.overflow = 'unset';
 	photoSection.style.overflow = 'auto';
 	loadContentTo(url, 'GET', '', photoSection, null);
@@ -346,11 +346,7 @@ function deleteMediaPermanently(){
 
 
 function turnMusicOnOff(){
-	ajaxCall('POST', '/turnAudioOnOff', function(responseText){
-		var popupWrapper = document.getElementById('popup-wrapper');
-		popupWrapper.innerHTML += responseText;
-		popupWrapper.style.visibility = 'visible';
-	}, null);
+	ajaxCall('POST', '/turnAudioOnOff', loadToPopupWrapper, null);
 }
 	
 
@@ -370,6 +366,42 @@ function hidePopup(popupId) {
 	console.log(popup.className);
 }
 
+function showThemeSelectionPopup(){
+	var selectThemePopup = document.getElementById('theme-selection');
+	var themeSection = document.getElementById('theme-')
+	ajaxCall('GET', '/addsessiontotheme', function(responseText){
+		selectThemePopup.children[1].innerHTML = responseText;
+		showPopup(selectThemePopup.id);
+	} , null);
+}
+
+function selectTheme(elementId, selectThemeId){
+	setSelected(document.getElementById(elementId));
+	if(selectedThemes[selectThemeId] === undefined ){
+		selectedThemes[selectThemeId] = 1;
+	} else {
+		delete selectedThemes[selectThemeId];
+	}
+}
+
+function sendSelectedThemesTo(url){
+	var params = '';
+	for(var i in selectedMedia){
+		params += 'selectedThemeId='+i+'&';
+	}
+	ajaxCall('POST', url, loadToPopupWrapper ,params);
+	hidePopup('theme-selection');
+}
+function resetApplication(){
+	ajaxCall('POST', '/settingmanagement', loadToPopupWrapper, 'reset=1');
+	hidePopup('reset-confirmation');
+}
+
+function loadToPopupWrapper(responseText){
+		var popupWrapper = document.getElementById('popup-wrapper');
+		popupWrapper.innerHTML += responseText;
+		popupWrapper.style.visibility = 'visible';
+}
 // Maakt een dropzone aan voor het uploaden van foto's
 var photoDropzoneConfig = function () {
 	Dropzone.autoDiscover = false;
