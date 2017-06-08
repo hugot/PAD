@@ -20,7 +20,8 @@ public class HtmlPopup extends HtmlForm implements HtmlElementInterface {
 		setClass(CLASS);
 		addContent(String.format(HEADER, title));
 		addContent("<br>" + text + "<br>");
-		HtmlButton button = new HtmlButton("popup-confirmation", "hidePopup('" + id + "');", buttonText);
+		HtmlButton button = new HtmlButton("popup-confirmation", "hidePopup('" + id + "');" +
+			"removePopup('" + id +"')", buttonText);
 		button.setType("button");
 		addElement(button);
 	}
@@ -36,7 +37,8 @@ public class HtmlPopup extends HtmlForm implements HtmlElementInterface {
 		setClass(CLASS);
 		addContent(String.format(HEADER, title));
 		addContent("<br>" + text + "<br>");
-		HtmlButton button = new HtmlButton("big-button", "hidePopup('" + id + "');", "OK");
+		HtmlButton button = new HtmlButton("big-button", "hidePopup('" + id + "');" +
+			"removePopup('" + id +"')", "OK");
 		button.setType("button");
 		addElement(button);
 	}

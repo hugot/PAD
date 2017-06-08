@@ -96,7 +96,9 @@ public class AddSessionToThemeServlet extends HttpServlet {
 		try {
 			for (String themeId : themeIds) {
 				Theme theme = requestWrapper.getSqlConnector().getThemeById(Integer.parseInt(themeId));
+				System.out.println("toevoegen aan thema");
 				for (Media media : requestWrapper.getSession().getMediaSession().getAddedMedia()) {
+					System.out.println("media");
 					requestWrapper.getSqlConnector().addMediaToTheme(theme.getId(), media);
 				}
 			}

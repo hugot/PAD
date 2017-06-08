@@ -34,7 +34,7 @@
 			<button type="button" onclick="resetApplication()">Doorgaan</button>
 			<button type="button" onclick="hidePopup('reset-confirmation');">annuleer</button>
 		</form>
-		<div id="theme-selection" class="theme-selection popup">
+		<div id="theme-selection" class="theme-selection hidden-popup">
 			<header>Selecteer een thema</header>
 			<div id="theme-selection-area" class="scrollable">
 			</div>

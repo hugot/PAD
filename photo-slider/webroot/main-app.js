@@ -366,6 +366,10 @@ function hidePopup(popupId) {
 	console.log(popup.className);
 }
 
+function removePopup(popupId){
+	document.getElementById(popupId).remove();
+}
+
 function showThemeSelectionPopup(){
 	var selectThemePopup = document.getElementById('theme-selection');
 	var themeSection = document.getElementById('theme-')
@@ -386,7 +390,7 @@ function selectTheme(elementId, selectThemeId){
 
 function sendSelectedThemesTo(url){
 	var params = '';
-	for(var i in selectedMedia){
+	for(var i in selectedThemes){
 		params += 'selectedThemeId='+i+'&';
 	}
 	ajaxCall('POST', url, loadToPopupWrapper ,params);

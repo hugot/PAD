@@ -266,7 +266,7 @@ public class SqlConnector {
      * @return mediaId
      */
     public int getMediaIdFrom(Media media) throws SQLException {
-        ResultSet set = executeQuery(String.format("SELECT id FROM media WHERE name = '%s';", media.getName()));
+        ResultSet set = executeQuery(String.format("SELECT id FROM media WHERE filePath = '%s';", media.getRelativePath()));
         set.next();
         return set.getInt("id");
     }
