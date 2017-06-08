@@ -47,14 +47,9 @@ public class SlideShowController {
 	 * Initialiseer de media die getoond wordt en zorg ervoor dat het scherm verschijnt.
 	 */
 	public void initialize(){
-		setFirstTheme();
-                /*try {
-            conn.addSetting();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }*/
-                System.out.println("Dit is de Theme_id: " + theme.getId());
                 setSettings();
+		setFirstTheme();
+                System.out.println("Dit is de Theme_id: " + theme.getId());
 		view.setKeyListener();
 		timer.start();
                 stage.setFullScreen(true);
@@ -62,8 +57,8 @@ public class SlideShowController {
                 view.setFill(Color.BLACK);
 		stage.show();
                 showNextImage();
-                /*playNextMusic();
-                runNextMusic();*/
+                playNextMusic();
+                runNextMusic();
 	}
 
 	public void pause(){
@@ -193,12 +188,13 @@ public class SlideShowController {
 		try {
                         System.out.println("setting next theme");
 			setTheme(conn.getRandomThemeThatIsNot(theme));;
+                        System.out.println("hodor");
                         System.out.println("Dit is de Theme_id: " + theme.getId());
                         setSettings();
 			showNextImage();
-                        /*stopMusic();
+                        stopMusic();
                         playNextMusic();
-                        runNextMusic();*/
+                        runNextMusic();
 		} catch (SQLException e) {
 			setFirstTheme();
 		}
