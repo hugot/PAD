@@ -35,7 +35,7 @@ public class SettingManagementServlet extends HttpServlet {
 				popup = new HtmlPopup("succes", "geluid uit", "Het geluid voor de slideshow staat nu uit");
 			}
 			requestWrapper.getContent().add(HtmlPopup.CLASS, popup);
-			new ThemeManagementServlet().doGet(requestWrapper, response);
+			requestWrapper.sendContentByWriter(response);
 		}
 
 		if (requestWrapper.getParameter("reset") != null){
