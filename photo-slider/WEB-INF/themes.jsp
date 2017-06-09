@@ -3,7 +3,7 @@
 
 <%-- 
 
-Author: Hugo Thunnissen, Marco Bergsma
+Author: Hugo Thunnissen
 
 Via deze view kunnen de thema's beheerd worden
 
@@ -34,7 +34,7 @@ Via deze view kunnen de thema's beheerd worden
 					</div>
 					<h4>Voeg foto's toe</h4>
 				</button><%--
-				--%>${photos}
+			--%>${photos} <%-- <<<<<<<< FOTO'S --%>
 		</section>
 		<section class="bottom-bar">
 			<button class="big-button" onclick="deleteActiveTheme()">Verwijder thema</button>
@@ -42,7 +42,7 @@ Via deze view kunnen de thema's beheerd worden
 		</section>
 	</section>
 		<section id="hideable-right-sidebar" class="hidden-right-sidebar">
-		<button class="show-section-button" onclick="moveAudioSection();"><h3><h3 id="button-arrow"><</h3> <br>a<br>u<br>d<br>i<br>o</h3> </button>
+		<button class="show-section-button" onclick="moveAudioSection();"><h3><h3 id="button-arrow"><</h3><br>a<br>u<br>d<br>i<br>o</h3> </button>
 		<header><p>Muziek in dit thema</p></header>
 			<div class="scrollable" id="audio-scrollable">
 			</div>

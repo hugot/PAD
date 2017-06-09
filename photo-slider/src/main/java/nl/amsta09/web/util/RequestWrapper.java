@@ -16,6 +16,11 @@ import nl.amsta09.driver.MainApp;
 import nl.amsta09.data.SqlConnector;
 import nl.amsta09.web.util.SessionWrapper;
 
+/**
+ * Dit is een wrapper class voor HttpServletRequests.
+ * 
+ * @author Hugo Thunnissen
+ */
 public class RequestWrapper extends HttpServletRequestWrapper {
 	public static final String SELECTED_THEME_ID = "selectedThemeId";
 	public static final String SELECTED_PHOTO_ID = "selectedPhotoId";
@@ -37,11 +42,9 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 	private Content content;
 	private SqlConnector conn;
 	private SessionWrapper sessionWrapper;
-
-	private HttpServletRequest httpServletRequest;
+	
 	public RequestWrapper(HttpServletRequest request) {
 		super(request);
-		httpServletRequest = request;
 		conn = new SqlConnector();
 		sessionWrapper = new SessionWrapper(request, MainApp.getSessionManager());
 		content = new Content(this);

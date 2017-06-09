@@ -11,6 +11,12 @@ import nl.amsta09.model.Theme;
 import nl.amsta09.web.util.MediaSessionManager;
 import nl.amsta09.web.util.MediaSessionManager.MediaSession;
 import nl.amsta09.web.util.MediaSessionManager.MediaSessionNotFoundException;
+/**
+ * Dit is een wrapper voor HttpSessions, voor gebruik in combinatie met de 
+ * HttpServletRequestWrapper.
+ * 
+ * @author Hugo Thunnissen
+ */
 
 public class SessionWrapper implements HttpSession {
 	private static final String MEDIA_SESSION_ID = "mediaSessionId";

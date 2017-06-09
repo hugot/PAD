@@ -18,6 +18,11 @@ import nl.amsta09.model.Photo;
 import nl.amsta09.model.Audio;
 import nl.amsta09.model.Theme; 
 
+/**
+ * Deze class dient voor het instantieren van een slideshow.
+ * 
+ * @author Hugo Thunnissen
+ */
 public class SlideShowController {
 	private Theme theme;
 	private ListIterator<Photo> photos;
@@ -47,18 +52,17 @@ public class SlideShowController {
 	 * Initialiseer de media die getoond wordt en zorg ervoor dat het scherm verschijnt.
 	 */
 	public void initialize(){
-                setSettings();
+        setSettings();
 		setFirstTheme();
-                System.out.println("Dit is de Theme_id: " + theme.getId());
 		view.setKeyListener();
 		timer.start();
-                stage.setFullScreen(true);
+        stage.setFullScreen(true);
 		stage.setScene(view);
-                view.setFill(Color.BLACK);
+        view.setFill(Color.BLACK);
 		stage.show();
-                showNextImage();
-                playNextMusic();
-                runNextMusic();
+        showNextImage();
+        playNextMusic();
+        runNextMusic();
 	}
 
 	public void pause(){
@@ -227,6 +231,8 @@ public class SlideShowController {
 
 	/**
 	 * Deze class dient voor het timen van de de duratie dat een foto getoond wordt.
+	 * 
+	 * @author Hugo Thunnissen
 	 */
 	private class Timer {
 		private int secondsToGo;

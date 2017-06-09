@@ -16,6 +16,15 @@ import nl.amsta09.model.Audio;
 import nl.amsta09.model.Media;
 import nl.amsta09.model.Photo;
 
+/**
+ * Met deze class kan de de data van de applicatie teruggebracht worden naar de nieuw
+ * staat. Alle door de gebruiker toegevoegde bestanden worden verwijderd.
+ * De database wordt opnieuw aangemaakt door middel van een sql script dat zich in
+ * de map WEB-INF/SQL bevindt. Vervolgens worden de standaard mediabestanden in de map
+ * Resources/Default toegevoegd.
+ * 
+ * @author Hugo Thunnissen
+ */
 public class ApplicationReset {
 	public static final String DEFAULT_PHOTO_DIRECTORY = "Resources/default/Foto/";
 	public static final String DEFAULT_AUDIO_DIRECTORY = "Resources/default/Audio/";

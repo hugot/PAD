@@ -1,5 +1,10 @@
 package nl.amsta09.web.html;
 
+	/**
+	 * Deze class dient voor het aanmaken van een HTML form element.
+	 * 
+	 * @author Hugo Thunnissen
+	 */
 	public class HtmlForm extends HtmlElement<HtmlForm> implements HtmlElementInterface {
 		private final String BOTTOM = "</form>";
 

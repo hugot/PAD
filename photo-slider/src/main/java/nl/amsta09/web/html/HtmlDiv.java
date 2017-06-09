@@ -1,5 +1,10 @@
 package nl.amsta09.web.html;
 
+/**
+ * Deze class dient voor het aanmaken van een HTML div element.
+ * 
+ * @author Hugo Thunnissen
+ */
 public class HtmlDiv extends HtmlElement<HtmlDiv> implements HtmlElementInterface {
 	private static final String BOTTOM = "</div>";
 

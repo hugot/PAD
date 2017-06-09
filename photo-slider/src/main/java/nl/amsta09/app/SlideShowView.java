@@ -15,6 +15,12 @@ import javax.imageio.ImageIO;
 
 import nl.amsta09.model.Photo;
 
+/**
+ * Deze class dient voor het instantieren van de user interface van
+ * de slideshow.
+ * 
+ * @author Hugo Thunnissen 
+ */
 public class SlideShowView extends Scene {
 	private Image image;
 	private ImageView imageView;
@@ -47,11 +53,11 @@ public class SlideShowView extends Scene {
         }
 
 	public void setKeyListener(){
-		EventHandler<KeyEvent> eventHandler = new EventHandler<KeyEvent>() {
+        EventHandler<KeyEvent> eventHandler = new EventHandler<KeyEvent>() {
 			
 			@Override
 			public void handle(KeyEvent k){
-                                    controller.showNextImage();
+                controller.showNextImage();
 			}
 		};
 		this.setOnKeyPressed(eventHandler);

@@ -1,5 +1,10 @@
 package nl.amsta09.web.html;
 
+/**
+ * Met deze class kan een HTML5 audio element worden aangemaakt.
+ * 
+ * @author Hugo Thunnissen.
+ */
 public class HtmlAudio extends HtmlElement<HtmlAudio> implements HtmlElementInterface {
 	private final static String BOTTOM = "</audio>";
 	private GenericHtmlElement sourceElement;

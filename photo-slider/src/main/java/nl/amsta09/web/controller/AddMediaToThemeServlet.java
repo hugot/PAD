@@ -13,8 +13,12 @@ import nl.amsta09.model.Theme;
 import nl.amsta09.web.util.RequestWrapper;
 import nl.amsta09.web.html.HtmlPopup;
 
+/**
+ * Deze servlet dient voor het toevoegen van media aan een thema.
+ * 
+ * @author Hugo Thunnissen
+ */
 public class AddMediaToThemeServlet extends HttpServlet {
-        
                 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException{
@@ -27,8 +31,8 @@ public class AddMediaToThemeServlet extends HttpServlet {
 
 		// Thema dat op dit moment beheerd wordt.
 		Theme theme = requestWrapper.getSession().getMediaSession().getManagedTheme();
-                
 
+		// Voeg alle media die in de request wordt vermeldt toe aan het thema.
 		try {
 			for(String mediaId : requestWrapper.parseParametersByName(
 				RequestWrapper.SELECTED_MEDIA_ID)){

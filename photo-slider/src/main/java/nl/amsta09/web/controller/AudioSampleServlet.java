@@ -15,8 +15,20 @@ import nl.amsta09.web.html.HtmlButton;
 import nl.amsta09.web.html.HtmlSection;
 import nl.amsta09.web.util.RequestWrapper;
 
+/**
+ * Deze servlet dient voor het ophalen van een audiobestand,
+ * om deze vervolgens in de web interface af te spelen.
+ * 
+ * @author Hugo Thunnissen
+ */
 public class AudioSampleServlet extends HttpServlet{
 	
+	/**
+	 * Antwoord met HTML elementen voor alle muziek in het gegeven thema.
+	 * @param request
+	 * @param response
+	 * @throws IOException
+	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		RequestWrapper requestWrapper = new RequestWrapper(request);
 		Theme managedTheme = requestWrapper.getSession().getMediaSession().getManagedTheme();
@@ -39,6 +51,12 @@ public class AudioSampleServlet extends HttpServlet{
 		requestWrapper.sendContentByWriter(response);
 	}
 
+	/**
+	 * Antwoordt met een HTML audio element waarmee het opgevraagde mediabestand
+	 * afgespeeld kan worden.
+	 * @param request
+	 * @param response
+	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		RequestWrapper requestWrapper = new RequestWrapper(request);
 		Audio audio;

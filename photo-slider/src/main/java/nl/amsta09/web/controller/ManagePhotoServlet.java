@@ -32,7 +32,7 @@ public class ManagePhotoServlet extends HttpServlet {
             return;
         }
 
-        // Thema dat op dit moment beheerd wordt.
+        // Verwijder de foto's uit het thema dat op dit moment beheerd wordt.
         try {
             Theme theme = requestWrapper.getSession().getMediaSession().getManagedTheme();
             for(String selectedMediaId : 
@@ -42,7 +42,6 @@ public class ManagePhotoServlet extends HttpServlet {
                      );
                 }
         } catch (SQLException | NullPointerException | NumberFormatException e) {
-
             requestWrapper.getContent().add(HtmlPopup.CLASS, new HtmlPopup("error",
                     "Fout bij verwerken van request",
                     "Het is niet gelukt om de door u geselecteerde foto te vinden, probeer het"

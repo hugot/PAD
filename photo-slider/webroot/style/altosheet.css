@@ -5,400 +5,417 @@
  * Distributed under terms of the MIT license.
  *
  * Dit bestand bevat de styling voor de hele web interaface.
+ * 
+ * Author: Hugo Thunnissen
  */
 
 body {
-	font-family: Arial, Helvetica, sans-serif;
-	width: 100%;
-	overflow: hidden;
-	padding: 0;
-	margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    width: 100%;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
 }
 
+
 /* Welkoms bericht */
+
 #welcome-section {
-	background-color: #4286f4;
-	width: 100%;
-	height: 100%;
-	color: white;
-	text-align: center;
-	position: relative;
+    background-color: #4286f4;
+    width: 100%;
+    height: 100%;
+    color: white;
+    text-align: center;
+    position: relative;
 }
 
 #welcome-section section {
-	text-shadow: 2px 2px 2px black;
-	position: relative;
-	top:40%;
-	display: inline;
-	font-size: 150%;
+    text-shadow: 2px 2px 2px black;
+    position: relative;
+    top: 40%;
+    display: inline;
+    font-size: 150%;
 }
+
 
 /* De bovenkant van de applicatie */
 
 #top-section {
-	text-align: center;
-	background-color: #4286f4;
-	width: 100%;
-	height: 70px;
-	text-shadow: 2px 2px 2px black;
+    text-align: center;
+    background-color: #4286f4;
+    width: 100%;
+    height: 70px;
+    text-shadow: 2px 2px 2px black;
 }
 
 #top-section button {
-	float: left;
-	margin: 3px;
+    float: left;
+    margin: 3px;
 }
 
 #top-section h1 {
-	font-size: 150%;
-	float: left;
-	color: white;
-	margin-right: 20px;
-	margin-left: 20px;
+    font-size: 150%;
+    float: left;
+    color: white;
+    margin-right: 20px;
+    margin-left: 20px;
 }
+
 
 /* Het frame waarin alle pagina's van de applicatie worden geladen */
 
 #hidden-app-frame {
-	visibility: hidden;
-	position: absolute;
-	top: -9999999px;
-	left: -99999px;
+    visibility: hidden;
+    position: absolute;
+    top: -9999999px;
+    left: -99999px;
 }
 
 #app-frame {
-	text-align: center;
-	visibility: visible;
-	position: relative;
-	padding: 0;
-	display: block;
-	width: 100%;
-	height: 90%;
-	overflow: hidden;
+    text-align: center;
+    visibility: visible;
+    position: relative;
+    padding: 0;
+    display: block;
+    width: 100%;
+    height: 90%;
+    overflow: hidden;
 }
+
 
 /* ------- BUTTONS -------- */
 
 button {
-	color: white;
-	background-color: #0D1B31;
-	border: 1px solid black;
-	max-height:60px;
-	line-height: 60px;
-	margin: 0;
-	padding: 3px;
+    color: white;
+    background-color: #0D1B31;
+    border: 1px solid black;
+    max-height: 60px;
+    line-height: 60px;
+    margin: 0;
+    padding: 3px;
 }
 
-button:hover, #selected-theme {
-	color:white;
-	background-color: #A1C2F9; 
+button:hover,
+#selected-theme {
+    color: white;
+    background-color: #A1C2F9;
 }
 
 .big-button {
-	min-width: 150px;
+    min-width: 150px;
 }
 
-.big-button h3{
-	margin: 0;
+.big-button h3 {
+    margin: 0;
 }
 
 .bottom-button {
-	position:absolute;
-	bottom:0;
-	left:0;
+    position: absolute;
+    bottom: 0;
+    left: 0;
 }
 
-.closing-button{
-	background-color: transparent; 
-	outline: 2px solid #4286f4;
-	color: blue;
-	border: none;
-	float: right;
-	width: 30px;
-	height: 100%;
-	line-height: normal;
+.closing-button {
+    background-color: transparent;
+    outline: 2px solid #4286f4;
+    color: blue;
+    border: none;
+    float: right;
+    width: 30px;
+    height: 100%;
+    line-height: normal;
 }
 
 #image-popup button {
-	float:bottom;
+    float: bottom;
 }
 
+
 /* ---------------------------- SECTIONS -------------------- */
+
 
 /* ----- headers ------ */
 
 header {
-	text-align: center;
-	background-color: white;
-	color: blue;
+    text-align: center;
+    background-color: white;
+    color: blue;
 }
 
-section header{
-	height: 60px;
-	line-height: 60px;
-	outline: 2px solid #4286f4;
-	margin-top: 0;
+section header {
+    height: 60px;
+    line-height: 60px;
+    outline: 2px solid #4286f4;
+    margin-top: 0;
 }
 
 header h3 {
-	display: inline;
-	margin: 0;
-	padding: 0;
+    display: inline;
+    margin: 0;
+    padding: 0;
 }
 
 header button {
-	border: none;
-	height: 100%;
+    border: none;
+    height: 100%;
 }
 
- .popup header {
-	min-height: 40px;
-	height: auto;
-	line-height: 40px;
-	height: 40px;
-	margin: 0;
-	outline: 2px solid #4286f4;
- }
+.popup header {
+    min-height: 40px;
+    height: auto;
+    line-height: 40px;
+    height: 40px;
+    margin: 0;
+    outline: 2px solid #4286f4;
+}
+
 header p {
-	margin:0;
-	padding: 0;
+    margin: 0;
+    padding: 0;
 }
 
- /* ------ sections ------ */
+
+/* ------ sections ------ */
 
 section {
-	outline: 2px solid #4286f4;
+    outline: 2px solid #4286f4;
 }
 
 .scrollable {
-	overflow: auto;
-	max-width: 100%;
+    overflow: auto;
+    max-width: 100%;
 }
 
-.scrollable *{
-	outline: 2px solid #4286f4;
-	width: 100%;
-	max-height: 35px;
-	line-height: 35px;
+.scrollable * {
+    outline: 2px solid #4286f4;
+    width: 100%;
+    max-height: 35px;
+    line-height: 35px;
 }
 
 .scrollable ul {
-	list-style-type: none;
+    list-style-type: none;
 }
+
 
 /* ------ side bars ----- */
 
-#left-selection-bar-wrapper{
-	width: 20%;
-	max-width: 300px;
-	min-width: 200px;
-	height: 100%;
-	position: absolute;
-	top: 2px;
-	left: 2px;
-	margin: 0;
-	padding: 0;
+#left-selection-bar-wrapper {
+    width: 20%;
+    max-width: 300px;
+    min-width: 200px;
+    height: 100%;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    margin: 0;
+    padding: 0;
 }
 
 #left-selection-bar-clearance {
-	margin: 5px;
-	height: 100%;
-	display: inline-block;
-	width: 20%;
-	max-width: 300px;
-	min-width: 200px;
-	text-align: center;
-	float: left;
+    margin: 5px;
+    height: 100%;
+    display: inline-block;
+    width: 20%;
+    max-width: 300px;
+    min-width: 200px;
+    text-align: center;
+    float: left;
 }
 
 #left-selection-bar {
-	width: 100%;
-	max-width: 300px;
-	min-width: 200px;
-	height: 100%;
-	background-color: #4286f4;
-	text-align: center;
+    width: 100%;
+    max-width: 300px;
+    min-width: 200px;
+    height: 100%;
+    background-color: #4286f4;
+    text-align: center;
 }
 
-#left-selection-bar .scrollable{
-	height: 70%;
+#left-selection-bar .scrollable {
+    height: 70%;
 }
 
-#left-selection-bar *{
-	width: 100%;
-	margin: 0;
+#left-selection-bar * {
+    width: 100%;
+    margin: 0;
 }
 
 #hideable-right-sidebar {
-	z-index: 1;
-	right:-20%;
-	top: 30px;
-	position: absolute;
-	height: 450px;
-	width: 20%;
-	background-color:white;
+    z-index: 1;
+    right: -20%;
+    top: 30px;
+    position: absolute;
+    height: 450px;
+    width: 20%;
+    background-color: white;
 }
 
 #hideable-right-sidebar .show-section-button {
-	float: left;
-	width: 20px;
-	height: 100%;
-	position: absolute;
-	left: -20px;
-	max-height:100%;
-	line-height: 20px;
+    float: left;
+    width: 20px;
+    height: 100%;
+    position: absolute;
+    left: -20px;
+    max-height: 100%;
+    line-height: 20px;
 }
 
 #hideable-right-sidebar .scrollable {
-	height: 340px;
-	background-color: white;
+    height: 340px;
+    background-color: white;
 }
+
 
 /* ----- middle section */
 
 #middle-section {
-	position: relative;
-	margin: 5px;
-	width: 78%;
-	height: 100%;
-	display: inline-block;
-	outline: 2px solid #4286f4;
+    position: relative;
+    margin: 5px;
+    width: 78%;
+    height: 100%;
+    display: inline-block;
+    outline: 2px solid #4286f4;
 }
 
 #photo-section {
-	position: relative;
-	overflow: auto;
-	width: 100%;
-	height: 90%;
-	text-align: center;
+    position: relative;
+    overflow: auto;
+    width: 100%;
+    height: 90%;
+    text-align: center;
 }
 
+
 /* ----- Photo's ---- */
+
 .floating-image {
-	display: inline-block;
-	vertical-align: top;
-	width: 20%;
-	height: auto;
-	max-width: 250px;
-	max-height: 233px;
-	border: #4286f4 solid 1px;
-	margin-top: 10px;
-	margin-left: 5px;
-	margin-right: 5px;
-	padding: 10px;
-	text-align: center;
-	background-color: white;
-	color: black;
+    display: inline-block;
+    vertical-align: top;
+    width: 20%;
+    height: auto;
+    max-width: 250px;
+    max-height: 233px;
+    border: #4286f4 solid 1px;
+    margin-top: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding: 10px;
+    text-align: center;
+    background-color: white;
+    color: black;
 }
 
 .floating-image h4 {
-	margin:0;
-	padding:0;
+    margin: 0;
+    padding: 0;
 }
 
 .photo-container {
-	background-color:white;
-	width: 80%;
-	overflow: hidden;
-	border: black solid 3px;
-	display: block;
-	margin-left: auto;
-	margin-right: auto;
+    background-color: white;
+    width: 80%;
+    overflow: hidden;
+    border: black solid 3px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
+
 
 /* ------  POPUP ------ */
 
 .hidden-popup {
-	visibility: hidden;
+    visibility: hidden;
     position: absolute;
     top: -9999px;
 }
 
 .popup {
-	text-align:center;
-	z-index: 2000;
-	position: absolute;
-	left: -15%;
-	top: -25%;
-	width: 500px;
-	height: 200px;
-	background-color: white;
-	outline: 2px solid #4286f4;
-	box-shadow: 2px 4px 4px 2px rgba(1,1,1,0.5);
+    text-align: center;
+    z-index: 2000;
+    position: absolute;
+    left: -15%;
+    top: -25%;
+    width: 500px;
+    height: 200px;
+    background-color: white;
+    outline: 2px solid #4286f4;
+    box-shadow: 2px 4px 4px 2px rgba(1, 1, 1, 0.5);
 }
 
- .standard-popup {
-	height: 200px;
-	width: 400px;
-	background-color: lightgrey;
-	margin-top: -100px;
-	margin-left:-200px;
- }
+.standard-popup {
+    height: 200px;
+    width: 400px;
+    background-color: lightgrey;
+    margin-top: -100px;
+    margin-left: -200px;
+}
 
- #image-display {
-	display: inline-block;
-	margin-top: 5%;
-	width: 80%;
-	max-width: 80%;
-	height: 60%;
-	max-height: 60%;
-	text-align: center;
-	outline: 2px solid #4286f4;
-	overflow: hidden;
- }
+#image-display {
+    display: inline-block;
+    margin-top: 5%;
+    width: 80%;
+    max-width: 80%;
+    height: 60%;
+    max-height: 60%;
+    text-align: center;
+    outline: 2px solid #4286f4;
+    overflow: hidden;
+}
 
- #image-display img {
-	height: 100%;
-	max-height: 100%;
-	display: inline-block;
- }
- 
- #popup-wrapper {
- 	visibility: hidden;
-	position: absolute;
-	left: 50%;
-	top: 50%;
-	height: 80%;
-	width: 70%;
- }
+#image-display img {
+    height: 100%;
+    max-height: 100%;
+    display: inline-block;
+}
+
+#popup-wrapper {
+    visibility: hidden;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    height: 80%;
+    width: 70%;
+}
 
 .photo-popup {
-	position: absolute;
-	left: -50%;
-	top: -50%;
-	z-index: 10;
-	height: 100%;
-	width: 100%;
-	max-height: 100%;
-	max-width: 100%;
-	background-color: white;
-	text-align: center;
-	outline: 2px solid #4286f4;
-	overflow: auto;
+    position: absolute;
+    left: -50%;
+    top: -50%;
+    z-index: 10;
+    height: 100%;
+    width: 100%;
+    max-height: 100%;
+    max-width: 100%;
+    background-color: white;
+    text-align: center;
+    outline: 2px solid #4286f4;
+    overflow: auto;
 }
 
 .bottom-bar {
-	position: absolute;
-	bottom: 0;
-	right: 0;
-	background-color: white;
-	outline: 2px solid #4286f4;
-	width: auto;
-	max-height: 60px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background-color: white;
+    outline: 2px solid #4286f4;
+    width: auto;
+    max-height: 60px;
 }
 
 .bottom-bar button {
-	float:right;
-	margin-right: 10px;
+    float: right;
+    margin-right: 10px;
 }
 
 #uploadForm {
-	display: block;
-	width: 70%;
-	min-height: 50%;
-	background-color: lightblue;
-	border: dashed 2px black;
-	margin: 50px;
-	margin-left: auto;
-	margin-right: auto;
-	box-shadow: 2px 4px 4px 2px rgba(1,1,1,0.5);
+    display: block;
+    width: 70%;
+    min-height: 50%;
+    background-color: lightblue;
+    border: dashed 2px black;
+    margin: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 2px 4px 4px 2px rgba(1, 1, 1, 0.5);
 }

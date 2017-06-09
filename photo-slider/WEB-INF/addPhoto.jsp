@@ -1,6 +1,14 @@
 <%@ page contentType="text/html;Charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="" tagdir="/WEB-INF/tags"%>
 
+<%--
+
+	Via deze webpagina kunnnen foto's geupload worden.
+
+	Author: Hugo Thunnissen
+
+--%>
+
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">

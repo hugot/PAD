@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import java.net.URL;
 import java.util.ArrayList;
 
 import nl.amsta09.model.Media;
@@ -15,6 +14,11 @@ import nl.amsta09.model.Theme;
 import nl.amsta09.model.Audio;
 import nl.amsta09.app.Settings;
 
+/**
+ * Met deze class kan een object aangemaakt worden dat als API dient voor de database.
+ * 
+ * @author Hugo Thunnissen
+ */
 public class SqlConnector {
 
     private static Connection connection;
@@ -23,7 +27,7 @@ public class SqlConnector {
         try {
             connection = DriverManager.getConnection("jdbc:mysql://localhost/photoslider?"
                     + "user=PAD&password=fissafissaheey123&useUnicode=true&useJDBCCompliantTimezoneShift=true"
-                    + "&useLegacyDatetimeCode=false&serverTimezone=UTC");
+                    + "&useLegacyDatetimeCode=false&serverTimezone=UTC&useSSL=false");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -452,6 +456,12 @@ public class SqlConnector {
         return photoList;
     }
 
+    /**
+     * Haal alle foto's op uit de database.
+     * @return photos
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
     public ArrayList<Audio> getAllAudio() throws SQLException, ClassNotFoundException {
         ArrayList<Audio> audioList = new ArrayList<>();
         ResultSet result = executeQuery("SELECT * FROM media INNER JOIN song ON media.id = song.id;");

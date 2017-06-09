@@ -1,13 +1,9 @@
 package nl.amsta09.web.util;
 
-import java.awt.SystemTray;
-import java.awt.print.Printable;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
 
-import javax.print.attribute.standard.PrinterLocation;
 import javax.servlet.http.HttpServletRequest;
 
 import nl.amsta09.model.Photo;
@@ -15,7 +11,6 @@ import nl.amsta09.model.Theme;
 import nl.amsta09.web.html.HtmlButton;
 import nl.amsta09.web.html.HtmlDiv;
 import nl.amsta09.web.html.HtmlElementInterface;
-import nl.amsta09.web.html.HtmlForm;
 import nl.amsta09.web.html.HtmlImage;
 	
 /**
@@ -76,6 +71,10 @@ public class Content {
 		});
 	}
 
+	/**
+	 * Haal alle content op in de vorm van een String.
+	 * @return content
+	 */
 	protected String getAll(){
 		StringBuilder sb = new StringBuilder();
 		content.forEach((String name, String value) -> {
@@ -84,6 +83,9 @@ public class Content {
 		return sb.toString();
 	}
 
+	/**
+	 * Voeg alle attrubiten toe aan de request.
+	 */
 	protected void appendAttributes(){
 		content.forEach((String name, String value) -> {
 			request.setAttribute(name, value);
@@ -127,6 +129,11 @@ public class Content {
 		add(RequestWrapper.PHOTO_LIST, sb.toString());
 	}
 
+	/**
+	 * Genereer html elementen waarmee de foto's uit de gegeven lijst
+	 * geselecteerd kunnen worden.
+	 * @param photos
+	 */
 	public void addPhotoSelectionList(ArrayList<Photo> photos){
 		StringBuilder sb = new StringBuilder();
 		photos.listIterator().forEachRemaining((Photo photo) -> {

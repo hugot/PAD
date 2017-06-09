@@ -1,28 +1,19 @@
 package nl.amsta09.web.controller;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.eclipse.jetty.util.PatternMatcher;
-
 import nl.amsta09.data.SqlConnector.ThemeNotFoundException;
 import nl.amsta09.model.Photo;
 import nl.amsta09.model.Theme;
 import nl.amsta09.model.Audio;
 import nl.amsta09.web.html.GenericHtmlElement;
-import nl.amsta09.web.html.HtmlAudio;
-import nl.amsta09.web.html.HtmlButton;
 import nl.amsta09.web.html.HtmlForm;
 import nl.amsta09.web.html.HtmlList;
 import nl.amsta09.web.html.HtmlPopup;

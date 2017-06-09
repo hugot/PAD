@@ -1,7 +1,6 @@
 package nl.amsta09.web.controller;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -13,6 +12,12 @@ import nl.amsta09.maintenance.ApplicationReset;
 import nl.amsta09.web.html.HtmlPopup;
 import nl.amsta09.web.util.RequestWrapper;
 
+/**
+ * Deze servlet dient voor het aanpassen van de instellingen van de
+ * applicatie via de web interface.
+ * 
+ * @author Hugo Thunnissen
+ */
 public class SettingManagementServlet extends HttpServlet {
 
 

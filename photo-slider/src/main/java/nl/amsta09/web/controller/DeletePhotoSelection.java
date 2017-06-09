@@ -27,7 +27,6 @@ public class DeletePhotoSelection extends HttpServlet {
 			throws ServletException, IOException{
 		requestWrapper = new RequestWrapper(request);
 		
-		
 		if(!requestWrapper.getSession().hasMediaSession()){
 			requestWrapper.respondUsing(RequestWrapper.INDEX_JSP, response);
 			return;

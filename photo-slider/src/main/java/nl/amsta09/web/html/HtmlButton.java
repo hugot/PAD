@@ -1,5 +1,10 @@
 package nl.amsta09.web.html;
 
+/**
+ * Met deze class kan een HTML button worden aangemaakt.
+ * 
+ * @author Hugo Thunnissen
+ */
 public class HtmlButton extends HtmlElement<HtmlButton> implements HtmlElementInterface {
 	
 	final String BOTTOM = "</button>";

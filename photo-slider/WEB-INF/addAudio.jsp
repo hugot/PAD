@@ -1,6 +1,14 @@
 <%@ page contentType="text/html;Charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="" tagdir="/WEB-INF/tags"%>
 
+<%--
+
+	Via deze webpagina kunnnen audiobestanden geupload worden.
+
+	Author: Hugo Thunnissen
+
+--%>
+
 <html lang="en">
 			<section id="middle-section">
 				<header><h3>Voeg audio toe via deze pagina</h3></header>

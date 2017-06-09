@@ -15,6 +15,7 @@ import nl.amsta09.web.html.HtmlPopup;
 
 /**
  * Verwijder een mediabestand uit de database en uit de opslag met deze class.
+ * 
  * @author Hugo Thunnissen
  */
 public class DeleteMediaServlet extends HttpServlet {

@@ -6,7 +6,7 @@
 
 Author: Hugo Thunnissen 
 
-Via deze view kunnen foto's toegevoegd worden
+Dit is de hoofdpagina van de applicatie. In de div et de id "app-frame" worden alle pagina's geladen.
 
 --%>
 
@@ -31,8 +31,6 @@ Via deze view kunnen foto's toegevoegd worden
 					<button class="big-button top-button" onclick="getReady(appParts['uploadAudio']);"><h3>Upload Muziek</h3></button>
 					<button class="big-button top-button" onclick="getReady(appParts['uploadPhoto']);"><h3>Upload foto's</h3></button>
 					<button class="big-button top-button" onclick="getReady(appParts['settings']);"><h3>Instellingen</h3></button>
-					<button class="big-button top-button" onclick="getReady(appParts['photoDeletion'])" ><h3>Foto's verwijderen</h3></button>
-					<button class="big-button top-button" onclick="getReady()" ><h3>Klik hier</h3></button>
 				</section>
 			</div>
 			<div name="app-frame" id="hidden-app-frame"></div>

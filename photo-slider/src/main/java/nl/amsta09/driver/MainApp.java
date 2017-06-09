@@ -31,10 +31,10 @@ public class MainApp extends Application{
 	@Override
 	public void start(Stage primaryStage) {
 		// Maak slideshow aan en start deze
-//		slideShowController = new SlideShowController(primaryStage);
-//		slideShowController.initialize();
+		slideShowController = new SlideShowController(primaryStage);
+		slideShowController.initialize();
 		
-        // Maak server aan en start de server (default port 4848)
+        // Maak server aan en sta de server (default port 4848)
         server = new JettyServer();
         server.setHandler();
         try {

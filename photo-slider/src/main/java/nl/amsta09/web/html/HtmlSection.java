@@ -1,5 +1,10 @@
 package nl.amsta09.web.html;
 
+/**
+ * Deze class dient voor het aanmaken van een HTML sectie
+ * 
+ * @author Hugo Thunnissen
+ */
 public class HtmlSection extends HtmlElement<HtmlSection> implements HtmlElementInterface {
 	private static final String BOTTOM = "</section>";
 
